@@ -1,4 +1,83 @@
 :root {
     --bgcolor: white;
+    font-family: 'Cabin Sketch', serif;
+}
 
+* {
+    border: solid red 1px;
+}
+
+
+
+body {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: space-around;
+    height: 100svh;
+    margin: 5px;
+}
+
+
+
+header>div {
+    font-size: 8rem;
+    font-weight: 700;
+}
+
+nav {
+    display: grid;
+    font-size: 3rem;
+}
+
+nav>.setNamePlayer1 {
+    display: flex;
+    padding: 10px 0px;
+    gap: 10px;
+}
+
+nav>.gameMode {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 10rem 1fr;
+    gap: 2%;
+    padding: 20px;
+    place-items: center;
+}
+
+nav>.gameMode>p {
+    grid-area: 1/1/2/3;
+}
+
+nav>.gameMode>.sp {
+    grid-area: 2/1/3/2;
+}
+
+nav>.gameMode>.mp {
+    grid-area: 2/2/3/3;
+}
+
+nav>.gameMode>button {
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    border-radius: 50%;
+}
+
+nav>.gameMode>button>img {
+    width: 100px;
+    color: black;
+}
+
+main>div {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+}
+
+footer>div {
+    font-size: 2rem;
 }
