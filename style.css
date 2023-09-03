@@ -1,11 +1,12 @@
 :root {
     --bgcolor: white;
-    font-family: 'Cabin Sketch', serif;
+    font-family: 'Yomogi', serif;
 }
 
-* {
+
+/* * {
     border: solid red 1px;
-}
+} */
 
 
 
@@ -13,7 +14,7 @@ body {
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
     height: 100svh;
     margin: 5px;
 }
@@ -23,41 +24,44 @@ body {
 header>div {
     font-size: 8rem;
     font-weight: 700;
+    font-family: 'Yomogi', serif;
 }
 
 nav {
     display: grid;
-    font-size: 3rem;
-}
-
-nav>.setNamePlayer1 {
-    display: flex;
-    padding: 10px 0px;
-    gap: 10px;
+    font-size: 2rem;
+    width: clamp(690px, 40%, 1080px);
 }
 
 nav>.gameMode {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 10rem 1fr;
-    gap: 2%;
-    padding: 20px;
-    place-items: center;
+    grid-template-rows: 0.5fr 1fr;
+    padding-bottom: 50px;
+    column-gap: 50px;
 }
 
 nav>.gameMode>p {
     grid-area: 1/1/2/3;
+    place-self: end center;
+    margin: 0px;
+    font-size: 3rem;
+    margin-bottom: 30px;
+    border-bottom: 2px solid black;
+    padding-bottom: 5px;
 }
 
 nav>.gameMode>.sp {
     grid-area: 2/1/3/2;
+    justify-self: end;
 }
 
 nav>.gameMode>.mp {
     grid-area: 2/2/3/3;
+    justify-self: start;
 }
 
-nav>.gameMode>button {
+nav>.gameMode button {
     width: fit-content;
     height: fit-content;
     display: flex;
@@ -65,18 +69,77 @@ nav>.gameMode>button {
     justify-content: center;
     padding: 30px;
     border-radius: 50%;
+    background-color: white;
+    border: 5px solid black;
+}
+
+nav>.gameMode button:focus {
+    background-color: lightgray
 }
 
 nav>.gameMode>button>img {
-    width: 100px;
+    width: 80px;
     color: black;
 }
 
-main>div {
+nav>form {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 0.5fr 1fr 0.5fr 1fr;
+    justify-items: center;
+    gap: 10px;
+}
+
+nav input {
+    border: none;
+    border-bottom: 5px dashed black;
+    text-align: center;
+}
+
+nav input:focus {
+    outline: none;
+}
+
+nav>form>p {
+    grid-area: 1/1/2/3;
+    margin: 0px;
+    border-bottom: 2px solid black;
+    font-size: 3rem;
+    padding-bottom: 5px;
+}
+
+nav>form>#nameP {
+    grid-area: 2/1/3/2;
+    width: 80%;
+    font-size: 2.5rem;
+}
+
+nav>form>.labelO {
+    grid-area: 3/1/4/2;
 
 }
+
+nav>form>#nameO {
+    grid-area: 2/2/3/3;
+    width: 80%;
+    font-size: 2.5rem;
+}
+
+nav>form>.labelO {
+    grid-area: 3/2/4/3;
+}
+
+nav>form>button {
+    grid-area: 4/1/5/3;
+    margin-top: 10px;
+    padding: 10px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
 
 footer>div {
     font-size: 2rem;
