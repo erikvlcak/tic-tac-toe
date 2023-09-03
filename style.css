@@ -1,12 +1,14 @@
 :root {
     --bgcolor: white;
     font-family: 'Yomogi', serif;
+    box-sizing: border-box;
+    cursor: default;
 }
 
 
-/* * {
+* {
     border: solid red 1px;
-} */
+}
 
 
 
@@ -44,7 +46,7 @@ nav>.gameMode {
 nav>.gameMode>p {
     grid-area: 1/1/2/3;
     place-self: end center;
-    margin: 0px;
+
     font-size: 3rem;
     margin-bottom: 30px;
     border-bottom: 2px solid black;
@@ -71,6 +73,7 @@ nav>.gameMode button {
     border-radius: 50%;
     background-color: white;
     border: 5px solid black;
+    cursor: pointer;
 }
 
 nav>.gameMode button:focus {
@@ -85,7 +88,7 @@ nav>.gameMode>button>img {
 nav>form {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: 0.5fr 1fr 0.5fr 1fr;
+    grid-template-rows: 0.5fr 1fr 0.5fr 0.5fr 1fr;
     justify-items: center;
     gap: 10px;
 }
@@ -102,7 +105,7 @@ nav input:focus {
 
 nav>form>p {
     grid-area: 1/1/2/3;
-    margin: 0px;
+
     border-bottom: 2px solid black;
     font-size: 3rem;
     padding-bottom: 5px;
@@ -116,7 +119,6 @@ nav>form>#nameP {
 
 nav>form>.labelO {
     grid-area: 3/1/4/2;
-
 }
 
 nav>form>#nameO {
@@ -129,16 +131,59 @@ nav>form>.labelO {
     grid-area: 3/2/4/3;
 }
 
-nav>form>button {
+p {
+    margin: 0px;
+    cursor: default;
+}
+
+nav>form>.numberOfGames {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
     grid-area: 4/1/5/3;
+    gap: 10px;
+    width: 90%;
+    padding-top: 40px;
+    cursor: default;
+}
+
+nav>form>.numberOfGames button {
+    height: fit-content;
+    background-color: white;
+    border: 2px solid white;
+    background-color: white;
+    color: black;
+    transition: border 0.2s, background-color 0.2s, color 0.2s;
+    margin-right: 3px;
+
+}
+
+nav>form>.numberOfGames button:hover {
+    border: 2px solid black;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+
+}
+
+nav>form>button {
+    grid-area: 5/1/6/3;
     margin-top: 10px;
     padding: 10px;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
+    background-color: lightgray;
+    color: black;
+    transition: color 0.3s, background-color 0.3s;
 }
 
+nav>form>button:hover {
+    color: white;
+    background-color: black;
+}
 
 
 footer>div {
