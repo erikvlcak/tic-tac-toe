@@ -1,8 +1,9 @@
 :root {
-    --bgcolor: white;
     font-family: 'Yomogi', serif;
     box-sizing: border-box;
     cursor: default;
+    --section-top-border: 5px solid rgba(128, 128, 128, 0.252);
+    --fsz-section-header: 2.5rem;
 }
 
 
@@ -13,57 +14,81 @@
 
 
 body {
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: center;
-    justify-content: space-between;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: 0.5fr minmax(500px, 1fr) 0.5fr;
     height: 100svh;
     margin: 5px;
 }
 
+header {
+    grid-area: 1/1/2/6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
+}
 
 header>div {
-    font-size: 8rem;
+    font-size: 5rem;
     font-weight: 700;
     font-family: 'Yomogi', serif;
 }
 
 nav {
-    display: grid;
+
+    /* display:none when in game, otherwise display:grid */
+    /* display: none;
+    flex-direction: column;
     font-size: 2rem;
-    width: clamp(690px, 40%, 1080px);
+    width: clamp(690px, 40%, 1080px); */
+
+    /* ******** */
+    display: none;
+
+    grid-area: 2/2/3/3;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    width: 100%;
+    row-gap: 2%;
+    margin: 50px 0px;
+
 }
 
-nav>.gameMode {
+
+
+nav .gameMode {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 0.5fr 1fr;
-    padding-bottom: 50px;
     column-gap: 50px;
+    width: 80%;
+    border-top: var(--section-top-border);
+
 }
 
-nav>.gameMode>p {
+nav .gameMode>p {
     grid-area: 1/1/2/3;
     place-self: end center;
-
-    font-size: 3rem;
+    font-weight: 900;
+    font-size: var(--fsz-section-header);
     margin-bottom: 30px;
     border-bottom: 2px solid black;
     padding-bottom: 5px;
 }
 
-nav>.gameMode>.sp {
+nav .gameMode>.sp {
     grid-area: 2/1/3/2;
-    justify-self: end;
+    justify-self: center;
 }
 
-nav>.gameMode>.mp {
+nav .gameMode>.mp {
     grid-area: 2/2/3/3;
-    justify-self: start;
+    justify-self: center;
 }
 
-nav>.gameMode button {
+nav .gameMode button {
     width: fit-content;
     height: fit-content;
     display: flex;
@@ -72,25 +97,28 @@ nav>.gameMode button {
     padding: 30px;
     border-radius: 50%;
     background-color: white;
-    border: 5px solid black;
+    border: 3px solid black;
     cursor: pointer;
 }
 
-nav>.gameMode button:focus {
-    background-color: lightgray
+nav .gameMode button:focus {
+    background-color: lightgray;
 }
 
-nav>.gameMode>button>img {
+nav .gameMode>button>img {
     width: 80px;
     color: black;
 }
 
-nav>form {
+nav .playerName {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: 0.5fr 1fr 0.5fr 0.5fr 1fr;
+    grid-template-rows: 0.5fr 2fr 1fr;
     justify-items: center;
     gap: 10px;
+    width: 80%;
+    border-top: var(--section-top-border);
+
 }
 
 nav input {
@@ -103,70 +131,7 @@ nav input:focus {
     outline: none;
 }
 
-nav>form>p {
-    grid-area: 1/1/2/3;
-
-    border-bottom: 2px solid black;
-    font-size: 3rem;
-    padding-bottom: 5px;
-}
-
-nav>form>#nameP {
-    grid-area: 2/1/3/2;
-    width: 80%;
-    font-size: 2.5rem;
-}
-
-nav>form>.labelO {
-    grid-area: 3/1/4/2;
-}
-
-nav>form>#nameO {
-    grid-area: 2/2/3/3;
-    width: 80%;
-    font-size: 2.5rem;
-}
-
-nav>form>.labelO {
-    grid-area: 3/2/4/3;
-}
-
-p {
-    margin: 0px;
-    cursor: default;
-}
-
-nav>form>.numberOfGames {
-    display: flex;
-    justify-content: space-between;
-    align-items: end;
-    grid-area: 4/1/5/3;
-    gap: 10px;
-    width: 90%;
-    padding-top: 40px;
-    cursor: default;
-}
-
-nav>form>.numberOfGames button {
-    height: fit-content;
-    background-color: white;
-    border: 2px solid white;
-    background-color: white;
-    color: black;
-    transition: border 0.2s, background-color 0.2s, color 0.2s;
-    margin-right: 3px;
-
-}
-
-nav>form>.numberOfGames button:hover {
-    border: 2px solid black;
-    background-color: black;
-    color: white;
-    cursor: pointer;
-
-}
-
-nav>form>button {
+nav .playerName>button {
     grid-area: 5/1/6/3;
     margin-top: 10px;
     padding: 10px;
@@ -180,11 +145,222 @@ nav>form>button {
     transition: color 0.3s, background-color 0.3s;
 }
 
-nav>form>button:hover {
+nav .playerName>button:hover {
     color: white;
     background-color: black;
 }
 
+nav .playerName>p {
+    grid-area: 1/1/2/3;
+    font-weight: 900;
+    border-bottom: 2px solid black;
+    font-size: var(--fsz-section-header);
+    padding-bottom: 5px;
+}
+
+nav .playerName>#nameP {
+    grid-area: 2/1/3/2;
+    width: 50%;
+    font-size: 2.5rem;
+}
+
+nav .playerName>.labelP {
+    grid-area: 3/1/4/2;
+    font-size: 2rem;
+}
+
+nav .playerName>#nameO {
+    grid-area: 2/2/3/3;
+    width: 50%;
+    font-size: 2.5rem;
+}
+
+nav .playerName>.labelO {
+    grid-area: 3/2/4/3;
+    font-size: 2rem;
+}
+
+nav .playerSymbol {
+    display: grid;
+    grid-template-rows: 0.5fr 2fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    place-items: center;
+    width: 80%;
+    border-top: var(--section-top-border);
+
+}
+
+nav .playerSymbol p:first-of-type {
+    grid-area: 1/1/2/5;
+    border-bottom: 2px solid black;
+    font-size: var(--fsz-section-header);
+    padding-bottom: 5px;
+    font-weight: 900;
+}
+
+nav .playerSymbol p:nth-of-type(2) {
+    grid-area: 2/1/3/5;
+    /* align-self: flex-end; */
+
+}
+
+nav .playerSymbol p:nth-of-type(3) {
+    grid-area: 3/1/4/2;
+    font-size: 2rem;
+    border-top: 5px solid black;
+    width: 150px;
+    text-align: center;
+}
+
+nav .playerSymbol p:last-of-type {
+    grid-area: 3/2/4/3;
+    font-size: 2rem;
+    border-top: 5px solid black;
+    width: 150px;
+    text-align: center;
+}
+
+nav .playerSymbol .spXO {
+    grid-area: 2/1/3/2;
+    font-size: 2rem;
+    /* align-self: flex-end; */
+}
+
+
+
+nav .playerSymbol .mpXO {
+    grid-area: 2/2/3/3;
+    font-size: 2rem;
+    /* align-self: flex-end; */
+}
+
+
+
+
+nav .numberOfGames {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    align-items: center;
+    grid-area: 4/1/5/3;
+    gap: 10px;
+    cursor: default;
+    width: 80%;
+    padding-bottom: 1%;
+    border-top: var(--section-top-border);
+    border-bottom: var(--section-top-border);
+}
+
+nav .numberOfGames p:first-of-type {
+    border-bottom: 2px solid black;
+    font-size: var(--fsz-section-header);
+    padding-bottom: 5px;
+    font-weight: 900;
+}
+
+
+nav .numberOfGames button {
+    height: fit-content;
+    background-color: white;
+    border: 2px solid white;
+    background-color: white;
+    color: black;
+    transition: border 0.2s, background-color 0.2s, color 0.2s;
+    margin-right: 3px;
+    font-size: 2rem;
+
+}
+
+nav .numberOfGames button:hover {
+    border: 2px solid black;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+
+}
+
+nav .startGame {
+    font-size: 2rem;
+    width: 50%;
+    padding: 10px;
+    background-color: rgba(211, 211, 211, 0.297);
+    color: black;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+nav .startGame:hover {
+    color: white;
+    background-color: black;
+}
+
+main {
+    grid-area: 2/2/3/3;
+    /* ******** */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+main .board {
+    display: grid;
+    grid-template-columns: repeat(3, 200px);
+    grid-template-rows: repeat(3, 200px);
+    border: 5px solid black;
+}
+
+main .board div {
+    border: 2.5px solid black;
+}
+
+body .leftArea {
+    background-color: rgb(0, 255, 166);
+    grid-area: 2/1/3/2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+body .leftArea .turn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+body .leftArea p {
+    font-size: var(--fsz-section-header);
+    border-bottom: 2px solid black;
+}
+
+body .leftArea div {
+    font-size: 2rem;
+}
+
+body .rightArea {
+    background-color: aqua;
+    grid-area: 2/3/3/4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+body .rightArea p:first-of-type {
+    font-size: var(--fsz-section-header);
+    border-bottom: 2px solid black;
+}
+
+body .rightArea div {
+    font-size: 2rem;
+}
+
+
+footer {
+    grid-area: 3/1/4/6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 footer>div {
     font-size: 2rem;
