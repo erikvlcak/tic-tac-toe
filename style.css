@@ -7,9 +7,9 @@
 }
 
 
-* {
+/* * {
     border: solid red 1px;
-}
+} */
 
 
 
@@ -434,6 +434,10 @@ body .rightArea .logItems .resultList div {
 
 body .rightArea .logItems .resultList p {
     grid-area: 1/1/2/3;
+}
+
+body .rightArea .logItems .resultList .currentGame {
+    border-right: 3px solid black;
 }
 
 body .rightArea div,
