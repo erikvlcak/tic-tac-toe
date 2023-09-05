@@ -346,11 +346,6 @@ body .rightArea {
     text-align: center;
 }
 
-body .rightArea .log>p {
-    font-size: var(--fsz-section-header);
-    border-bottom: 2px solid black;
-}
-
 body .rightArea div {
     font-size: 2rem;
 }
