@@ -326,11 +326,13 @@ main .board div {
 main .score {
     width: 100%;
     text-align: center;
+
 }
 
 main .gameScore {
     display: grid;
     grid-template-columns: 2fr auto auto auto 2fr;
+    align-items: center;
 }
 
 main .gameScore .nameP {
@@ -341,10 +343,12 @@ main .gameScore .nameP {
 
 main .gameScore .scoreP {
     grid-area: 1/2/2/3;
+    padding: 15px;
 }
 
 main .gameScore .scoreO {
     grid-area: 1/4/2/5;
+    padding: 15px;
 }
 
 main .gameScore .nameO {
