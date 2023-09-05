@@ -67,7 +67,7 @@
 
     <div class="leftArea">
         <div class="turn">
-            <p>Now on turn</p>
+            <p>On turn</p>
             <div class="turnName">Erik</div>
             <div class="turnSymbol">X</div>
         </div>
@@ -78,14 +78,14 @@
         <div class="log">
             <div class="gameCounter">
                 <p>Game count</p>
-                <div class="counter"> <span class="currentGameNr">1</span>/<span class="totalGameNr">5</span>
+                <div class="counter"> <span class="currentGameNr ">1</span>/<span class="totalGameNr ">5</span>
 
                 </div>
             </div>
 
             <div class="logItems">
                 <div class="resultList">
-                    <p>Results</p>
+                    <p class=>Results</p>
                     <div class="currentGameNr">Game <span class="currentGameNr">1</span></div>
                     <div class="currentGameResult"> <span class="winnerName">P1</span> <span class="result">wins</span>
                     </div>
@@ -103,6 +103,11 @@
     </div>
 
     <main>
+        <div class="options">
+            <button class="undoBtn fontSize3rem">Undo move</button>
+            <button class="menuBtn fontSize3rem">Back to menu</button>
+        </div>
+
         <div class="board">
             <div class="a1"></div>
             <div class="a2"></div>
@@ -114,7 +119,11 @@
             <div class="c2"></div>
             <div class="c3"></div>
         </div>
-        <div class="score"></div>
+        <div class="score">
+            <p class="">Score</p>
+            <div class="gameScore"> <span class="nameP">Erik </span> <span class="scoreP">1</span> : <span
+                    class="scoreO">3</span> <span class="nameO">Barbora </span> </div>
+        </div>
     </main>
 
     <footer>
