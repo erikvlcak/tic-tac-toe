@@ -27,10 +27,10 @@
         <div class="gameMode">
             <p>Choose your opponent</p>
             <button type="button" class="sp">
-                <img src="./imgs/robot_FILL0_wght400_GRAD0_opsz48.svg" alt="robot" />
+                <img src="./imgs/robot_FILL0_wght400_GRAD0_opsz48.svg" class="spImg" alt="robot" />
             </button>
             <button type="button" class="mp">
-                <img src="./imgs/face_FILL1_wght400_GRAD0_opsz48.svg" alt="human" />
+                <img src="./imgs/face_FILL1_wght400_GRAD0_opsz48.svg" class="mpImg" alt="human" />
             </button>
         </div>
 
@@ -46,23 +46,27 @@
             <p>Choose symbol</p>
             <p>Click to change</p>
             <p>Your</p>
-            <div class="spXO">X</div>
+            <div class="spXO">
+                <button>X</button>
+            </div>
             <p>Opponents</p>
-            <div class="mpXO">O</div>
+            <div class="mpXO">
+                <button>O</button>
+            </div>
         </div>
 
         <div class="numberOfGames">
             <p>Number of games</p>
             <div>
-                <button type="button">1</button>
-                <button type="button">2</button>
-                <button type="button">3</button>
-                <button type="button">4</button>
-                <button type="button">5</button>
+                <button type="button" class="notSelected">1</button>
+                <button type="button" class="notSelected">2</button>
+                <button type="button" class="notSelected">3</button>
+                <button type="button" class="notSelected">4</button>
+                <button type="button" class="notSelected">5</button>
             </div>
         </div>
 
-        <button class="startGame">Confirm and play</button>
+        <button class="startGame">Confirm and play!</button>
     </nav>
 
     <div class="leftArea">
@@ -74,32 +78,41 @@
     </div>
 
     <div class="rightArea">
-
         <div class="log">
             <div class="gameCounter">
                 <p>Game count</p>
-                <div class="counter"> <span class="currentGameNr ">1</span>/<span class="totalGameNr ">5</span>
-
+                <div class="counter">
+                    <span class="currentGameNr">1</span>/<span class="totalGameNr">5</span>
                 </div>
             </div>
 
             <div class="logItems">
                 <div class="resultList">
-                    <p class=>Results</p>
-                    <div class="currentGame">Game <span class="currentGameNr">1</span></div>
-                    <div class="currentGameResult"> <span class="winnerName">P1</span> <span class="result">wins</span>
+                    <p>Results</p>
+                    <div class="currentGame">
+                        Game <span class="currentGameNr">1</span>
                     </div>
-                    <div class="currentGame">Game <span class="currentGameNr">2</span></div>
-                    <div class="currentGameResult"> <span class="winnerName">P2</span> <span class="result">wins</span>
+                    <div class="currentGameResult">
+                        <span class="winnerName">P1</span>
+                        <span class="result">wins</span>
                     </div>
-                    <div class="currentGame">Game <span class="currentGameNr">3</span></div>
-                    <div class="currentGameResult"> <span class="winnerName">P1</span> <span class="result">wins</span>
+                    <div class="currentGame">
+                        Game <span class="currentGameNr">2</span>
+                    </div>
+                    <div class="currentGameResult">
+                        <span class="winnerName">P2</span>
+                        <span class="result">wins</span>
+                    </div>
+                    <div class="currentGame">
+                        Game <span class="currentGameNr">3</span>
+                    </div>
+                    <div class="currentGameResult">
+                        <span class="winnerName">P1</span>
+                        <span class="result">wins</span>
                     </div>
                 </div>
-
             </div>
         </div>
-
     </div>
 
     <main>
@@ -108,21 +121,15 @@
             <button class="menuBtn">Back to menu</button>
         </div>
 
-        <div class="board">
-            <div class="a1"></div>
-            <div class="a2"></div>
-            <div class="a3"></div>
-            <div class="b1"></div>
-            <div class="b2"></div>
-            <div class="b3"></div>
-            <div class="c1"></div>
-            <div class="c2"></div>
-            <div class="c3"></div>
-        </div>
+        <!-- board -->
+        <div class="board"></div>
+
         <div class="score">
             <p>Score</p>
-            <div class="gameScore"> <span class="nameP">Erik </span> <span class="scoreP">1</span> : <span
-                    class="scoreO">3</span> <span class="nameO">Barbora </span> </div>
+            <div class="gameScore">
+                <span class="nameP">Erik </span> <span class="scoreP">1</span> :
+                <span class="scoreO">3</span> <span class="nameO">Barbora </span>
+            </div>
         </div>
     </main>
 

@@ -6,10 +6,13 @@
     --fsz-section-header: 2.5rem;
 }
 
+/* 
 
 * {
     border: solid red 1px;
-}
+} */
+
+
 
 
 
@@ -56,6 +59,15 @@ nav {
 
 }
 
+nav div {
+    min-height: max-content;
+    padding: 20px 0px;
+}
+
+/* nav div :hover {
+    background-color: gray;
+} */
+
 
 
 nav .gameMode {
@@ -74,19 +86,33 @@ nav .gameMode>p {
     font-weight: 900;
     font-size: var(--fsz-section-header);
     margin-bottom: 30px;
-    border-bottom: 2px solid black;
+    /* border-bottom: 2px solid black; */
     padding-bottom: 5px;
 }
 
 nav .gameMode>.sp {
     grid-area: 2/1/3/2;
     justify-self: center;
+    background-color: white;
+    transition: background-color 0.3s;
 }
 
 nav .gameMode>.mp {
     grid-area: 2/2/3/3;
     justify-self: center;
+    background-color: white;
+    transition: background-color 0.3s;
 }
+
+nav .gameMode>button>img {
+    width: 100px;
+    filter: invert(0);
+    transition: filter 0.3s;
+}
+
+/* nav .gameMode>button>img:hover {
+    filter: invert(100);
+} */
 
 nav .gameMode button {
     width: fit-content;
@@ -101,21 +127,12 @@ nav .gameMode button {
     cursor: pointer;
 }
 
-/* nav .gameMode button:focus {
-    background-color: lightgray;
-} */
-
-nav .gameMode>button>img {
-    width: 80px;
-    color: black;
-}
 
 nav .playerName {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: 0.5fr 2fr 1fr;
-    justify-items: center;
-    gap: 10px;
+    place-items: center;
     width: 80%;
     border-top: var(--section-top-border);
 
@@ -153,7 +170,7 @@ nav .playerName>button:hover {
 nav .playerName>p {
     grid-area: 1/1/2/3;
     font-weight: 900;
-    border-bottom: 2px solid black;
+    /* border-bottom: 2px solid black; */
     font-size: var(--fsz-section-header);
     padding-bottom: 5px;
 }
@@ -192,7 +209,7 @@ nav .playerSymbol {
 
 nav .playerSymbol p:first-of-type {
     grid-area: 1/1/2/5;
-    border-bottom: 2px solid black;
+    /* border-bottom: 2px solid black; */
     font-size: var(--fsz-section-header);
     padding-bottom: 5px;
     font-weight: 900;
@@ -226,6 +243,21 @@ nav .playerSymbol .spXO {
     /* align-self: flex-end; */
 }
 
+nav .playerSymbol button {
+    width: 5rem;
+    height: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    border-radius: 50%;
+    background-color: white;
+    border: 3px solid black;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 2rem;
+}
+
 
 
 nav .playerSymbol .mpXO {
@@ -243,31 +275,34 @@ nav .numberOfGames {
     justify-content: space-between;
     align-items: center;
     grid-area: 4/1/5/3;
-    gap: 10px;
     cursor: default;
     width: 80%;
-    padding-bottom: 1%;
     border-top: var(--section-top-border);
     border-bottom: var(--section-top-border);
+    gap: 50px;
+}
+
+nav .numberOfGames {
+    align-items: center;
+    justify-content: center;
 }
 
 nav .numberOfGames p:first-of-type {
-    border-bottom: 2px solid black;
+    /* border-bottom: 2px solid black; */
     font-size: var(--fsz-section-header);
     padding-bottom: 5px;
     font-weight: 900;
+    margin-bottom: auto;
 }
 
 
 nav .numberOfGames button {
     height: fit-content;
-    background-color: white;
-    border: 2px solid white;
-    background-color: white;
-    color: black;
     transition: border 0.2s, background-color 0.2s, color 0.2s;
     margin-right: 3px;
     font-size: 2rem;
+    /* background-color: white;
+    border: 2px solid white; */
 
 }
 
@@ -279,13 +314,36 @@ nav .numberOfGames button:hover {
 
 }
 
-nav .startGame {
+.notSelected {
+    height: fit-content;
+    background-color: white;
+    border: 2px solid white;
+    background-color: white;
+    color: black;
+    transition: border 0.2s, background-color 0.2s, color 0.2s;
+    margin-right: 3px;
     font-size: 2rem;
-    width: 50%;
+}
+
+.selected {
+    height: fit-content;
+    border: 2px solid black;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+    margin-right: 3px;
+    font-size: 2rem;
+}
+
+nav .startGame {
+    font-size: 3rem;
+    width: fit-content;
     padding: 10px;
     background-color: rgba(211, 211, 211, 0.297);
     color: black;
+    font-weight: bold;
     transition: background-color 0.2s, color 0.2s;
+    margin-top: 15%;
 }
 
 nav .startGame:hover {
@@ -298,9 +356,10 @@ main {
     grid-area: 2/2/3/3;
     /* display none OR display flex */
     display: none;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: center;
     flex-direction: column;
+    gap: 2%;
 }
 
 main div,
@@ -315,14 +374,13 @@ main span {
 
 main .board {
     display: grid;
-    grid-template-columns: repeat(3, 7vw);
-    grid-template-rows: repeat(3, 7vw);
     border: 5px solid black;
 }
 
 main .board div {
-    border: 2.5px solid black;
+    border: 1px solid black;
 }
+
 
 main .score {
     width: 100%;
@@ -374,7 +432,7 @@ body .leftArea .turn {
     justify-content: center;
     align-items: center;
     gap: 1rem;
-    border: 5px solid black;
+    border: 3px solid black;
     padding: 10px;
 }
 
@@ -405,7 +463,7 @@ body .rightArea div {
 }
 
 body .rightArea .log {
-    border: 5px solid black;
+    border: 3px solid black;
     padding: 10px;
 }
 
