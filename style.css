@@ -1,4 +1,546 @@
 :root {
-    --bgcolor: white;
+    font-family: 'Yomogi', serif;
+    box-sizing: border-box;
+    cursor: default;
+    --section-top-border: 5px solid rgba(128, 128, 128, 0.252);
+    --fsz-section-header: 2.5rem;
+    --transition-color: rgba(128, 128, 128, 0.1);
+    --light-color: white;
+    --dark-color: black;
+}
 
+/* 
+
+* {
+    border: solid red 1px;
+} */
+
+
+
+
+
+body {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: 0.5fr minmax(500px, 1fr) 0.5fr;
+    height: 100svh;
+    margin: 5px;
+}
+
+header {
+    grid-area: 1/1/2/6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+header>div {
+    font-size: 5rem;
+    font-weight: 700;
+    font-family: 'Yomogi', serif;
+}
+
+nav {
+
+    /* display:none when in game, otherwise display:flex */
+    /* display: none;
+    flex-direction: column;
+    font-size: 2rem;
+    width: clamp(690px, 40%, 1080px); */
+
+    /* ******** */
+    display: flex;
+
+    grid-area: 2/2/3/3;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    /* row-gap: 2%; */
+    margin: 50px 0px;
+
+}
+
+nav div {
+    min-height: max-content;
+    padding: 20px 0px;
+}
+
+
+nav .gameMode {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 0.5fr 1fr;
+    column-gap: 50px;
+    width: 80%;
+    border-top: var(--section-top-border);
+    background-color: var(--light-color);
+    transition: background-color 0.3s;
+
+}
+
+nav .gameMode:hover {
+    background-color: var(--transition-color);
+}
+
+nav .gameMode>p {
+    grid-area: 1/1/2/3;
+    place-self: end center;
+    font-weight: 900;
+    font-size: var(--fsz-section-header);
+    margin-bottom: 30px;
+    /* border-bottom: 2px solid black; */
+    padding-bottom: 5px;
+}
+
+nav .gameMode>.sp {
+    grid-area: 2/1/3/2;
+    justify-self: center;
+    background-color: var(--light-color);
+    transition: background-color 0.3s;
+}
+
+nav .gameMode>.mp {
+    grid-area: 2/2/3/3;
+    justify-self: center;
+    background-color: var(--light-color);
+    transition: background-color 0.3s;
+}
+
+nav .gameMode>button>img {
+    width: 100px;
+    filter: invert(0);
+    transition: filter 0.3s;
+}
+
+/* nav .gameMode>button>img:hover {
+    filter: invert(100);
+} */
+
+nav .gameMode button {
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    border-radius: 50%;
+    background-color: var(--light-color);
+    border: 3px solid var(--dark-color);
+    cursor: pointer;
+}
+
+
+nav .playerName {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 0.5fr 2fr 1fr;
+    place-items: center;
+    width: 80%;
+    border-top: var(--section-top-border);
+    background-color: var(--light-color);
+    transition: background-color 0.3s;
+}
+
+nav .playerName:hover {
+    background-color: var(--transition-color);
+}
+
+nav input {
+    border: none;
+    border-bottom: 5px dashed var(--dark-color);
+    text-align: center;
+}
+
+nav input:focus {
+    outline: none;
+}
+
+nav .playerName>button {
+    grid-area: 5/1/6/3;
+    margin-top: 10px;
+    padding: 10px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: lightgray;
+    color: black;
+    transition: color 0.3s, background-color 0.3s;
+}
+
+nav .playerName>button:hover {
+    color: var(--light-color);
+    background-color: black;
+}
+
+nav .playerName>p {
+    grid-area: 1/1/2/3;
+    font-weight: 900;
+    /* border-bottom: 2px solid black; */
+    font-size: var(--fsz-section-header);
+    padding-bottom: 5px;
+}
+
+nav .playerName>#nameP {
+    grid-area: 2/1/3/2;
+    width: 70%;
+    font-size: 2.5rem;
+    background-color: transparent;
+}
+
+nav .playerName>.labelP {
+    grid-area: 3/1/4/2;
+    font-size: 2rem;
+}
+
+nav .playerName>#nameO {
+    grid-area: 2/2/3/3;
+    width: 70%;
+    font-size: 2.5rem;
+}
+
+nav .playerName>#nameO:disabled {
+    background-color: transparent;
+}
+
+nav .playerName>.labelO {
+    grid-area: 3/2/4/3;
+    font-size: 2rem;
+}
+
+nav .playerSymbol {
+    display: grid;
+    grid-template-rows: 0.5fr 2fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    place-items: center;
+    width: 80%;
+    border-top: var(--section-top-border);
+    background-color: var(--light-color);
+    transition: background-color 0.3s;
+}
+
+nav .playerSymbol:hover {
+    background-color: var(--transition-color);
+}
+
+nav .playerSymbol p:first-of-type {
+    grid-area: 1/1/2/5;
+    /* border-bottom: 2px solid black; */
+    font-size: var(--fsz-section-header);
+    padding-bottom: 5px;
+    font-weight: 900;
+}
+
+nav .playerSymbol p:nth-of-type(2) {
+    grid-area: 2/1/3/5;
+    /* align-self: flex-end; */
+
+}
+
+nav .playerSymbol p:nth-of-type(3) {
+    grid-area: 3/1/4/2;
+    font-size: 2rem;
+    border-top: 5px solid var(--dark-color);
+    width: 150px;
+    text-align: center;
+}
+
+nav .playerSymbol p:last-of-type {
+    grid-area: 3/2/4/3;
+    font-size: 2rem;
+    border-top: 5px solid var(--dark-color);
+    width: 150px;
+    text-align: center;
+}
+
+nav .playerSymbol .spXO {
+    grid-area: 2/1/3/2;
+    font-size: 2rem;
+    /* align-self: flex-end; */
+}
+
+nav .playerSymbol button {
+    width: 5rem;
+    height: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    border-radius: 50%;
+    background-color: var(--light-color);
+    border: 3px solid var(--dark-color);
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+
+
+nav .playerSymbol .mpXO {
+    grid-area: 2/2/3/3;
+    font-size: 2rem;
+    /* align-self: flex-end; */
+}
+
+
+
+
+nav .numberOfGames {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    align-items: center;
+    grid-area: 4/1/5/3;
+    cursor: default;
+    width: 80%;
+    border-top: var(--section-top-border);
+    border-bottom: var(--section-top-border);
+    gap: 50px;
+
+}
+
+nav .numberOfGames {
+    align-items: center;
+    justify-content: center;
+    background-color: var(--light-color);
+    transition: background-color 0.3s;
+}
+
+nav .numberOfGames:hover {
+    background-color: var(--transition-color);
+}
+
+nav .numberOfGames p:first-of-type {
+    /* border-bottom: 2px solid black; */
+    font-size: var(--fsz-section-header);
+    padding-bottom: 5px;
+    font-weight: 900;
+    margin-bottom: auto;
+}
+
+
+nav .numberOfGames button {
+    height: fit-content;
+    transition: border 0.2s, background-color 0.2s, color 0.2s;
+    margin-right: 3px;
+    font-size: 2rem;
+    background-color: transparent;
+    color: var(--dark-color);
+    /* border: 3px solid transparent; */
+}
+
+nav .numberOfGames button:hover {
+    border: 3px solid var(--dark-color);
+    background-color: var(--dark-color);
+    color: var(--light-color);
+    cursor: pointer;
+
+}
+
+.notSelected {
+    height: fit-content;
+    background-color: var(--light-color);
+    border: 3px solid var(--light-color);
+    background-color: var(--light-color);
+    color: black;
+    transition: border 0.2s, background-color 0.2s, color 0.2s;
+    margin-right: 3px;
+    font-size: 2rem;
+}
+
+.selected {
+    height: fit-content;
+    border: 3px solid var(--dark-color);
+    background-color: var(--dark-color);
+    color: var(--light-color);
+    cursor: pointer;
+    margin-right: 3px;
+    font-size: 2rem;
+}
+
+nav .startGame {
+    font-size: 3rem;
+    width: fit-content;
+    padding: 10px;
+    background-color: rgba(211, 211, 211, 0.297);
+    color: var(--dark-color);
+    font-weight: bold;
+    transition: background-color 0.2s, color 0.2s;
+    margin-top: 15%;
+}
+
+nav .startGame:hover {
+    color: var(--light-color);
+    background-color: var(--dark-color);
+}
+
+main {
+
+    grid-area: 2/2/3/3;
+    /* display none OR display flex */
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 2%;
+}
+
+main div,
+main button {
+    font-size: 1.5vw;
+}
+
+main p,
+main span {
+    font-size: 1.8vw;
+}
+
+main .board {
+    display: grid;
+    border: 5px solid var(--dark-color);
+}
+
+main .board div {
+    border: 1px solid var(--dark-color);
+}
+
+
+main .score {
+    width: 100%;
+    text-align: center;
+
+}
+
+main .gameScore {
+    display: grid;
+    grid-template-columns: 2fr auto auto auto 2fr;
+    align-items: center;
+}
+
+main .gameScore .nameP {
+    justify-self: end;
+    padding-right: 50px;
+    grid-area: 1/1/2/2;
+}
+
+main .gameScore .scoreP {
+    grid-area: 1/2/2/3;
+    padding: 15px;
+}
+
+main .gameScore .scoreO {
+    grid-area: 1/4/2/5;
+    padding: 15px;
+}
+
+main .gameScore .nameO {
+    justify-self: start;
+    padding-left: 50px;
+    grid-area: 1/5/2/6;
+}
+
+
+body .leftArea {
+    /* display none OR display flex */
+    grid-area: 2/1/3/2;
+    display: none;
+    justify-content: end;
+    align-items: center;
+
+}
+
+body .leftArea .turn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    border: 3px solid var(--dark-color);
+    padding: 10px;
+}
+
+body .leftArea p {
+    font-size: var(--fsz-section-header);
+    border-bottom: 3px solid var(--dark-color);
+}
+
+body .leftArea div {
+    font-size: 1.5vw;
+}
+
+body .leftArea p {
+    font-size: 1.8vw;
+}
+
+body .rightArea {
+    /* display none OR display flex */
+    grid-area: 2/3/3/4;
+    display: none;
+    justify-content: start;
+    align-items: center;
+    text-align: center;
+}
+
+body .rightArea div {
+    font-size: 2rem;
+}
+
+body .rightArea .log {
+    border: 3px solid var(--dark-color);
+    padding: 10px;
+}
+
+body .rightArea .log p {
+    border-bottom: 3px solid var(--dark-color);
+}
+
+body .rightArea .logItems {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+body .rightArea .logItems p:first-of-type {
+    grid-area: 1/1/2/2;
+}
+
+body .rightArea .logItems .resultList {
+    grid-area: 2/1/3/3;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    text-align: center;
+}
+
+body .rightArea .logItems .resultList div {
+    padding: 10px;
+}
+
+body .rightArea .logItems .resultList p {
+    grid-area: 1/1/2/3;
+}
+
+body .rightArea .logItems .resultList .currentGame {
+    border-right: 3px solid var(--dark-color);
+}
+
+body .rightArea div,
+body .rightArea span {
+    font-size: 1.5vw;
+}
+
+body .rightArea p {
+    font-size: 1.8vw;
+}
+
+footer {
+    grid-area: 3/1/4/6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+footer>div {
+    font-size: 2rem;
 }

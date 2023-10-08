@@ -2,21 +2,139 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="../reset.css">
-    <script src="script.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="../normalize.css" />
+    <script src="script.js" defer></script>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&family=Gabriela&family=Inter:wght@400;600;700&display=swap");
+    </style>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Yomogi&display=swap");
+    </style>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <title>Piškvorky</title>
 </head>
 
 <body>
     <header>
-        <h1>Tic-tac-toe</h1>
+        <div>Tic-Tac-Toe</div>
     </header>
 
-    <footer>
+    <nav>
+        <div class="gameMode">
+            <p>Choose your opponent</p>
+            <button type="button" class="sp">
+                <img src="./imgs/robot_FILL0_wght400_GRAD0_opsz48.svg" class="spImg" alt="robot" />
+            </button>
+            <button type="button" class="mp">
+                <img src="./imgs/face_FILL1_wght400_GRAD0_opsz48.svg" class="mpImg" alt="human" />
+            </button>
+        </div>
 
+        <div class="playerName">
+            <p>Enter names</p>
+            <label for="nameP" class="labelP">Your</label>
+            <input type="text" id="nameP" autocomplete="off" />
+            <label for="nameO" class="labelO">Opponents</label>
+            <input type="text" id="nameO" autocomplete="off" />
+        </div>
+
+        <div class="playerSymbol">
+            <p>Choose symbol</p>
+            <p>Click to change</p>
+            <p>Your</p>
+            <div class="spXO">
+                <button class="btnSP">X</button>
+            </div>
+            <p>Opponents</p>
+            <div class="mpXO">
+                <button class="btnMP">O</button>
+            </div>
+        </div>
+
+        <div class="numberOfGames">
+            <p>Number of games</p>
+            <div>
+                <button type="button" class="notSelected">1</button>
+                <button type="button" class="notSelected">2</button>
+                <button type="button" class="notSelected">3</button>
+                <button type="button" class="notSelected">4</button>
+                <button type="button" class="notSelected">5</button>
+            </div>
+        </div>
+
+        <button class="startGame">Confirm and play!</button>
+    </nav>
+
+    <div class="leftArea">
+        <div class="turn">
+            <p>On turn</p>
+            <div class="turnName">Erik</div>
+            <div class="turnSymbol">X</div>
+        </div>
+    </div>
+
+    <div class="rightArea">
+        <div class="log">
+            <div class="gameCounter">
+                <p>Game count</p>
+                <div class="counter">
+                    <span class="currentGameNr">1</span>/<span class="totalGameNr">5</span>
+                </div>
+            </div>
+
+            <div class="logItems">
+                <div class="resultList">
+                    <p>Results</p>
+                    <div class="currentGame">
+                        Game <span class="currentGameNr">1</span>
+                    </div>
+                    <div class="currentGameResult">
+                        <span class="winnerName">P1</span>
+                        <span class="result">wins</span>
+                    </div>
+                    <div class="currentGame">
+                        Game <span class="currentGameNr">2</span>
+                    </div>
+                    <div class="currentGameResult">
+                        <span class="winnerName">P2</span>
+                        <span class="result">wins</span>
+                    </div>
+                    <div class="currentGame">
+                        Game <span class="currentGameNr">3</span>
+                    </div>
+                    <div class="currentGameResult">
+                        <span class="winnerName">P1</span>
+                        <span class="result">wins</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <div class="options">
+            <button class="undoBtn">Undo move</button>
+            <button class="menuBtn">Back to menu</button>
+        </div>
+
+        <!-- board -->
+        <div class="board"></div>
+
+        <div class="score">
+            <p>Score</p>
+            <div class="gameScore">
+                <span class="nameP">Erik </span> <span class="scoreP">1</span> :
+                <span class="scoreO">3</span> <span class="nameO">Barbora </span>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div>Made by Erik</div>
     </footer>
 </body>
 
