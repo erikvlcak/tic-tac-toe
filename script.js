@@ -29,7 +29,7 @@ function createBoard() {
 function getGameSetup() {
 
     let playerCount = () => {
-
+        lalalla
     }
 
 
