@@ -7,21 +7,8 @@ document.querySelector('nav .startGame').addEventListener('click', () => {
 })
 
 document.querySelector('main .options .menuBtn').addEventListener('click', () => {
-    showMenu()
+    showMenu();
 })
-
-// document.querySelector('nav .gameMode').addEventListener('click', () => {
-//     let sp = document.querySelector('.sp');
-//     let mp = document.querySelector('.mp');
-//     if (!(sp.classList.contains('checked'))) {
-//         sp.classList.add('checked')
-//         mp.classList.remove('checked');
-//     }
-//     if (!(mp.classList.contains('checked'))) {
-//         mp.classList.add('checked')
-//         sp.classList.remove('checked');
-//     }
-// })
 
 
 
@@ -39,6 +26,16 @@ function createBoard() {
     }
 }
 
+function getGameSetup() {
+
+    let playerCount = () => {
+
+    }
+
+
+
+}
+
 function showBoard() {
     document.querySelector('nav').style.display = 'none';
     document.querySelector('main').style.display = 'flex';
@@ -54,7 +51,7 @@ function showMenu() {
 }
 
 
-
+//select opponent
 document.querySelector('.gameMode').addEventListener("click", (e) => {
 
     if ((e.target.className == "sp") || (e.target.className == 'spImg')) {
@@ -70,15 +67,30 @@ document.querySelector('.gameMode').addEventListener("click", (e) => {
     }
 })
 
+//change X and O
 document.querySelector('.playerSymbol').addEventListener('click', (e) => {
-
-    if (e.target.className == 'spXO') {
-        e.target.textContent = 'O';
-        document.querySelector
+    if (e.target.classList.contains('btnSP')) {
+        if (e.target.textContent == 'X') {
+            e.target.textContent = 'O';
+            document.querySelector('.btnMP').textContent = 'X';
+        } else {
+            e.target.textContent = 'X';
+            document.querySelector('.btnMP').textContent = 'O';
+        }
     }
 
+    if (e.target.classList.contains('btnMP')) {
+        if (e.target.textContent == 'X') {
+            e.target.textContent = 'O';
+            document.querySelector('.btnSP').textContent = 'X';
+        } else {
+            e.target.textContent = 'X';
+            document.querySelector('.btnSP').textContent = 'O';
+        }
+    }
 })
 
+//get selected number of games to be played
 let NumberOfGames = (() => {
     let selectedNumber = null;
 
