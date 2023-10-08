@@ -1,16 +1,16 @@
 'use strict'
 
+let game = getGameSetup();
+
 document.querySelector('nav .startGame').addEventListener('click', () => {
     showBoard();
-    console.log(NumberOfGames.getNumberOfGames());
     createBoard();
 })
 
 document.querySelector('main .options .menuBtn').addEventListener('click', () => {
     showMenu();
+    clearBoard();
 })
-
-
 
 function createBoard() {
     let board = document.querySelector('main .board');
@@ -26,15 +26,44 @@ function createBoard() {
     }
 }
 
+function clearBoard() {
+    document.querySelector('main .board').innerHTML = '';
+}
+
 function getGameSetup() {
 
-    let playerCount = () => {
-
+    let getMode = () => {
+        let mode = undefined;
+        document.querySelectorAll('.gameMode button').forEach(item => {
+            if (item.style.backgroundColor == 'black') {
+                mode = item.className;
+            }
+        })
+        return mode;
     }
 
+    let getNamePlayer1 = () => document.querySelector('#nameP').value;
 
+    let getNamePlayer2 = () => document.querySelector('#nameO').value;
 
+    let getNumberOfGames = () => {
+        let number = undefined;
+        document.querySelectorAll('.numberOfGames button').forEach(item => {
+            if (item.className == 'selected') {
+                number = item.textContent;
+            }
+        })
+        return number;
+    }
+
+    let getSymbolPlayer1 = () => document.querySelector('.btnSP').textContent;
+
+    let getSymbolPlayer2 = () => document.querySelector('.btnMP').textContent;
+
+    return { getMode, getNamePlayer1, getNamePlayer2, getNumberOfGames, getSymbolPlayer1, getSymbolPlayer2 }
 }
+
+
 
 function showBoard() {
     document.querySelector('nav').style.display = 'none';
@@ -91,31 +120,19 @@ document.querySelector('.playerSymbol').addEventListener('click', (e) => {
 })
 
 //get selected number of games to be played
-let NumberOfGames = (() => {
-    let selectedNumber = null;
 
-    document.querySelector('.numberOfGames div').addEventListener('click', (e) => {
-        let clearNumbers = (e) => {
-            if (e.target.tagName == 'BUTTON') {
-                for (let i = 0; i < e.target.parentElement.children.length; i++) {
-                    e.target.parentElement.children[i].classList.replace('selected', 'notSelected');
-                }
-            }
+
+document.querySelector('.numberOfGames div').addEventListener('click', (e) => {
+
+    if (e.target.tagName == 'BUTTON') {
+        for (let i = 0; i < e.target.parentElement.children.length; i++) {
+            e.target.parentElement.children[i].classList.replace('selected', 'notSelected');
         }
+    }
+    e.target.classList.replace('notSelected', 'selected');
+});
 
-        let number = (e) => {
-            e.target.classList.replace('notSelected', 'selected');
-            selectedNumber = e.target.textContent;
-        }
 
-        clearNumbers(e);
-        number(e);
-    });
-
-    let getNumberOfGames = () => +selectedNumber;
-
-    return { getNumberOfGames };
-})();
 
 function highlightSp() {
     document.querySelector('.sp').style.backgroundColor = 'black';
