@@ -1,10 +1,11 @@
 'use strict'
 
-let game = getGameSetup();
+let game = getGameData();
 
 document.querySelector('nav .startGame').addEventListener('click', () => {
     showBoard();
     createBoard();
+    initializeBoardData();
 })
 
 document.querySelector('main .options .menuBtn').addEventListener('click', () => {
@@ -30,7 +31,7 @@ function clearBoard() {
     document.querySelector('main .board').innerHTML = '';
 }
 
-function getGameSetup() {
+function getGameData() {
 
     let getMode = () => {
         let mode = undefined;
@@ -42,16 +43,28 @@ function getGameSetup() {
         return mode;
     }
 
-    let getNamePlayer1 = () => document.querySelector('#nameP').value;
+    let getNamePlayer1 = () => {
+        if ((document.querySelector('#nameP').value) != '') {
+            return document.querySelector('#nameP').value
+        } else return 'Player 1';
+    }
 
-    let getNamePlayer2 = () => document.querySelector('#nameO').value;
+
+    let getNamePlayer2 = () => {
+        if (getMode() == 'sp') {
+            return document.querySelector('#nameO').value
+        } else if (document.querySelector('#nameO').value != '') {
+            return document.querySelector('#nameO').value
+        } else return 'Player 2';
+
+    }
 
     let getNumberOfGames = () => {
         let number = undefined;
         document.querySelectorAll('.numberOfGames button').forEach(item => {
             if (item.className == 'selected') {
-                number = item.textContent;
-            }
+                number = +item.textContent;
+            } else number = 1;
         })
         return number;
     }
@@ -60,10 +73,73 @@ function getGameSetup() {
 
     let getSymbolPlayer2 = () => document.querySelector('.btnMP').textContent;
 
+
+
     return { getMode, getNamePlayer1, getNamePlayer2, getNumberOfGames, getSymbolPlayer1, getSymbolPlayer2 }
 }
 
+function playTurn() {
 
+    let turnCount = 1;
+
+    let makeTurnPlayer1 = (e) => e.target.textContent = game.getSymbolPlayer1();
+
+    let makeTurnPlayer2 = (e) => e.target.textContent = game.getSymbolPlayer2();
+
+    let turnCounter = () => {
+        turnCount++;
+        return turnCount;
+    }
+
+    return { makeTurnPlayer1, makeTurnPlayer2, turnCounter }
+}
+
+let play = playTurn();
+
+document.querySelector('.board').addEventListener('click', (e) => {
+    if (e.target.textContent == '') {
+        if (play.turnCounter() % 2 == 0) {
+            play.makeTurnPlayer1(e);
+            history.recordTurnPlayer1(e);
+            document.querySelector('.leftArea .turn .turnName').textContent = game.getNamePlayer2();
+            document.querySelector('.leftArea .turn .turnSymbol').textContent = game.getSymbolPlayer2();
+            console.log(history.historyPlayer1())
+        } else {
+            play.makeTurnPlayer2(e);
+            history.recordTurnPlayer2(e);
+            document.querySelector('.leftArea .turn .turnName').textContent = game.getNamePlayer1();
+            document.querySelector('.leftArea .turn .turnSymbol').textContent = game.getSymbolPlayer1();
+            console.log(history.historyPlayer2())
+        }
+    }
+})
+
+function playHistory() {
+
+    let arrP1 = [];
+    let arrP2 = [];
+
+    let recordTurnPlayer1 = (e) => arrP1.push(+e.target.className);
+    let undoTurnPlayer1 = () => arrP1.pop();
+    let historyPlayer1 = () => arrP1;
+
+    let recordTurnPlayer2 = (e) => arrP2.push(+e.target.className);
+    let undoTurnPlayer2 = () => arrP2.pop();
+    let historyPlayer2 = () => arrP2;
+
+    return { recordTurnPlayer1, recordTurnPlayer2, undoTurnPlayer1, undoTurnPlayer2, historyPlayer1, historyPlayer2 };
+}
+
+let history = playHistory();
+
+
+function initializeBoardData() {
+    document.querySelector('.leftArea .turn .turnName').textContent = game.getNamePlayer1();
+    document.querySelector('.leftArea .turn .turnSymbol').textContent = game.getSymbolPlayer1();
+    document.querySelector('.rightArea .totalGameNr').textContent = game.getNumberOfGames();
+    document.querySelector('.score .nameP').textContent = game.getNamePlayer1();
+    document.querySelector('.score .nameO').textContent = game.getNamePlayer2();
+}
 
 function showBoard() {
     document.querySelector('nav').style.display = 'none';
