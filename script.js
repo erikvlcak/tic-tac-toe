@@ -95,24 +95,67 @@ function playTurn() {
 }
 
 let play = playTurn();
+let result = gameResult();
 
 document.querySelector('.board').addEventListener('click', (e) => {
+    let currentPlayer;
+    let currentPosition;
     if (e.target.textContent == '') {
+        currentPosition = e.target.className;
         if (play.turnCounter() % 2 == 0) {
             play.makeTurnPlayer1(e);
             history.recordTurnPlayer1(e);
             document.querySelector('.leftArea .turn .turnName').textContent = game.getNamePlayer2();
             document.querySelector('.leftArea .turn .turnSymbol').textContent = game.getSymbolPlayer2();
-            console.log(history.historyPlayer1())
+            currentPlayer = game.getSymbolPlayer1();
+            // console.log(history.historyPlayer1())
         } else {
             play.makeTurnPlayer2(e);
             history.recordTurnPlayer2(e);
             document.querySelector('.leftArea .turn .turnName').textContent = game.getNamePlayer1();
             document.querySelector('.leftArea .turn .turnSymbol').textContent = game.getSymbolPlayer1();
-            console.log(history.historyPlayer2())
+            currentPlayer = game.getSymbolPlayer2()
+            // console.log(history.historyPlayer2())
         }
+        result.checkWinner(currentPosition, currentPlayer);
     }
 })
+
+function gameResult() {
+    let boardScheme = [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9],
+        [1, 4, 7],
+        [2, 5, 8],
+        [3, 6, 9],
+        [1, 5, 9],
+        [3, 5, 7],
+    ];
+
+    let updateBoardScheme = (position, symbol) => {
+        for (let i = 0; i < boardScheme.length; i++) {
+            for (let j = 0; j < boardScheme[i].length; j++) {
+                boardScheme[i][j] == +position ? boardScheme[i][j] = symbol : boardScheme[i][j]
+            }
+        }
+    }
+
+    let checkWinner = (position, symbol) => {
+        updateBoardScheme(position, symbol)
+        for (let i = 0; i < boardScheme.length; i++) {
+            if (boardScheme[i].join('') == 'XXX') {
+                console.log('vyhral X');
+            } else if (boardScheme[i].join('') == 'OOO') {
+                console.log('vyhral O');
+            }
+        }
+    }
+
+    return { checkWinner }
+}
+
+
 
 function playHistory() {
 
