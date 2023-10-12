@@ -443,6 +443,20 @@ main .gameScore .nameO {
     grid-area: 1/5/2/6;
 }
 
+main .gameResult {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+main .board div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--fsz-section-header);
+}
+
 
 body .leftArea {
     /* display none OR display flex */
