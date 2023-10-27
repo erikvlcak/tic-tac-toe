@@ -35,13 +35,16 @@ function clearBoard() {
 function getGameData() {
 
     let getMode = () => {
-        let mode = undefined;
-        document.querySelectorAll('.gameMode button').forEach(item => {
+        let mode = document.querySelectorAll('.gameMode button');
+
+        for (let item of mode) {
             if (item.style.backgroundColor == 'black') {
-                mode = item.className;
+                return item.className;
             }
-        })
-        return mode;
+        }
+
+        //if no mode is selected, select singleplayer
+        return 'sp';
     }
 
     let getNamePlayer1 = () => {
@@ -61,7 +64,6 @@ function getGameData() {
 
     let getNumberOfGames = () => {
         const buttons = document.querySelectorAll('.numberOfGames button');
-        console.log(buttons)
         for (let item of buttons) {
             if (item.className == 'selected') {
                 return +item.textContent;
@@ -185,6 +187,30 @@ function playHistory() {
 
 let history = playHistory();
 
+function createListOfWInners() {
+    let list = document.querySelector('.rightArea .logItems .resultList');
+    for (let i = 1; i <= game.getNumberOfGames(); i++) {
+
+        let currentGame = document.createElement('div');
+        currentGame.classList.add('currentGame');
+        let currentGameNr = document.createElement('span');
+        currentGameNr.classList.add('currentGameNr')
+        let currentGameResult = document.createElement('div');
+        currentGameResult.classList.add('currentGameResult')
+        let winnerName = document.createElement('span');
+        winnerName.classList.add('winnerName');
+
+
+        currentGameNr.textContent = 'Game ' + i;
+        currentGame.appendChild(currentGameNr);
+
+        winnerName.textContent = '';
+        currentGameResult.appendChild(winnerName);
+
+        list.appendChild(currentGame);
+        list.appendChild(currentGameResult);
+    }
+}
 
 function initializeBoardData() {
     document.querySelector('.leftArea .turn .turnName').textContent = game.getNamePlayer1();
@@ -192,6 +218,7 @@ function initializeBoardData() {
     document.querySelector('.rightArea .totalGameNr').textContent = game.getNumberOfGames();
     document.querySelector('.score .nameP').textContent = game.getNamePlayer1();
     document.querySelector('.score .nameO').textContent = game.getNamePlayer2();
+    createListOfWInners();
 }
 
 function showBoard() {
