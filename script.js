@@ -56,7 +56,6 @@ function getGameData() {
         } else if (document.querySelector('#nameO').value != '') {
             return document.querySelector('#nameO').value
         } else return 'Player 2';
-
     }
 
     let getNumberOfGames = () => {
@@ -68,9 +67,7 @@ function getGameData() {
         })
         return number;
     }
-
     let getSymbolPlayer1 = () => document.querySelector('.btnSP').textContent;
-
     let getSymbolPlayer2 = () => document.querySelector('.btnMP').textContent;
 
 
@@ -79,13 +76,9 @@ function getGameData() {
 }
 
 function playTurn() {
-
     let turnCount = 0;
-
     let makeTurnPlayer1 = (e) => e.target.textContent = game.getSymbolPlayer1();
-
     let makeTurnPlayer2 = (e) => e.target.textContent = game.getSymbolPlayer2();
-
     let turnCounter = () => {
         turnCount++;
         return turnCount;
@@ -103,24 +96,26 @@ document.querySelector('.board').addEventListener('click', (e) => {
     let counter = play.turnCounter()
     if (e.target.textContent == '') {
         currentPosition = e.target.className;
+        console.log(counter)
         if (counter % 2 == 1) {
-
             play.makeTurnPlayer1(e);
             history.recordTurnPlayer1(e);
             document.querySelector('.leftArea .turn .turnName').textContent = game.getNamePlayer2();
             document.querySelector('.leftArea .turn .turnSymbol').textContent = game.getSymbolPlayer2();
             currentPlayer = game.getSymbolPlayer1();
         } else {
-
             play.makeTurnPlayer2(e);
             history.recordTurnPlayer2(e);
             document.querySelector('.leftArea .turn .turnName').textContent = game.getNamePlayer1();
             document.querySelector('.leftArea .turn .turnSymbol').textContent = game.getSymbolPlayer1();
             currentPlayer = game.getSymbolPlayer2()
-            // console.log(history.historyPlayer2())
+        };
+        let finalResult = result.getWinner(currentPosition, currentPlayer, counter)
+        if (!(finalResult) && (counter == 9)) {
+            console.log('nikto nevyhral')
+        } else if (finalResult) {
+            console.log('mame vitaza')
         }
-        console.log(result.getWinner(currentPosition, currentPlayer, counter));
-
     }
 })
 
@@ -159,8 +154,6 @@ function gameResult() {
             }
         }
     }
-
-
 
     return { getWinner }
 }
