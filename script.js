@@ -11,6 +11,8 @@ document.querySelector('nav .startGame').addEventListener('click', () => {
 document.querySelector('main .options .menuBtn').addEventListener('click', () => {
     showMenu();
     clearBoard();
+    clearListOfWinners();
+
 })
 
 function createBoard() {
@@ -190,7 +192,8 @@ let history = playHistory();
 //after each game run this function and update winnerName at current i
 
 function createListOfWInners() {
-    let list = document.querySelector('.rightArea .logItems .resultList');
+
+    let listData = document.querySelector('.rightArea .logItems .resultList .listData');
     for (let i = 1; i <= game.getNumberOfGames(); i++) {
 
         let currentGame = document.createElement('div');
@@ -209,9 +212,13 @@ function createListOfWInners() {
         winnerName.textContent = '';
         currentGameResult.appendChild(winnerName);
 
-        list.appendChild(currentGame);
-        list.appendChild(currentGameResult);
+        listData.appendChild(currentGame);
+        listData.appendChild(currentGameResult);
     }
+}
+
+function clearListOfWinners() {
+    document.querySelector('.rightArea .logItems .resultList .listData').innerHTML = '';
 }
 
 function initializeBoardData() {

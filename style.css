@@ -516,7 +516,7 @@ body .rightArea .log p {
     border-bottom: 3px solid var(--dark-color);
 }
 
-body .rightArea .logItems {
+body .rightArea .logItems .listData {
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
@@ -525,14 +525,14 @@ body .rightArea .logItems p:first-of-type {
     grid-area: 1/1/2/2;
 }
 
-body .rightArea .logItems .resultList {
+body .rightArea .logItems .resultList .listData {
     grid-area: 2/1/3/3;
     display: grid;
     grid-template-columns: 1fr 1fr;
     text-align: center;
 }
 
-body .rightArea .logItems .resultList div {
+body .rightArea .logItems .resultList .listData div {
     padding: 10px;
 }
 
