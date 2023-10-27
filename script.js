@@ -187,6 +187,8 @@ function playHistory() {
 
 let history = playHistory();
 
+//after each game run this function and update winnerName at current i
+
 function createListOfWInners() {
     let list = document.querySelector('.rightArea .logItems .resultList');
     for (let i = 1; i <= game.getNumberOfGames(); i++) {
