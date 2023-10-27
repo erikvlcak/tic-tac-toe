@@ -80,7 +80,7 @@ function getGameData() {
 
 function playTurn() {
 
-    let turnCount = 1;
+    let turnCount = 0;
 
     let makeTurnPlayer1 = (e) => e.target.textContent = game.getSymbolPlayer1();
 
@@ -100,16 +100,18 @@ let result = gameResult();
 document.querySelector('.board').addEventListener('click', (e) => {
     let currentPlayer;
     let currentPosition;
+    let counter = play.turnCounter()
     if (e.target.textContent == '') {
         currentPosition = e.target.className;
-        if (play.turnCounter() % 2 == 0) {
+        if (counter % 2 == 1) {
+
             play.makeTurnPlayer1(e);
             history.recordTurnPlayer1(e);
             document.querySelector('.leftArea .turn .turnName').textContent = game.getNamePlayer2();
             document.querySelector('.leftArea .turn .turnSymbol').textContent = game.getSymbolPlayer2();
             currentPlayer = game.getSymbolPlayer1();
-            // console.log(history.historyPlayer1())
         } else {
+
             play.makeTurnPlayer2(e);
             history.recordTurnPlayer2(e);
             document.querySelector('.leftArea .turn .turnName').textContent = game.getNamePlayer1();
@@ -117,7 +119,8 @@ document.querySelector('.board').addEventListener('click', (e) => {
             currentPlayer = game.getSymbolPlayer2()
             // console.log(history.historyPlayer2())
         }
-        result.checkWinner(currentPosition, currentPlayer);
+        console.log(result.getWinner(currentPosition, currentPlayer, counter));
+
     }
 })
 
@@ -133,6 +136,7 @@ function gameResult() {
         [3, 5, 7],
     ];
 
+
     let updateBoardScheme = (position, symbol) => {
         for (let i = 0; i < boardScheme.length; i++) {
             for (let j = 0; j < boardScheme[i].length; j++) {
@@ -141,18 +145,24 @@ function gameResult() {
         }
     }
 
-    let checkWinner = (position, symbol) => {
-        updateBoardScheme(position, symbol)
+    let getWinner = (position, symbol, counter) => {
+        console.log(boardScheme);
+        let winner = undefined;
+        updateBoardScheme(position, symbol, counter)
         for (let i = 0; i < boardScheme.length; i++) {
             if (boardScheme[i].join('') == 'XXX') {
                 console.log('vyhral X');
+                return winner = 'X'
             } else if (boardScheme[i].join('') == 'OOO') {
                 console.log('vyhral O');
+                return winner = 'O'
             }
         }
     }
 
-    return { checkWinner }
+
+
+    return { getWinner }
 }
 
 
