@@ -25,6 +25,7 @@ function createBoard() {
         cell.classList.add(i);
         board.appendChild(cell);
     }
+
 }
 
 function clearBoard() {
@@ -59,14 +60,20 @@ function getGameData() {
     }
 
     let getNumberOfGames = () => {
-        let number = undefined;
-        document.querySelectorAll('.numberOfGames button').forEach(item => {
+        const buttons = document.querySelectorAll('.numberOfGames button');
+        console.log(buttons)
+        for (let item of buttons) {
             if (item.className == 'selected') {
-                number = +item.textContent;
-            } else number = 1;
-        })
-        return number;
+                return +item.textContent;
+            }
+        }
+        return 1;
     }
+
+
+
+
+
     let getSymbolPlayer1 = () => document.querySelector('.btnSP').textContent;
     let getSymbolPlayer2 = () => document.querySelector('.btnMP').textContent;
 
@@ -201,6 +208,10 @@ function showMenu() {
     document.querySelector('.rightArea').style.display = 'none';
 }
 
+function logResult() {
+
+}
+
 
 //select opponent
 document.querySelector('.gameMode').addEventListener("click", (e) => {
@@ -242,7 +253,6 @@ document.querySelector('.playerSymbol').addEventListener('click', (e) => {
 })
 
 //get selected number of games to be played
-
 
 document.querySelector('.numberOfGames div').addEventListener('click', (e) => {
 

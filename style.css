@@ -499,6 +499,10 @@ body .rightArea {
     text-align: center;
 }
 
+body .rightArea .gameCounter .counter {
+    padding: 1rem;
+}
+
 body .rightArea div {
     font-size: 2rem;
 }
