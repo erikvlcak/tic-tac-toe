@@ -12,7 +12,6 @@ document.querySelector('main .options .menuBtn').addEventListener('click', () =>
     showMenu();
     clearBoard();
     clearListOfWinners();
-
 })
 
 function createBoard() {
@@ -142,6 +141,17 @@ function gameResult() {
         [3, 5, 7],
     ];
 
+    let boardSchemeCopy = [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9],
+        [1, 4, 7],
+        [2, 5, 8],
+        [3, 6, 9],
+        [1, 5, 9],
+        [3, 5, 7],
+    ];
+
 
     let updateBoardScheme = (position, symbol) => {
         for (let i = 0; i < boardScheme.length; i++) {
@@ -158,15 +168,27 @@ function gameResult() {
         for (let i = 0; i < boardScheme.length; i++) {
             if (boardScheme[i].join('') == 'XXX') {
                 console.log('vyhral X');
+                highlightWinningPositions(i, boardSchemeCopy);
                 return winner = 'X'
             } else if (boardScheme[i].join('') == 'OOO') {
                 console.log('vyhral O');
+                highlightWinningPositions(i, boardSchemeCopy);
                 return winner = 'O'
             }
         }
     }
 
     return { getWinner }
+}
+
+function highlightWinningPositions(i, boardSchemeCopy) {
+    let [firstWinPos, secondWinPos, thirdWinPos] = boardSchemeCopy[i];
+    document.querySelectorAll('.board div').forEach(item => {
+        if ((item.className == firstWinPos) || (item.className == secondWinPos) || (item.className == thirdWinPos)) {
+            item.style.backgroundColor = '#303030';
+            item.style.color = 'white';
+        }
+    })
 }
 
 
