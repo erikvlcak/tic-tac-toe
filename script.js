@@ -2,6 +2,7 @@
 
 let game = getGameData();
 
+
 document.querySelector('nav .startGame').addEventListener('click', () => {
     showBoard();
     createBoard();
@@ -100,9 +101,11 @@ function playTurn() {
 let play = playTurn();
 let result = gameResult();
 
-document.querySelector('.board').addEventListener('click', (e) => {
+function boardClickListener(e) {
     let currentPlayer;
     let currentPosition;
+    let totalNumberOfGames = game.getNumberOfGames()
+    let currentNumberOfGame = 1;
     let counter = play.turnCounter()
     if (e.target.textContent == '') {
         currentPosition = e.target.className;
@@ -122,12 +125,28 @@ document.querySelector('.board').addEventListener('click', (e) => {
         };
         let finalResult = result.getWinner(currentPosition, currentPlayer, counter)
         if (!(finalResult) && (counter == 9)) {
-            console.log('nikto nevyhral')
+            document.querySelector('.gameResultMessage').textContent = 'It\'s a tie!';
+            document.querySelectorAll('.listData .currentGameResult').forEach(item => {
+                if (item.classList.contains(currentNumberOfGame)) {
+                    item.textContent = 'Tie'
+                }
+            })
+            document.querySelector('.board').removeEventListener('click', boardClickListener);
         } else if (finalResult) {
-            console.log('mame vitaza')
+            document.querySelector('.gameResultMessage').textContent = `${finalResult} has won this round!`;
+            result.updateScoreboard(finalResult)
+            document.querySelectorAll('.listData .currentGameResult').forEach(item => {
+                if (item.classList.contains(currentNumberOfGame)) {
+                    item.textContent = finalResult
+                }
+            })
+            document.querySelector('.board').removeEventListener('click', boardClickListener);
         }
     }
-})
+}
+
+document.querySelector('.board').addEventListener('click', boardClickListener);
+
 
 function gameResult() {
     let boardScheme = [
@@ -162,23 +181,37 @@ function gameResult() {
     }
 
     let getWinner = (position, symbol, counter) => {
-        console.log(boardScheme);
-        let winner = undefined;
         updateBoardScheme(position, symbol, counter)
         for (let i = 0; i < boardScheme.length; i++) {
             if (boardScheme[i].join('') == 'XXX') {
-                console.log('vyhral X');
+
                 highlightWinningPositions(i, boardSchemeCopy);
-                return winner = 'X'
+                if (game.getSymbolPlayer1() == 'X') {
+                    return game.getNamePlayer1();
+                } else return game.getNamePlayer2();
+
             } else if (boardScheme[i].join('') == 'OOO') {
-                console.log('vyhral O');
+
                 highlightWinningPositions(i, boardSchemeCopy);
-                return winner = 'O'
+                if (game.getSymbolPlayer1() == 'O') {
+                    return game.getNamePlayer1();
+                } else return game.getNamePlayer2();
             }
         }
     }
 
-    return { getWinner }
+    let updateScoreboard = (nameOfWinner) => {
+        let scoreboard = document.querySelector('.gameScore');
+        let scorePlayer = Number(scoreboard.querySelector('.scoreP').textContent);
+        let scoreOpponent = Number(scoreboard.querySelector('.scoreO').textContent);
+        if (scoreboard.querySelector('.nameP').textContent == nameOfWinner) {
+            scoreboard.querySelector('.scoreP').textContent = ++scorePlayer
+        } else {
+            scoreboard.querySelector('.scoreP').textContent = ++scoreOpponent
+        }
+    }
+
+    return { getWinner, updateScoreboard }
 }
 
 function highlightWinningPositions(i, boardSchemeCopy) {
@@ -193,7 +226,7 @@ function highlightWinningPositions(i, boardSchemeCopy) {
 
 
 
-function playHistory() {
+let history = (function () {
 
     let arrP1 = [];
     let arrP2 = [];
@@ -207,9 +240,7 @@ function playHistory() {
     let historyPlayer2 = () => arrP2;
 
     return { recordTurnPlayer1, recordTurnPlayer2, undoTurnPlayer1, undoTurnPlayer2, historyPlayer1, historyPlayer2 };
-}
-
-let history = playHistory();
+})();
 
 //after each game run this function and update winnerName at current i
 
@@ -223,16 +254,11 @@ function createListOfWInners() {
         let currentGameNr = document.createElement('span');
         currentGameNr.classList.add('currentGameNr')
         let currentGameResult = document.createElement('div');
-        currentGameResult.classList.add('currentGameResult')
-        let winnerName = document.createElement('span');
-        winnerName.classList.add('winnerName');
+        currentGameResult.classList.add('currentGameResult', i)
 
 
         currentGameNr.textContent = 'Game ' + i;
         currentGame.appendChild(currentGameNr);
-
-        winnerName.textContent = '';
-        currentGameResult.appendChild(winnerName);
 
         listData.appendChild(currentGame);
         listData.appendChild(currentGameResult);
