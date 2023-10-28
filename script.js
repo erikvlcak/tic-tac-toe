@@ -13,6 +13,7 @@ document.querySelector('main .options .menuBtn').addEventListener('click', () =>
     showMenu();
     clearBoard();
     clearListOfWinners();
+    play.resetGameCounter();
 })
 
 function createBoard() {
@@ -88,6 +89,7 @@ function getGameData() {
 
 function playTurn() {
     let turnCount = 0;
+    let gameCount = 0;
     let makeTurnPlayer1 = (e) => e.target.textContent = game.getSymbolPlayer1();
     let makeTurnPlayer2 = (e) => e.target.textContent = game.getSymbolPlayer2();
 
@@ -100,7 +102,16 @@ function playTurn() {
         turnCount = 0;
     }
 
-    return { makeTurnPlayer1, makeTurnPlayer2, turnCounter, resetTurnCounter }
+    let gameCounter = () => {
+        gameCount++;
+        return gameCount;
+    }
+
+    let resetGameCounter = () => {
+        gameCount = 0;
+    }
+
+    return { makeTurnPlayer1, makeTurnPlayer2, turnCounter, resetTurnCounter, gameCounter, resetGameCounter }
 }
 
 document.querySelector('.nextGame').addEventListener('click', (e) => {
@@ -118,8 +129,7 @@ let result = gameResult();
 function boardClickListener(e) {
     let currentPlayer;
     let currentPosition;
-    let totalNumberOfGames = game.getNumberOfGames()
-    let currentNumberOfGame = 1;
+
     let counter = play.turnCounter()
     if (e.target.textContent == '') {
         currentPosition = e.target.className;
@@ -141,15 +151,21 @@ function boardClickListener(e) {
         let finalResult = result.getWinner(currentPosition, currentPlayer, counter);
 
         if (!(finalResult) && (counter == 9)) {
+            let currentNumberOfGame = play.gameCounter();
             document.querySelector('.gameResultMessage').textContent = 'It\'s a tie!';
-            result.updateListOfWinners(finalResult, currentNumberOfGame)
-
+            result.updateListOfWinners(finalResult, currentNumberOfGame, counter);
+            finalResult = undefined;
             disableBoard()
+            result.resetBoardScheme()
         } else if (finalResult) {
+            let currentNumberOfGame = play.gameCounter();
             document.querySelector('.gameResultMessage').textContent = `${finalResult} has won this round!`;
             result.updateScoreboard(finalResult)
-            result.updateListOfWinners(finalResult, currentNumberOfGame)
+            result.updateListOfWinners(finalResult, currentNumberOfGame, counter);
+            console.log(currentNumberOfGame)
+            finalResult = undefined;
             disableBoard()
+            result.resetBoardScheme()
         }
     }
 }
@@ -211,14 +227,15 @@ function gameResult() {
     }
 
     let getWinner = (position, symbol, counter) => {
-        console.log(boardScheme)
         updateBoardScheme(position, symbol, counter)
+        console.log(boardScheme)
         for (let i = 0; i < boardScheme.length; i++) {
             if (boardScheme[i].join('') == 'XXX') {
 
                 highlightWinningPositions(i, boardSchemeCopy);
                 if (game.getSymbolPlayer1() == 'X') {
-                    resetBoardScheme()
+
+                    console.log('reset board scheme')
                     return game.getNamePlayer1();
                 } else return game.getNamePlayer2();
 
@@ -226,7 +243,8 @@ function gameResult() {
 
                 highlightWinningPositions(i, boardSchemeCopy);
                 if (game.getSymbolPlayer1() == 'O') {
-                    resetBoardScheme()
+
+                    console.log('reset board scheme')
                     return game.getNamePlayer1();
                 } else return game.getNamePlayer2();
             }
@@ -237,6 +255,7 @@ function gameResult() {
         let scoreboard = document.querySelector('.gameScore');
         let scorePlayer = Number(scoreboard.querySelector('.scoreP').textContent);
         let scoreOpponent = Number(scoreboard.querySelector('.scoreO').textContent);
+
         if (scoreboard.querySelector('.nameP').textContent == nameOfWinner) {
             scoreboard.querySelector('.scoreP').textContent = ++scorePlayer
         } else {
@@ -246,22 +265,23 @@ function gameResult() {
 
     let updateListOfWinners = (finalResult, currentNumberOfGame) => {
         if (result) {
+            console.log('uprade list of winners run')
             document.querySelectorAll('.listData .currentGameResult').forEach(item => {
                 if (item.classList.contains(currentNumberOfGame)) {
-                    item.textContent = finalResult
+                    item.textContent = finalResult;
                 }
             })
-        } else {
+        } else if (!(finalResult) && (counter == 9)) {
             document.querySelectorAll('.listData .currentGameResult').forEach(item => {
                 if (item.classList.contains(currentNumberOfGame)) {
                     item.textContent = 'Tie';
                 }
             })
         }
-        ++currentNumberOfGame;
+
     }
 
-    return { getWinner, updateScoreboard, updateListOfWinners }
+    return { getWinner, updateScoreboard, updateListOfWinners, resetBoardScheme }
 
 }
 
