@@ -90,13 +90,27 @@ function playTurn() {
     let turnCount = 0;
     let makeTurnPlayer1 = (e) => e.target.textContent = game.getSymbolPlayer1();
     let makeTurnPlayer2 = (e) => e.target.textContent = game.getSymbolPlayer2();
+
     let turnCounter = () => {
         turnCount++;
         return turnCount;
     }
 
-    return { makeTurnPlayer1, makeTurnPlayer2, turnCounter }
+    let resetTurnCounter = () => {
+        turnCount = 0;
+    }
+
+    return { makeTurnPlayer1, makeTurnPlayer2, turnCounter, resetTurnCounter }
 }
+
+document.querySelector('.nextGame').addEventListener('click', (e) => {
+    clearBoard();
+    createBoard();
+    enableBoard();
+    play.resetTurnCounter();
+    let gameNumber = Number(document.querySelector('.currentGameNr').textContent);
+    document.querySelector('.currentGameNr').textContent = ++gameNumber;
+})
 
 let play = playTurn();
 let result = gameResult();
@@ -123,30 +137,33 @@ function boardClickListener(e) {
             document.querySelector('.leftArea .turn .turnSymbol').textContent = game.getSymbolPlayer1();
             currentPlayer = game.getSymbolPlayer2()
         };
-        let finalResult = result.getWinner(currentPosition, currentPlayer, counter)
+
+        let finalResult = result.getWinner(currentPosition, currentPlayer, counter);
+
         if (!(finalResult) && (counter == 9)) {
             document.querySelector('.gameResultMessage').textContent = 'It\'s a tie!';
-            document.querySelectorAll('.listData .currentGameResult').forEach(item => {
-                if (item.classList.contains(currentNumberOfGame)) {
-                    item.textContent = 'Tie'
-                }
-            })
-            document.querySelector('.board').removeEventListener('click', boardClickListener);
+            result.updateListOfWinners(finalResult, currentNumberOfGame)
+
+            disableBoard()
         } else if (finalResult) {
             document.querySelector('.gameResultMessage').textContent = `${finalResult} has won this round!`;
             result.updateScoreboard(finalResult)
-            document.querySelectorAll('.listData .currentGameResult').forEach(item => {
-                if (item.classList.contains(currentNumberOfGame)) {
-                    item.textContent = finalResult
-                }
-            })
-            document.querySelector('.board').removeEventListener('click', boardClickListener);
+            result.updateListOfWinners(finalResult, currentNumberOfGame)
+            disableBoard()
         }
     }
 }
 
 document.querySelector('.board').addEventListener('click', boardClickListener);
 
+
+function disableBoard() {
+    document.querySelector('.board').removeEventListener('click', boardClickListener);
+}
+
+function enableBoard() {
+    document.querySelector('.board').addEventListener('click', boardClickListener);
+}
 
 function gameResult() {
     let boardScheme = [
@@ -171,6 +188,19 @@ function gameResult() {
         [3, 5, 7],
     ];
 
+    let resetBoardScheme = () => {
+        boardScheme = [
+            [1, 2, 3],
+            [4, 5, 6],
+            [7, 8, 9],
+            [1, 4, 7],
+            [2, 5, 8],
+            [3, 6, 9],
+            [1, 5, 9],
+            [3, 5, 7],
+        ];
+    }
+
 
     let updateBoardScheme = (position, symbol) => {
         for (let i = 0; i < boardScheme.length; i++) {
@@ -181,12 +211,14 @@ function gameResult() {
     }
 
     let getWinner = (position, symbol, counter) => {
+        console.log(boardScheme)
         updateBoardScheme(position, symbol, counter)
         for (let i = 0; i < boardScheme.length; i++) {
             if (boardScheme[i].join('') == 'XXX') {
 
                 highlightWinningPositions(i, boardSchemeCopy);
                 if (game.getSymbolPlayer1() == 'X') {
+                    resetBoardScheme()
                     return game.getNamePlayer1();
                 } else return game.getNamePlayer2();
 
@@ -194,6 +226,7 @@ function gameResult() {
 
                 highlightWinningPositions(i, boardSchemeCopy);
                 if (game.getSymbolPlayer1() == 'O') {
+                    resetBoardScheme()
                     return game.getNamePlayer1();
                 } else return game.getNamePlayer2();
             }
@@ -211,7 +244,25 @@ function gameResult() {
         }
     }
 
-    return { getWinner, updateScoreboard }
+    let updateListOfWinners = (finalResult, currentNumberOfGame) => {
+        if (result) {
+            document.querySelectorAll('.listData .currentGameResult').forEach(item => {
+                if (item.classList.contains(currentNumberOfGame)) {
+                    item.textContent = finalResult
+                }
+            })
+        } else {
+            document.querySelectorAll('.listData .currentGameResult').forEach(item => {
+                if (item.classList.contains(currentNumberOfGame)) {
+                    item.textContent = 'Tie';
+                }
+            })
+        }
+        ++currentNumberOfGame;
+    }
+
+    return { getWinner, updateScoreboard, updateListOfWinners }
+
 }
 
 function highlightWinningPositions(i, boardSchemeCopy) {
@@ -241,8 +292,6 @@ let history = (function () {
 
     return { recordTurnPlayer1, recordTurnPlayer2, undoTurnPlayer1, undoTurnPlayer2, historyPlayer1, historyPlayer2 };
 })();
-
-//after each game run this function and update winnerName at current i
 
 function createListOfWInners() {
 
