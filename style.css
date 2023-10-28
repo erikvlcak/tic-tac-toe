@@ -200,6 +200,7 @@ nav .playerName>#nameO {
     grid-area: 2/2/3/3;
     width: 70%;
     font-size: 2.5rem;
+    background-color: transparent;
 }
 
 nav .playerName>#nameO:disabled {
@@ -442,6 +443,20 @@ main .gameScore .nameO {
     grid-area: 1/5/2/6;
 }
 
+main .gameResult {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+main .board div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--fsz-section-header);
+}
+
 
 body .leftArea {
     /* display none OR display flex */
@@ -484,6 +499,10 @@ body .rightArea {
     text-align: center;
 }
 
+body .rightArea .gameCounter .counter {
+    padding: 1rem;
+}
+
 body .rightArea div {
     font-size: 2rem;
 }
@@ -497,7 +516,7 @@ body .rightArea .log p {
     border-bottom: 3px solid var(--dark-color);
 }
 
-body .rightArea .logItems {
+body .rightArea .logItems .listData {
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
@@ -506,14 +525,14 @@ body .rightArea .logItems p:first-of-type {
     grid-area: 1/1/2/2;
 }
 
-body .rightArea .logItems .resultList {
+body .rightArea .logItems .resultList .listData {
     grid-area: 2/1/3/3;
     display: grid;
     grid-template-columns: 1fr 1fr;
     text-align: center;
 }
 
-body .rightArea .logItems .resultList div {
+body .rightArea .logItems .resultList .listData div {
     padding: 10px;
 }
 

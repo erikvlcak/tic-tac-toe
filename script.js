@@ -1,16 +1,18 @@
 'use strict'
 
+let game = getGameData();
+
 document.querySelector('nav .startGame').addEventListener('click', () => {
     showBoard();
-    console.log(NumberOfGames.getNumberOfGames());
     createBoard();
+    initializeBoardData();
 })
 
 document.querySelector('main .options .menuBtn').addEventListener('click', () => {
     showMenu();
+    clearBoard();
+    clearListOfWinners();
 })
-
-
 
 function createBoard() {
     let board = document.querySelector('main .board');
@@ -24,16 +26,230 @@ function createBoard() {
         cell.classList.add(i);
         board.appendChild(cell);
     }
+
 }
 
-function getGameSetup() {
+function clearBoard() {
+    document.querySelector('main .board').innerHTML = '';
+}
 
-    let playerCount = () => {
+function getGameData() {
 
+    let getMode = () => {
+        let mode = document.querySelectorAll('.gameMode button');
+
+        for (let item of mode) {
+            if (item.style.backgroundColor == 'black') {
+                return item.className;
+            }
+        }
+
+        //if no mode is selected, select singleplayer
+        return 'sp';
+    }
+
+    let getNamePlayer1 = () => {
+        if ((document.querySelector('#nameP').value) != '') {
+            return document.querySelector('#nameP').value
+        } else return 'Player 1';
+    }
+
+
+    let getNamePlayer2 = () => {
+        if (getMode() == 'sp') {
+            return document.querySelector('#nameO').value
+        } else if (document.querySelector('#nameO').value != '') {
+            return document.querySelector('#nameO').value
+        } else return 'Player 2';
+    }
+
+    let getNumberOfGames = () => {
+        const buttons = document.querySelectorAll('.numberOfGames button');
+        for (let item of buttons) {
+            if (item.className == 'selected') {
+                return +item.textContent;
+            }
+        }
+        return 1;
     }
 
 
 
+
+
+    let getSymbolPlayer1 = () => document.querySelector('.btnSP').textContent;
+    let getSymbolPlayer2 = () => document.querySelector('.btnMP').textContent;
+
+
+
+    return { getMode, getNamePlayer1, getNamePlayer2, getNumberOfGames, getSymbolPlayer1, getSymbolPlayer2 }
+}
+
+function playTurn() {
+    let turnCount = 0;
+    let makeTurnPlayer1 = (e) => e.target.textContent = game.getSymbolPlayer1();
+    let makeTurnPlayer2 = (e) => e.target.textContent = game.getSymbolPlayer2();
+    let turnCounter = () => {
+        turnCount++;
+        return turnCount;
+    }
+
+    return { makeTurnPlayer1, makeTurnPlayer2, turnCounter }
+}
+
+let play = playTurn();
+let result = gameResult();
+
+document.querySelector('.board').addEventListener('click', (e) => {
+    let currentPlayer;
+    let currentPosition;
+    let counter = play.turnCounter()
+    if (e.target.textContent == '') {
+        currentPosition = e.target.className;
+        console.log(counter)
+        if (counter % 2 == 1) {
+            play.makeTurnPlayer1(e);
+            history.recordTurnPlayer1(e);
+            document.querySelector('.leftArea .turn .turnName').textContent = game.getNamePlayer2();
+            document.querySelector('.leftArea .turn .turnSymbol').textContent = game.getSymbolPlayer2();
+            currentPlayer = game.getSymbolPlayer1();
+        } else {
+            play.makeTurnPlayer2(e);
+            history.recordTurnPlayer2(e);
+            document.querySelector('.leftArea .turn .turnName').textContent = game.getNamePlayer1();
+            document.querySelector('.leftArea .turn .turnSymbol').textContent = game.getSymbolPlayer1();
+            currentPlayer = game.getSymbolPlayer2()
+        };
+        let finalResult = result.getWinner(currentPosition, currentPlayer, counter)
+        if (!(finalResult) && (counter == 9)) {
+            console.log('nikto nevyhral')
+        } else if (finalResult) {
+            console.log('mame vitaza')
+        }
+    }
+})
+
+function gameResult() {
+    let boardScheme = [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9],
+        [1, 4, 7],
+        [2, 5, 8],
+        [3, 6, 9],
+        [1, 5, 9],
+        [3, 5, 7],
+    ];
+
+    let boardSchemeCopy = [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9],
+        [1, 4, 7],
+        [2, 5, 8],
+        [3, 6, 9],
+        [1, 5, 9],
+        [3, 5, 7],
+    ];
+
+
+    let updateBoardScheme = (position, symbol) => {
+        for (let i = 0; i < boardScheme.length; i++) {
+            for (let j = 0; j < boardScheme[i].length; j++) {
+                boardScheme[i][j] == +position ? boardScheme[i][j] = symbol : boardScheme[i][j]
+            }
+        }
+    }
+
+    let getWinner = (position, symbol, counter) => {
+        console.log(boardScheme);
+        let winner = undefined;
+        updateBoardScheme(position, symbol, counter)
+        for (let i = 0; i < boardScheme.length; i++) {
+            if (boardScheme[i].join('') == 'XXX') {
+                console.log('vyhral X');
+                highlightWinningPositions(i, boardSchemeCopy);
+                return winner = 'X'
+            } else if (boardScheme[i].join('') == 'OOO') {
+                console.log('vyhral O');
+                highlightWinningPositions(i, boardSchemeCopy);
+                return winner = 'O'
+            }
+        }
+    }
+
+    return { getWinner }
+}
+
+function highlightWinningPositions(i, boardSchemeCopy) {
+    let [firstWinPos, secondWinPos, thirdWinPos] = boardSchemeCopy[i];
+    document.querySelectorAll('.board div').forEach(item => {
+        if ((item.className == firstWinPos) || (item.className == secondWinPos) || (item.className == thirdWinPos)) {
+            item.style.backgroundColor = '#303030';
+            item.style.color = 'white';
+        }
+    })
+}
+
+
+
+function playHistory() {
+
+    let arrP1 = [];
+    let arrP2 = [];
+
+    let recordTurnPlayer1 = (e) => arrP1.push(+e.target.className);
+    let undoTurnPlayer1 = () => arrP1.pop();
+    let historyPlayer1 = () => arrP1;
+
+    let recordTurnPlayer2 = (e) => arrP2.push(+e.target.className);
+    let undoTurnPlayer2 = () => arrP2.pop();
+    let historyPlayer2 = () => arrP2;
+
+    return { recordTurnPlayer1, recordTurnPlayer2, undoTurnPlayer1, undoTurnPlayer2, historyPlayer1, historyPlayer2 };
+}
+
+let history = playHistory();
+
+//after each game run this function and update winnerName at current i
+
+function createListOfWInners() {
+
+    let listData = document.querySelector('.rightArea .logItems .resultList .listData');
+    for (let i = 1; i <= game.getNumberOfGames(); i++) {
+
+        let currentGame = document.createElement('div');
+        currentGame.classList.add('currentGame');
+        let currentGameNr = document.createElement('span');
+        currentGameNr.classList.add('currentGameNr')
+        let currentGameResult = document.createElement('div');
+        currentGameResult.classList.add('currentGameResult')
+        let winnerName = document.createElement('span');
+        winnerName.classList.add('winnerName');
+
+
+        currentGameNr.textContent = 'Game ' + i;
+        currentGame.appendChild(currentGameNr);
+
+        winnerName.textContent = '';
+        currentGameResult.appendChild(winnerName);
+
+        listData.appendChild(currentGame);
+        listData.appendChild(currentGameResult);
+    }
+}
+
+function clearListOfWinners() {
+    document.querySelector('.rightArea .logItems .resultList .listData').innerHTML = '';
+}
+
+function initializeBoardData() {
+    document.querySelector('.leftArea .turn .turnName').textContent = game.getNamePlayer1();
+    document.querySelector('.leftArea .turn .turnSymbol').textContent = game.getSymbolPlayer1();
+    document.querySelector('.rightArea .totalGameNr').textContent = game.getNumberOfGames();
+    document.querySelector('.score .nameP').textContent = game.getNamePlayer1();
+    document.querySelector('.score .nameO').textContent = game.getNamePlayer2();
+    createListOfWInners();
 }
 
 function showBoard() {
@@ -48,6 +264,10 @@ function showMenu() {
     document.querySelector('main').style.display = 'none';
     document.querySelector('.leftArea').style.display = 'none';
     document.querySelector('.rightArea').style.display = 'none';
+}
+
+function logResult() {
+
 }
 
 
@@ -91,31 +311,18 @@ document.querySelector('.playerSymbol').addEventListener('click', (e) => {
 })
 
 //get selected number of games to be played
-let NumberOfGames = (() => {
-    let selectedNumber = null;
 
-    document.querySelector('.numberOfGames div').addEventListener('click', (e) => {
-        let clearNumbers = (e) => {
-            if (e.target.tagName == 'BUTTON') {
-                for (let i = 0; i < e.target.parentElement.children.length; i++) {
-                    e.target.parentElement.children[i].classList.replace('selected', 'notSelected');
-                }
-            }
+document.querySelector('.numberOfGames div').addEventListener('click', (e) => {
+
+    if (e.target.tagName == 'BUTTON') {
+        for (let i = 0; i < e.target.parentElement.children.length; i++) {
+            e.target.parentElement.children[i].classList.replace('selected', 'notSelected');
         }
+    }
+    e.target.classList.replace('notSelected', 'selected');
+});
 
-        let number = (e) => {
-            e.target.classList.replace('notSelected', 'selected');
-            selectedNumber = e.target.textContent;
-        }
 
-        clearNumbers(e);
-        number(e);
-    });
-
-    let getNumberOfGames = () => +selectedNumber;
-
-    return { getNumberOfGames };
-})();
 
 function highlightSp() {
     document.querySelector('.sp').style.backgroundColor = 'black';
