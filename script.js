@@ -2,6 +2,7 @@
 
 let game = getGameData();
 
+
 document.querySelector('nav .startGame').addEventListener('click', () => {
     showBoard();
     createBoard();
@@ -89,20 +90,36 @@ function playTurn() {
     let turnCount = 0;
     let makeTurnPlayer1 = (e) => e.target.textContent = game.getSymbolPlayer1();
     let makeTurnPlayer2 = (e) => e.target.textContent = game.getSymbolPlayer2();
+
     let turnCounter = () => {
         turnCount++;
         return turnCount;
     }
 
-    return { makeTurnPlayer1, makeTurnPlayer2, turnCounter }
+    let resetTurnCounter = () => {
+        turnCount = 0;
+    }
+
+    return { makeTurnPlayer1, makeTurnPlayer2, turnCounter, resetTurnCounter }
 }
+
+document.querySelector('.nextGame').addEventListener('click', (e) => {
+    clearBoard();
+    createBoard();
+    enableBoard();
+    play.resetTurnCounter();
+    let gameNumber = Number(document.querySelector('.currentGameNr').textContent);
+    document.querySelector('.currentGameNr').textContent = ++gameNumber;
+})
 
 let play = playTurn();
 let result = gameResult();
 
-document.querySelector('.board').addEventListener('click', (e) => {
+function boardClickListener(e) {
     let currentPlayer;
     let currentPosition;
+    let totalNumberOfGames = game.getNumberOfGames()
+    let currentNumberOfGame = 1;
     let counter = play.turnCounter()
     if (e.target.textContent == '') {
         currentPosition = e.target.className;
@@ -120,14 +137,33 @@ document.querySelector('.board').addEventListener('click', (e) => {
             document.querySelector('.leftArea .turn .turnSymbol').textContent = game.getSymbolPlayer1();
             currentPlayer = game.getSymbolPlayer2()
         };
-        let finalResult = result.getWinner(currentPosition, currentPlayer, counter)
+
+        let finalResult = result.getWinner(currentPosition, currentPlayer, counter);
+
         if (!(finalResult) && (counter == 9)) {
-            console.log('nikto nevyhral')
+            document.querySelector('.gameResultMessage').textContent = 'It\'s a tie!';
+            result.updateListOfWinners(finalResult, currentNumberOfGame)
+
+            disableBoard()
         } else if (finalResult) {
-            console.log('mame vitaza')
+            document.querySelector('.gameResultMessage').textContent = `${finalResult} has won this round!`;
+            result.updateScoreboard(finalResult)
+            result.updateListOfWinners(finalResult, currentNumberOfGame)
+            disableBoard()
         }
     }
-})
+}
+
+document.querySelector('.board').addEventListener('click', boardClickListener);
+
+
+function disableBoard() {
+    document.querySelector('.board').removeEventListener('click', boardClickListener);
+}
+
+function enableBoard() {
+    document.querySelector('.board').addEventListener('click', boardClickListener);
+}
 
 function gameResult() {
     let boardScheme = [
@@ -152,6 +188,19 @@ function gameResult() {
         [3, 5, 7],
     ];
 
+    let resetBoardScheme = () => {
+        boardScheme = [
+            [1, 2, 3],
+            [4, 5, 6],
+            [7, 8, 9],
+            [1, 4, 7],
+            [2, 5, 8],
+            [3, 6, 9],
+            [1, 5, 9],
+            [3, 5, 7],
+        ];
+    }
+
 
     let updateBoardScheme = (position, symbol) => {
         for (let i = 0; i < boardScheme.length; i++) {
@@ -162,23 +211,58 @@ function gameResult() {
     }
 
     let getWinner = (position, symbol, counter) => {
-        console.log(boardScheme);
-        let winner = undefined;
+        console.log(boardScheme)
         updateBoardScheme(position, symbol, counter)
         for (let i = 0; i < boardScheme.length; i++) {
             if (boardScheme[i].join('') == 'XXX') {
-                console.log('vyhral X');
+
                 highlightWinningPositions(i, boardSchemeCopy);
-                return winner = 'X'
+                if (game.getSymbolPlayer1() == 'X') {
+                    resetBoardScheme()
+                    return game.getNamePlayer1();
+                } else return game.getNamePlayer2();
+
             } else if (boardScheme[i].join('') == 'OOO') {
-                console.log('vyhral O');
+
                 highlightWinningPositions(i, boardSchemeCopy);
-                return winner = 'O'
+                if (game.getSymbolPlayer1() == 'O') {
+                    resetBoardScheme()
+                    return game.getNamePlayer1();
+                } else return game.getNamePlayer2();
             }
         }
     }
 
-    return { getWinner }
+    let updateScoreboard = (nameOfWinner) => {
+        let scoreboard = document.querySelector('.gameScore');
+        let scorePlayer = Number(scoreboard.querySelector('.scoreP').textContent);
+        let scoreOpponent = Number(scoreboard.querySelector('.scoreO').textContent);
+        if (scoreboard.querySelector('.nameP').textContent == nameOfWinner) {
+            scoreboard.querySelector('.scoreP').textContent = ++scorePlayer
+        } else {
+            scoreboard.querySelector('.scoreP').textContent = ++scoreOpponent
+        }
+    }
+
+    let updateListOfWinners = (finalResult, currentNumberOfGame) => {
+        if (result) {
+            document.querySelectorAll('.listData .currentGameResult').forEach(item => {
+                if (item.classList.contains(currentNumberOfGame)) {
+                    item.textContent = finalResult
+                }
+            })
+        } else {
+            document.querySelectorAll('.listData .currentGameResult').forEach(item => {
+                if (item.classList.contains(currentNumberOfGame)) {
+                    item.textContent = 'Tie';
+                }
+            })
+        }
+        ++currentNumberOfGame;
+    }
+
+    return { getWinner, updateScoreboard, updateListOfWinners }
+
 }
 
 function highlightWinningPositions(i, boardSchemeCopy) {
@@ -193,7 +277,7 @@ function highlightWinningPositions(i, boardSchemeCopy) {
 
 
 
-function playHistory() {
+let history = (function () {
 
     let arrP1 = [];
     let arrP2 = [];
@@ -207,11 +291,7 @@ function playHistory() {
     let historyPlayer2 = () => arrP2;
 
     return { recordTurnPlayer1, recordTurnPlayer2, undoTurnPlayer1, undoTurnPlayer2, historyPlayer1, historyPlayer2 };
-}
-
-let history = playHistory();
-
-//after each game run this function and update winnerName at current i
+})();
 
 function createListOfWInners() {
 
@@ -223,16 +303,11 @@ function createListOfWInners() {
         let currentGameNr = document.createElement('span');
         currentGameNr.classList.add('currentGameNr')
         let currentGameResult = document.createElement('div');
-        currentGameResult.classList.add('currentGameResult')
-        let winnerName = document.createElement('span');
-        winnerName.classList.add('winnerName');
+        currentGameResult.classList.add('currentGameResult', i)
 
 
         currentGameNr.textContent = 'Game ' + i;
         currentGame.appendChild(currentGameNr);
-
-        winnerName.textContent = '';
-        currentGameResult.appendChild(winnerName);
 
         listData.appendChild(currentGame);
         listData.appendChild(currentGameResult);

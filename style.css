@@ -378,6 +378,11 @@ nav .startGame:hover {
     background-color: var(--dark-color);
 }
 
+nav .startGameWarning {
+    font-size: 1.5rem;
+    margin-top: 10px;
+}
+
 main {
 
     grid-area: 2/2/3/3;
@@ -389,25 +394,21 @@ main {
     gap: 2%;
 }
 
-main div,
+/* main div,
 main button {
     font-size: 1.5vw;
-}
+} */
 
-main p,
+/* main p,
 main span {
     font-size: 1.8vw;
-}
+} */
 
 main .board {
     display: grid;
     border: 5px solid var(--dark-color);
-}
 
-main .board div {
-    border: 1px solid var(--dark-color);
 }
-
 
 main .score {
     width: 100%;
@@ -419,6 +420,17 @@ main .gameScore {
     display: grid;
     grid-template-columns: 2fr auto auto auto 2fr;
     align-items: center;
+    border: 3px solid var(--dark-color);
+    width: fit-content;
+    margin: 0 auto;
+    padding: 10px;
+
+}
+
+main .gameResultMessage {
+    padding: 20px;
+    font-size: 3rem;
+    font-weight: bold;
 }
 
 main .gameScore .nameP {
@@ -454,7 +466,9 @@ main .board div {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: var(--fsz-section-header);
+    border: 1px solid var(--dark-color);
+    font-weight: bold;
+    font-size: 5rem;
 }
 
 
