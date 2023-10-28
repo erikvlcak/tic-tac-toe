@@ -263,8 +263,8 @@ function gameResult() {
         }
     }
 
-    let updateListOfWinners = (finalResult, currentNumberOfGame) => {
-        if (result) {
+    let updateListOfWinners = (finalResult, currentNumberOfGame, counter) => {
+        if (finalResult) {
             console.log('uprade list of winners run')
             document.querySelectorAll('.listData .currentGameResult').forEach(item => {
                 if (item.classList.contains(currentNumberOfGame)) {
@@ -274,7 +274,7 @@ function gameResult() {
         } else if (!(finalResult) && (counter == 9)) {
             document.querySelectorAll('.listData .currentGameResult').forEach(item => {
                 if (item.classList.contains(currentNumberOfGame)) {
-                    item.textContent = 'Tie';
+                    item.textContent = 'Tie!';
                 }
             })
         }
