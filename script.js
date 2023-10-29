@@ -93,6 +93,15 @@ function playTurn() {
     let makeTurnPlayer1 = (e) => e.target.textContent = game.getSymbolPlayer1();
     let makeTurnPlayer2 = (e) => e.target.textContent = game.getSymbolPlayer2();
 
+    let makeTurnComputer = (boardCells, randomCellNumber) => {
+        boardCells.forEach(item => {
+            if (item.classList.contains(randomCellNumber)) {
+                item.textContent = game.getSymbolPlayer2();
+            }
+        })
+    }
+
+
     let turnCounter = () => {
         turnCount++;
         return turnCount;
@@ -111,7 +120,11 @@ function playTurn() {
         gameCount = 0;
     }
 
-    return { makeTurnPlayer1, makeTurnPlayer2, turnCounter, resetTurnCounter, gameCounter, resetGameCounter }
+    let generateRandomPosition = () => {
+        return Math.floor(Math.random() * (9 - 1 + 1) + 1);
+    }
+
+    return { makeTurnPlayer1, makeTurnPlayer2, turnCounter, resetTurnCounter, gameCounter, resetGameCounter, generateRandomPosition, makeTurnComputer }
 }
 
 document.querySelector('.nextGame').addEventListener('click', (e) => {
@@ -126,48 +139,105 @@ document.querySelector('.nextGame').addEventListener('click', (e) => {
 let play = playTurn();
 let result = gameResult();
 
+
+
 function boardClickListener(e) {
     let currentPlayer;
     let currentPosition;
+    let finalResult;
+    let gameMode = game.getMode();
+    let counter = play.turnCounter();
+    let boardCells = document.querySelectorAll('.board div');
 
-    let counter = play.turnCounter()
-    if (e.target.textContent == '') {
-        currentPosition = e.target.className;
-        console.log(counter)
-        if (counter % 2 == 1) {
-            play.makeTurnPlayer1(e);
-            history.recordTurnPlayer1(e);
-            document.querySelector('.leftArea .turn .turnName').textContent = game.getNamePlayer2();
-            document.querySelector('.leftArea .turn .turnSymbol').textContent = game.getSymbolPlayer2();
-            currentPlayer = game.getSymbolPlayer1();
-        } else {
-            play.makeTurnPlayer2(e);
-            history.recordTurnPlayer2(e);
-            document.querySelector('.leftArea .turn .turnName').textContent = game.getNamePlayer1();
-            document.querySelector('.leftArea .turn .turnSymbol').textContent = game.getSymbolPlayer1();
-            currentPlayer = game.getSymbolPlayer2()
-        };
 
-        let finalResult = result.getWinner(currentPosition, currentPlayer, counter);
 
-        if (!(finalResult) && (counter == 9)) {
-            let currentNumberOfGame = play.gameCounter();
-            document.querySelector('.gameResultMessage').textContent = 'It\'s a tie!';
-            result.updateListOfWinners(finalResult, currentNumberOfGame, counter);
-            finalResult = undefined;
-            disableBoard()
-            result.resetBoardScheme()
-        } else if (finalResult) {
-            let currentNumberOfGame = play.gameCounter();
-            document.querySelector('.gameResultMessage').textContent = `${finalResult} has won this round!`;
-            result.updateScoreboard(finalResult)
-            result.updateListOfWinners(finalResult, currentNumberOfGame, counter);
-            console.log(currentNumberOfGame)
-            finalResult = undefined;
-            disableBoard()
-            result.resetBoardScheme()
+    if (gameMode == 'mp') {
+        console.log('mp mode')
+        if (e.target.textContent == '') {
+            currentPosition = e.target.className;
+            console.log(counter)
+            if (counter % 2 == 1) {
+                play.makeTurnPlayer1(e);
+
+                document.querySelector('.leftArea .turn .turnName').textContent = game.getNamePlayer2();
+                document.querySelector('.leftArea .turn .turnSymbol').textContent = game.getSymbolPlayer2();
+                currentPlayer = game.getSymbolPlayer1();
+            } else {
+                play.makeTurnPlayer2(e);
+
+                document.querySelector('.leftArea .turn .turnName').textContent = game.getNamePlayer1();
+                document.querySelector('.leftArea .turn .turnSymbol').textContent = game.getSymbolPlayer1();
+                currentPlayer = game.getSymbolPlayer2()
+            };
+            finalResult = result.getWinner(currentPosition, currentPlayer, counter);
+
         }
     }
+
+    else if (gameMode == 'sp') {
+        if (e.target.textContent == '') {
+            play.makeTurnPlayer1(e);
+            currentPosition = e.target.className;
+            currentPlayer = game.getSymbolPlayer1();
+            result.updateBoardScheme(currentPosition, currentPlayer, counter);
+            let emptyCells = result.getEmptyCellsFromBoardScheme();
+            let randomIndex = Math.floor(Math.random() * emptyCells.length)
+            let randomCellNumber = emptyCells[randomIndex];
+            // play.turnCounter();
+            play.makeTurnComputer(boardCells, randomCellNumber);
+            result.updateBoardScheme(randomCellNumber, game.getSymbolPlayer2(), counter);
+
+
+            finalResult = result.getWinner(play.generateRandomPosition(), game.getSymbolPlayer2(), counter);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+
+
+
+    } else {
+        console.log('nic si ne nevybral')
+    }
+
+
+
+    if (!(finalResult) && (counter == 9)) {
+        let currentNumberOfGame = play.gameCounter();
+        document.querySelector('.gameResultMessage').textContent = 'It\'s a tie!';
+
+        result.updateListOfWinners(finalResult, currentNumberOfGame, counter);
+        finalResult = undefined;
+
+        disableBoard()
+        result.resetBoardScheme()
+
+
+    } else if (finalResult) {
+        let currentNumberOfGame = play.gameCounter();
+        document.querySelector('.gameResultMessage').textContent = `${finalResult} has won this round!`;
+
+        result.updateScoreboard(finalResult)
+
+        result.updateListOfWinners(finalResult, currentNumberOfGame, counter);
+        finalResult = undefined;
+
+        disableBoard()
+        result.resetBoardScheme()
+    }
+
 }
 
 document.querySelector('.board').addEventListener('click', boardClickListener);
@@ -182,6 +252,7 @@ function enableBoard() {
 }
 
 function gameResult() {
+
     let boardScheme = [
         [1, 2, 3],
         [4, 5, 6],
@@ -219,6 +290,7 @@ function gameResult() {
 
 
     let updateBoardScheme = (position, symbol) => {
+        console.log('updated board scheme')
         for (let i = 0; i < boardScheme.length; i++) {
             for (let j = 0; j < boardScheme[i].length; j++) {
                 boardScheme[i][j] == +position ? boardScheme[i][j] = symbol : boardScheme[i][j]
@@ -265,7 +337,6 @@ function gameResult() {
 
     let updateListOfWinners = (finalResult, currentNumberOfGame, counter) => {
         if (finalResult) {
-            console.log('uprade list of winners run')
             document.querySelectorAll('.listData .currentGameResult').forEach(item => {
                 if (item.classList.contains(currentNumberOfGame)) {
                     item.textContent = finalResult;
@@ -281,7 +352,28 @@ function gameResult() {
 
     }
 
-    return { getWinner, updateScoreboard, updateListOfWinners, resetBoardScheme }
+    let getBoardScheme = () => {
+        return boardScheme;
+    }
+
+    let getEmptyCellsFromBoardScheme = () => {
+        let emptyCells = new Set();
+        let arrayOfEmptyCells = [];
+        for (let i = 0; i < boardScheme.length; i++) {
+            for (let j = 0; j < boardScheme[i].length; j++) {
+                emptyCells.add(boardScheme[i][j]);
+            }
+        }
+
+        emptyCells.forEach(item => {
+            if (typeof (item) == 'number') {
+                arrayOfEmptyCells.push(item);
+            }
+        })
+        return arrayOfEmptyCells;
+    }
+
+    return { getWinner, updateScoreboard, updateListOfWinners, resetBoardScheme, updateBoardScheme, getBoardScheme, getEmptyCellsFromBoardScheme }
 
 }
 
@@ -296,22 +388,6 @@ function highlightWinningPositions(i, boardSchemeCopy) {
 }
 
 
-
-let history = (function () {
-
-    let arrP1 = [];
-    let arrP2 = [];
-
-    let recordTurnPlayer1 = (e) => arrP1.push(+e.target.className);
-    let undoTurnPlayer1 = () => arrP1.pop();
-    let historyPlayer1 = () => arrP1;
-
-    let recordTurnPlayer2 = (e) => arrP2.push(+e.target.className);
-    let undoTurnPlayer2 = () => arrP2.pop();
-    let historyPlayer2 = () => arrP2;
-
-    return { recordTurnPlayer1, recordTurnPlayer2, undoTurnPlayer1, undoTurnPlayer2, historyPlayer1, historyPlayer2 };
-})();
 
 function createListOfWInners() {
 
