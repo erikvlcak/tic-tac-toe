@@ -179,37 +179,21 @@ function boardClickListener(e) {
             play.makeTurnPlayer1(e);
             currentPosition = e.target.className;
             currentPlayer = game.getSymbolPlayer1();
-            result.updateBoardScheme(currentPosition, currentPlayer, counter);
+            finalResult = result.updateBoardScheme(currentPosition, currentPlayer, counter);
             let emptyCells = result.getEmptyCellsFromBoardScheme();
             let randomIndex = Math.floor(Math.random() * emptyCells.length)
             let randomCellNumber = emptyCells[randomIndex];
-            // play.turnCounter();
+            console.log('counter je ' + counter);
+            // console.log('nahodna pozicia je ' + play.generateRandomPosition())
             play.makeTurnComputer(boardCells, randomCellNumber);
-            result.updateBoardScheme(randomCellNumber, game.getSymbolPlayer2(), counter);
+            finalResult = result.updateBoardScheme(randomCellNumber, game.getSymbolPlayer2(), counter);
 
 
-            finalResult = result.getWinner(play.generateRandomPosition(), game.getSymbolPlayer2(), counter);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            // finalResult = result.getWinner(play.generateRandomPosition(), game.getSymbolPlayer2(), counter);
+            console.log(finalResult)
 
         }
 
-
-
-    } else {
-        console.log('nic si ne nevybral')
     }
 
 
