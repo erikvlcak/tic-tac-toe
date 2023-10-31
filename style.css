@@ -72,6 +72,10 @@ nav div {
     padding: 20px 0px;
 }
 
+nav .numberOfGames .numbers {
+    font-size: 3rem;
+}
+
 
 nav .gameMode {
     display: grid;
@@ -141,7 +145,7 @@ nav .playerName {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: 0.5fr 2fr 1fr;
-    place-items: center;
+    place-items: end center;
     width: 80%;
     border-top: var(--section-top-border);
     background-color: var(--light-color);
@@ -194,6 +198,7 @@ nav .playerName>#nameP {
     width: 70%;
     font-size: 2.5rem;
     background-color: transparent;
+    font-weight: bold;
 }
 
 nav .playerName>.labelP {
@@ -206,6 +211,7 @@ nav .playerName>#nameO {
     width: 70%;
     font-size: 2.5rem;
     background-color: transparent;
+    font-weight: bold;
 }
 
 nav .playerName>#nameO:disabled {
@@ -236,7 +242,7 @@ nav .playerSymbol p:first-of-type {
     grid-area: 1/1/2/5;
     /* border-bottom: 2px solid black; */
     font-size: var(--fsz-section-header);
-    padding-bottom: 5px;
+    padding-bottom: 15px;
     font-weight: 900;
 }
 
@@ -249,7 +255,7 @@ nav .playerSymbol p:nth-of-type(2) {
 nav .playerSymbol p:nth-of-type(3) {
     grid-area: 3/1/4/2;
     font-size: 2rem;
-    border-top: 5px solid var(--dark-color);
+    /* border-top: 5px solid var(--dark-color); */
     width: 150px;
     text-align: center;
 }
@@ -257,7 +263,7 @@ nav .playerSymbol p:nth-of-type(3) {
 nav .playerSymbol p:last-of-type {
     grid-area: 3/2/4/3;
     font-size: 2rem;
-    border-top: 5px solid var(--dark-color);
+    /* border-top: 5px solid var(--dark-color); */
     width: 150px;
     text-align: center;
 }
@@ -265,12 +271,13 @@ nav .playerSymbol p:last-of-type {
 nav .playerSymbol .spXO {
     grid-area: 2/1/3/2;
     font-size: 2rem;
-    /* align-self: flex-end; */
+    place-items: end center;
+    padding-bottom: 0px;
 }
 
 nav .playerSymbol button {
-    width: 5rem;
-    height: 5rem;
+    width: 8rem;
+    height: 8rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -279,8 +286,7 @@ nav .playerSymbol button {
     background-color: var(--light-color);
     border: 3px solid var(--dark-color);
     cursor: pointer;
-    font-weight: bold;
-    font-size: 4rem;
+    font-size: 7rem;
 }
 
 
@@ -288,7 +294,8 @@ nav .playerSymbol button {
 nav .playerSymbol .mpXO {
     grid-area: 2/2/3/3;
     font-size: 2rem;
-    /* align-self: flex-end; */
+    place-items: end center;
+    padding-bottom: 0px;
 }
 
 
@@ -304,7 +311,7 @@ nav .numberOfGames {
     width: 80%;
     border-top: var(--section-top-border);
     border-bottom: var(--section-top-border);
-    gap: 50px;
+    gap: 30px;
 
 }
 
@@ -332,7 +339,8 @@ nav .numberOfGames button {
     height: fit-content;
     transition: border 0.2s, background-color 0.2s, color 0.2s;
     margin-right: 3px;
-    font-size: 2rem;
+    font-size: 4rem;
+    font-weight: bolder;
     background-color: transparent;
     color: var(--dark-color);
     /* border: 3px solid transparent; */
@@ -354,7 +362,7 @@ nav .numberOfGames button:hover {
     color: black;
     transition: border 0.2s, background-color 0.2s, color 0.2s;
     margin-right: 3px;
-    font-size: 2rem;
+    font-size: 3rem;
 }
 
 .selected {
@@ -384,8 +392,11 @@ nav .startGame:hover {
 }
 
 nav .startGameWarning {
-    font-size: 1.5rem;
+    font-size: 2rem;
     margin-top: 10px;
+    display: none;
+    height: 30px;
+    font-weight: bold;
 }
 
 main {
@@ -456,6 +467,7 @@ main .gameScore .nameP {
     padding-right: 50px;
     grid-area: 1/1/2/2;
 }
+
 
 main .gameScore .scoreP {
     grid-area: 1/2/2/3;
