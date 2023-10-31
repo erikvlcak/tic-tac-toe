@@ -169,27 +169,31 @@ function boardClickListener(e) {
                 document.querySelector('.leftArea .turn .turnSymbol').textContent = game.getSymbolPlayer1();
                 currentPlayer = game.getSymbolPlayer2()
             };
-            finalResult = result.getWinner(currentPosition, currentPlayer, counter);
 
+            finalResult = result.getWinner(currentPosition, currentPlayer, counter);
         }
     }
 
     else if (gameMode == 'sp') {
         if (e.target.textContent == '') {
             play.makeTurnPlayer1(e);
+
             currentPosition = e.target.className;
             currentPlayer = game.getSymbolPlayer1();
-            finalResult = result.updateBoardScheme(currentPosition, currentPlayer, counter);
+            result.updateBoardScheme(currentPosition, currentPlayer, counter);
             let emptyCells = result.getEmptyCellsFromBoardScheme();
             let randomIndex = Math.floor(Math.random() * emptyCells.length)
             let randomCellNumber = emptyCells[randomIndex];
-            console.log('counter je ' + counter);
-            // console.log('nahodna pozicia je ' + play.generateRandomPosition())
+
+
             play.makeTurnComputer(boardCells, randomCellNumber);
-            finalResult = result.updateBoardScheme(randomCellNumber, game.getSymbolPlayer2(), counter);
+            play.turnCounter();
 
 
-            // finalResult = result.getWinner(play.generateRandomPosition(), game.getSymbolPlayer2(), counter);
+
+
+            result.updateBoardScheme(randomCellNumber, game.getSymbolPlayer2(), counter);
+            finalResult = result.getWinner(currentPosition, currentPlayer, counter);
             console.log(finalResult)
 
         }
@@ -274,7 +278,7 @@ function gameResult() {
 
 
     let updateBoardScheme = (position, symbol) => {
-        console.log('updated board scheme')
+
         for (let i = 0; i < boardScheme.length; i++) {
             for (let j = 0; j < boardScheme[i].length; j++) {
                 boardScheme[i][j] == +position ? boardScheme[i][j] = symbol : boardScheme[i][j]
@@ -284,14 +288,14 @@ function gameResult() {
 
     let getWinner = (position, symbol, counter) => {
         updateBoardScheme(position, symbol, counter)
-        console.log(boardScheme)
+        console.log('hehe')
         for (let i = 0; i < boardScheme.length; i++) {
             if (boardScheme[i].join('') == 'XXX') {
 
                 highlightWinningPositions(i, boardSchemeCopy);
                 if (game.getSymbolPlayer1() == 'X') {
 
-                    console.log('reset board scheme')
+
                     return game.getNamePlayer1();
                 } else return game.getNamePlayer2();
 
@@ -300,7 +304,7 @@ function gameResult() {
                 highlightWinningPositions(i, boardSchemeCopy);
                 if (game.getSymbolPlayer1() == 'O') {
 
-                    console.log('reset board scheme')
+
                     return game.getNamePlayer1();
                 } else return game.getNamePlayer2();
             }
