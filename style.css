@@ -16,13 +16,18 @@
 } */
 
 
+.ff-symbols {
+    font-family: 'Gochi Hand', cursive;
 
+
+
+}
 
 
 body {
     display: grid;
     grid-template-rows: auto 1fr auto;
-    grid-template-columns: 0.5fr minmax(500px, 1fr) 0.5fr;
+    grid-template-columns: 0.5fr 800px 0.5fr;
     height: 100svh;
     margin: 5px;
 }
@@ -275,7 +280,7 @@ nav .playerSymbol button {
     border: 3px solid var(--dark-color);
     cursor: pointer;
     font-weight: bold;
-    font-size: 2rem;
+    font-size: 4rem;
 }
 
 
@@ -424,13 +429,26 @@ main .gameScore {
     width: fit-content;
     margin: 0 auto;
     padding: 10px;
+    font-size: 2rem;
+    font-weight: bold;
+}
 
+body>main>div.options {
+    display: flex;
+    gap: 20px;
+
+}
+
+body>main>div.options>button,
+body>main>div.gameResult>button {
+    font-size: 2rem;
 }
 
 main .gameResultMessage {
     padding: 20px;
     font-size: 3rem;
     font-weight: bold;
+    height: 80px;
 }
 
 main .gameScore .nameP {
@@ -442,11 +460,15 @@ main .gameScore .nameP {
 main .gameScore .scoreP {
     grid-area: 1/2/2/3;
     padding: 15px;
+    font-size: 3rem;
+    font-weight: bold;
 }
 
 main .gameScore .scoreO {
     grid-area: 1/4/2/5;
     padding: 15px;
+    font-size: 3rem;
+    font-weight: bold;
 }
 
 main .gameScore .nameO {
@@ -467,8 +489,8 @@ main .board div {
     align-items: center;
     justify-content: center;
     border: 1px solid var(--dark-color);
-    font-weight: bold;
-    font-size: 5rem;
+    /* font-weight: bold; */
+    font-size: 10rem;
 }
 
 
@@ -491,17 +513,15 @@ body .leftArea .turn {
     padding: 10px;
 }
 
-body .leftArea p {
-    font-size: var(--fsz-section-header);
-    border-bottom: 3px solid var(--dark-color);
-}
 
 body .leftArea div {
-    font-size: 1.5vw;
+    font-size: 2rem;
 }
 
 body .leftArea p {
-    font-size: 1.8vw;
+    font-size: 2rem;
+    border-bottom: 3px solid var(--dark-color);
+    font-weight: bold;
 }
 
 body .rightArea {
@@ -517,9 +537,10 @@ body .rightArea .gameCounter .counter {
     padding: 1rem;
 }
 
-body .rightArea div {
-    font-size: 2rem;
+body>div.leftArea>div>div.turnSymbol.ff-symbols {
+    font-size: 4rem;
 }
+
 
 body .rightArea .log {
     border: 3px solid var(--dark-color);
@@ -560,11 +581,17 @@ body .rightArea .logItems .resultList .currentGame {
 
 body .rightArea div,
 body .rightArea span {
-    font-size: 1.5vw;
+    font-size: 2rem;
+}
+
+body>div.rightArea>div>div.gameCounter>div>span.currentGameNr {
+    font-size: 3rem;
+    font-weight: bold;
 }
 
 body .rightArea p {
-    font-size: 1.8vw;
+    font-size: 2rem;
+    font-weight: bold;
 }
 
 footer {

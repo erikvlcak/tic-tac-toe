@@ -13,6 +13,9 @@
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Yomogi&display=swap");
     </style>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Gochi+Hand&display=swap');
+    </style>
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <title>Piškvorky</title>
@@ -47,11 +50,11 @@
             <p>Click to change</p>
             <p>Your</p>
             <div class="spXO">
-                <button class="btnSP">X</button>
+                <button class="btnSP ff-symbols">X</button>
             </div>
             <p>Opponents</p>
             <div class="mpXO">
-                <button class="btnMP">O</button>
+                <button class="btnMP ff-symbols">O</button>
             </div>
         </div>
 
@@ -73,7 +76,7 @@
         <div class="turn">
             <p>On turn</p>
             <div class="turnName">Erik</div>
-            <div class="turnSymbol">X</div>
+            <div class="turnSymbol ff-symbols">X</div>
         </div>
     </div>
 
@@ -98,22 +101,22 @@
     <main>
         <div class="options">
             <button class="menuBtn">Back to menu</button>
+            <button class="nextGame"><span class="btnResultContext">Next</span> Game</button>
         </div>
 
         <!-- board -->
-        <div class="board"></div>
+        <div class="board ff-symbols"></div>
 
         <div class="score">
+            <div class="gameResultMessage"></div>
             <div class="gameScore">
                 <span class="nameP">Erik </span> <span class="scoreP">0</span> :
                 <span class="scoreO">0</span> <span class="nameO">Barbora </span>
             </div>
-            <div class="gameResultMessage"></div>
         </div>
 
         <div class="gameResult">
-            <h2></h2>
-            <button class="nextGame"><span class="btnResultContext">Next</span> Game</button>
+
         </div>
     </main>
 

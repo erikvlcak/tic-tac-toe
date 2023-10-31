@@ -15,8 +15,8 @@ document.querySelector('main .options .menuBtn').addEventListener('click', () =>
 
 function createBoard() {
     let board = document.querySelector('main .board');
-    board.style.gridTemplateColumns = 'repeat(3, 10vw)';
-    board.style.gridTemplateRows = 'repeat(3, 10vw)';
+    board.style.gridTemplateColumns = 'repeat(3, 180px)';
+    board.style.gridTemplateRows = 'repeat(3, 180px)';
     board.style.width = '10wv';
     for (let i = 1; i <= 9; i++) {
         let cell = document.createElement('div');
