@@ -1,9 +1,14 @@
 'use strict'
 
 document.querySelector('nav .startGame').addEventListener('click', () => {
-    showBoard();
-    createBoard();
-    initializeBoardData();
+    if (game.getMode()) {
+        showBoard();
+        createBoard();
+        initializeBoardData();
+    }
+    else {
+        document.querySelector('.startGameWarning').style.display = 'block';
+    }
 })
 
 document.querySelector('main .options .menuBtn').addEventListener('click', () => {
@@ -11,6 +16,7 @@ document.querySelector('main .options .menuBtn').addEventListener('click', () =>
     clearBoard();
     clearListOfWinners();
     play.resetGameCounter();
+    document.querySelector('.startGameWarning').style.display = 'none';
 })
 
 function createBoard() {
@@ -40,11 +46,8 @@ let game = (function () {
         for (let item of mode) {
             if (item.style.backgroundColor == 'black') {
                 return item.className;
-            }
+            } else return undefined
         }
-
-        //if no mode is selected, select singleplayer
-        return 'sp';
     }
 
     let getNamePlayer1 = () => {
@@ -307,7 +310,7 @@ let result = (function () {
         if (scoreboard.querySelector('.nameP').textContent == nameOfWinner) {
             scoreboard.querySelector('.scoreP').textContent = ++scorePlayer
         } else {
-            scoreboard.querySelector('.scoreP').textContent = ++scoreOpponent
+            scoreboard.querySelector('.scoreO').textContent = ++scoreOpponent
         }
     }
 
