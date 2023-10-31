@@ -1,8 +1,5 @@
 'use strict'
 
-let game = getGameData();
-
-
 document.querySelector('nav .startGame').addEventListener('click', () => {
     showBoard();
     createBoard();
@@ -35,7 +32,7 @@ function clearBoard() {
     document.querySelector('main .board').innerHTML = '';
 }
 
-function getGameData() {
+let game = (function () {
 
     let getMode = () => {
         let mode = document.querySelectorAll('.gameMode button');
@@ -75,19 +72,15 @@ function getGameData() {
         return 1;
     }
 
-
-
-
-
     let getSymbolPlayer1 = () => document.querySelector('.btnSP').textContent;
     let getSymbolPlayer2 = () => document.querySelector('.btnMP').textContent;
 
-
-
     return { getMode, getNamePlayer1, getNamePlayer2, getNumberOfGames, getSymbolPlayer1, getSymbolPlayer2 }
-}
+})();
 
-function playTurn() {
+
+
+let play = (function () {
     let turnCount = 0;
     let gameCount = 0;
     let makeTurnPlayer1 = (e) => e.target.textContent = game.getSymbolPlayer1();
@@ -125,7 +118,7 @@ function playTurn() {
     }
 
     return { makeTurnPlayer1, makeTurnPlayer2, turnCounter, resetTurnCounter, gameCounter, resetGameCounter, generateRandomPosition, makeTurnComputer }
-}
+})()
 
 document.querySelector('.nextGame').addEventListener('click', (e) => {
     clearBoard();
@@ -135,11 +128,6 @@ document.querySelector('.nextGame').addEventListener('click', (e) => {
     let gameNumber = Number(document.querySelector('.currentGameNr').textContent);
     document.querySelector('.currentGameNr').textContent = ++gameNumber;
 })
-
-let play = playTurn();
-let result = gameResult();
-
-
 
 function boardClickListener(e) {
     let currentPlayer;
@@ -239,7 +227,7 @@ function enableBoard() {
     document.querySelector('.board').addEventListener('click', boardClickListener);
 }
 
-function gameResult() {
+let result = (function () {
 
     let boardScheme = [
         [1, 2, 3],
@@ -363,7 +351,7 @@ function gameResult() {
 
     return { getWinner, updateScoreboard, updateListOfWinners, resetBoardScheme, updateBoardScheme, getBoardScheme, getEmptyCellsFromBoardScheme }
 
-}
+})();
 
 function highlightWinningPositions(i, boardSchemeCopy) {
     let [firstWinPos, secondWinPos, thirdWinPos] = boardSchemeCopy[i];
