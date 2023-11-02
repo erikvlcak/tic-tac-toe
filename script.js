@@ -31,6 +31,7 @@ function createBoard() {
         cell.classList.add(i);
         board.appendChild(cell);
     }
+
 }
 
 function clearBoard() {
@@ -45,8 +46,9 @@ let game = (function () {
         for (let item of mode) {
             if (item.style.backgroundColor == 'black') {
                 return item.className;
-            } else return undefined
+            }
         }
+        // return 'sp';
     }
 
     let getNamePlayer1 = () => {
@@ -93,6 +95,7 @@ let play = (function () {
     let gameCount = 0;
     let makeTurnPlayer1 = (e) => e.target.textContent = game.getSymbolPlayer1();
     let makeTurnPlayer2 = (e) => e.target.textContent = game.getSymbolPlayer2();
+
     let makeTurnComputer = (boardCells, randomCellNumber) => {
         boardCells.forEach(item => {
             if (item.classList.contains(randomCellNumber)) {
@@ -100,6 +103,7 @@ let play = (function () {
             }
         })
     }
+
 
     let turnCounter = () => {
         turnCount++;
@@ -179,30 +183,66 @@ function boardClickListener(e) {
             result.updateBoardScheme(currentPosition, currentPlayer, counter); //do boardscheme zaznaci miesto kam som klikol mojim symbolom
             finalResult = result.getWinner(currentPosition, currentPlayer, counter);
             if (!(finalResult)) {
+
+
                 let makeComputerTurn = function () {
+
                     let randomCellNumber = game.getRandomCellNumber(); //zisti nahodne volne policko pre comp
                     play.makeTurnComputer(boardCells, randomCellNumber); //na nahodne policko zaznaci comp symbol
                     play.turnCounter(); //zapocita ze presiel tah comp
+
+
                     result.updateBoardScheme(randomCellNumber, game.getSymbolPlayer2(), counter); //do boardscheme zaznaci miesto kam dal symbol comp
+
+
                     finalResult = result.getWinner(currentPosition, currentPlayer, counter); //zisti ci su 3 policka oznacene a ak ano tak do finalResult da meno toho, kto oznacil tie 3 policka
+
+
+
                     if (finalResult) {
+
                         result.endTurnWithWinner(finalResult, play.gameCounter(), counter)
                     }
+
+
+
                 }
+
                 setTimeout(makeComputerTurn, 300);
+
+
             }
+
+
+
+
+
+
+
+
         }
+
     }
 
+
+
     if (!(finalResult) && (counter == 9)) {
+
+
         document.querySelector('.gameResultMessage').textContent = 'It\'s a tie!';
+
         result.updateListOfWinners(finalResult, play.gameCounter(), counter);
         finalResult = undefined;
+
         disableBoard()
         result.resetBoardScheme()
+
+
     } else if (finalResult) {
+
         result.endTurnWithWinner(finalResult, play.gameCounter(), counter)
     }
+
 }
 
 document.querySelector('.board').addEventListener('click', boardClickListener);
@@ -255,7 +295,7 @@ let result = (function () {
 
 
     let updateBoardScheme = (position, symbol) => {
-
+        console.log('updatd board scheme')
         for (let i = 0; i < boardScheme.length; i++) {
             for (let j = 0; j < boardScheme[i].length; j++) {
                 boardScheme[i][j] == +position ? boardScheme[i][j] = symbol : boardScheme[i][j]
@@ -366,6 +406,7 @@ function highlightWinningPositions(i, boardSchemeCopy) {
 }
 
 
+
 function createListOfWInners() {
 
     let listData = document.querySelector('.rightArea .logItems .resultList .listData');
@@ -377,6 +418,7 @@ function createListOfWInners() {
         currentGameNr.classList.add('currentGameNr')
         let currentGameResult = document.createElement('div');
         currentGameResult.classList.add('currentGameResult', i)
+
 
         currentGameNr.textContent = 'Game ' + i;
         currentGame.appendChild(currentGameNr);
@@ -411,6 +453,10 @@ function showMenu() {
     document.querySelector('main').style.display = 'none';
     document.querySelector('.leftArea').style.display = 'none';
     document.querySelector('.rightArea').style.display = 'none';
+}
+
+function logResult() {
+
 }
 
 
