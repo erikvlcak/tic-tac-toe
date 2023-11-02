@@ -31,7 +31,6 @@ function createBoard() {
         cell.classList.add(i);
         board.appendChild(cell);
     }
-
 }
 
 function clearBoard() {
@@ -78,7 +77,13 @@ let game = (function () {
     let getSymbolPlayer1 = () => document.querySelector('.btnSP').textContent;
     let getSymbolPlayer2 = () => document.querySelector('.btnMP').textContent;
 
-    return { getMode, getNamePlayer1, getNamePlayer2, getNumberOfGames, getSymbolPlayer1, getSymbolPlayer2 }
+    let getRandomCellNumber = () => {
+        let emptyCells = result.getEmptyCellsFromBoardScheme();
+        let randomIndex = Math.floor(Math.random() * emptyCells.length)
+        return emptyCells[randomIndex];
+    }
+
+    return { getMode, getNamePlayer1, getNamePlayer2, getNumberOfGames, getSymbolPlayer1, getSymbolPlayer2, getRandomCellNumber }
 })();
 
 
@@ -88,7 +93,6 @@ let play = (function () {
     let gameCount = 0;
     let makeTurnPlayer1 = (e) => e.target.textContent = game.getSymbolPlayer1();
     let makeTurnPlayer2 = (e) => e.target.textContent = game.getSymbolPlayer2();
-
     let makeTurnComputer = (boardCells, randomCellNumber) => {
         boardCells.forEach(item => {
             if (item.classList.contains(randomCellNumber)) {
@@ -96,7 +100,6 @@ let play = (function () {
             }
         })
     }
-
 
     let turnCounter = () => {
         turnCount++;
@@ -137,14 +140,15 @@ function boardClickListener(e) {
     let currentPosition;
     let finalResult;
     let gameMode = game.getMode();
-    let counter = play.turnCounter();
+    let counter;
     let boardCells = document.querySelectorAll('.board div');
 
 
 
     if (gameMode == 'mp') {
-        console.log('mp mode')
+
         if (e.target.textContent == '') {
+            counter = play.turnCounter();
             currentPosition = e.target.className;
             console.log(counter)
             if (counter % 2 == 1) {
@@ -166,57 +170,39 @@ function boardClickListener(e) {
     }
 
     else if (gameMode == 'sp') {
+
         if (e.target.textContent == '') {
-            play.makeTurnPlayer1(e);
-
-            currentPosition = e.target.className;
-            currentPlayer = game.getSymbolPlayer1();
-            result.updateBoardScheme(currentPosition, currentPlayer, counter);
-            let emptyCells = result.getEmptyCellsFromBoardScheme();
-            let randomIndex = Math.floor(Math.random() * emptyCells.length)
-            let randomCellNumber = emptyCells[randomIndex];
-
-
-            play.makeTurnComputer(boardCells, randomCellNumber);
-            play.turnCounter();
-
-
-
-
-            result.updateBoardScheme(randomCellNumber, game.getSymbolPlayer2(), counter);
+            play.makeTurnPlayer1(e); //ja kam kliknem tam da moj symbol
+            counter = play.turnCounter(); //zapocita ze presiel tah mna
+            currentPosition = e.target.className; //zisti policko kam som klikol
+            currentPlayer = game.getSymbolPlayer1(); //zisti moj symbol
+            result.updateBoardScheme(currentPosition, currentPlayer, counter); //do boardscheme zaznaci miesto kam som klikol mojim symbolom
             finalResult = result.getWinner(currentPosition, currentPlayer, counter);
-            console.log(finalResult)
-
+            if (!(finalResult)) {
+                let makeComputerTurn = function () {
+                    let randomCellNumber = game.getRandomCellNumber(); //zisti nahodne volne policko pre comp
+                    play.makeTurnComputer(boardCells, randomCellNumber); //na nahodne policko zaznaci comp symbol
+                    play.turnCounter(); //zapocita ze presiel tah comp
+                    result.updateBoardScheme(randomCellNumber, game.getSymbolPlayer2(), counter); //do boardscheme zaznaci miesto kam dal symbol comp
+                    finalResult = result.getWinner(currentPosition, currentPlayer, counter); //zisti ci su 3 policka oznacene a ak ano tak do finalResult da meno toho, kto oznacil tie 3 policka
+                    if (finalResult) {
+                        result.endTurnWithWinner(finalResult, play.gameCounter(), counter)
+                    }
+                }
+                setTimeout(makeComputerTurn, 300);
+            }
         }
-
     }
-
-
 
     if (!(finalResult) && (counter == 9)) {
-        let currentNumberOfGame = play.gameCounter();
         document.querySelector('.gameResultMessage').textContent = 'It\'s a tie!';
-
-        result.updateListOfWinners(finalResult, currentNumberOfGame, counter);
+        result.updateListOfWinners(finalResult, play.gameCounter(), counter);
         finalResult = undefined;
-
         disableBoard()
         result.resetBoardScheme()
-
-
     } else if (finalResult) {
-        let currentNumberOfGame = play.gameCounter();
-        document.querySelector('.gameResultMessage').textContent = `${finalResult} has won this round!`;
-
-        result.updateScoreboard(finalResult)
-
-        result.updateListOfWinners(finalResult, currentNumberOfGame, counter);
-        finalResult = undefined;
-
-        disableBoard()
-        result.resetBoardScheme()
+        result.endTurnWithWinner(finalResult, play.gameCounter(), counter)
     }
-
 }
 
 document.querySelector('.board').addEventListener('click', boardClickListener);
@@ -279,7 +265,7 @@ let result = (function () {
 
     let getWinner = (position, symbol, counter) => {
         updateBoardScheme(position, symbol, counter)
-        console.log('hehe')
+
         for (let i = 0; i < boardScheme.length; i++) {
             if (boardScheme[i].join('') == 'XXX') {
 
@@ -352,7 +338,20 @@ let result = (function () {
         return arrayOfEmptyCells;
     }
 
-    return { getWinner, updateScoreboard, updateListOfWinners, resetBoardScheme, updateBoardScheme, getBoardScheme, getEmptyCellsFromBoardScheme }
+    let endTurnWithWinner = (finalResult, currentNumberOfGame, counter) => {
+
+        document.querySelector('.gameResultMessage').textContent = `${finalResult} has won this round!`;
+
+        updateScoreboard(finalResult)
+
+        updateListOfWinners(finalResult, currentNumberOfGame, counter);
+        finalResult = undefined;
+
+        disableBoard()
+        resetBoardScheme()
+    }
+
+    return { getWinner, updateScoreboard, updateListOfWinners, resetBoardScheme, updateBoardScheme, getBoardScheme, getEmptyCellsFromBoardScheme, endTurnWithWinner }
 
 })();
 
@@ -367,7 +366,6 @@ function highlightWinningPositions(i, boardSchemeCopy) {
 }
 
 
-
 function createListOfWInners() {
 
     let listData = document.querySelector('.rightArea .logItems .resultList .listData');
@@ -379,7 +377,6 @@ function createListOfWInners() {
         currentGameNr.classList.add('currentGameNr')
         let currentGameResult = document.createElement('div');
         currentGameResult.classList.add('currentGameResult', i)
-
 
         currentGameNr.textContent = 'Game ' + i;
         currentGame.appendChild(currentGameNr);
@@ -414,10 +411,6 @@ function showMenu() {
     document.querySelector('main').style.display = 'none';
     document.querySelector('.leftArea').style.display = 'none';
     document.querySelector('.rightArea').style.display = 'none';
-}
-
-function logResult() {
-
 }
 
 
