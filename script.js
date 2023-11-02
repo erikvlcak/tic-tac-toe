@@ -2,6 +2,7 @@
 
 document.querySelector('nav .startGame').addEventListener('click', () => {
     if (game.getMode()) {
+
         showBoard();
         createBoard();
         initializeBoardData();
@@ -106,7 +107,7 @@ let play = (function () {
 
 
     let turnCounter = () => {
-        turnCount++;
+        ++turnCount;
         return turnCount;
     }
 
@@ -137,6 +138,7 @@ document.querySelector('.nextGame').addEventListener('click', (e) => {
     play.resetTurnCounter();
     let gameNumber = Number(document.querySelector('.currentGameNr').textContent);
     document.querySelector('.currentGameNr').textContent = ++gameNumber;
+    document.querySelector('.gameResultMessage').textContent = '';
 })
 
 function boardClickListener(e) {
@@ -154,7 +156,6 @@ function boardClickListener(e) {
         if (e.target.textContent == '') {
             counter = play.turnCounter();
             currentPosition = e.target.className;
-            console.log(counter)
             if (counter % 2 == 1) {
                 play.makeTurnPlayer1(e);
 
@@ -176,10 +177,12 @@ function boardClickListener(e) {
     else if (gameMode == 'sp') {
 
         if (e.target.textContent == '') {
+
             play.makeTurnPlayer1(e); //ja kam kliknem tam da moj symbol
             counter = play.turnCounter(); //zapocita ze presiel tah mna
             currentPosition = e.target.className; //zisti policko kam som klikol
             currentPlayer = game.getSymbolPlayer1(); //zisti moj symbol
+            console.log(counter);
             result.updateBoardScheme(currentPosition, currentPlayer, counter); //do boardscheme zaznaci miesto kam som klikol mojim symbolom
             finalResult = result.getWinner(currentPosition, currentPlayer, counter);
             if (!(finalResult)) {
@@ -189,7 +192,8 @@ function boardClickListener(e) {
 
                     let randomCellNumber = game.getRandomCellNumber(); //zisti nahodne volne policko pre comp
                     play.makeTurnComputer(boardCells, randomCellNumber); //na nahodne policko zaznaci comp symbol
-                    play.turnCounter(); //zapocita ze presiel tah comp
+                    counter = play.turnCounter(); //zapocita ze presiel tah comp
+                    console.log(counter);
 
 
                     result.updateBoardScheme(randomCellNumber, game.getSymbolPlayer2(), counter); //do boardscheme zaznaci miesto kam dal symbol comp
@@ -197,13 +201,32 @@ function boardClickListener(e) {
 
                     finalResult = result.getWinner(currentPosition, currentPlayer, counter); //zisti ci su 3 policka oznacene a ak ano tak do finalResult da meno toho, kto oznacil tie 3 policka
 
+                    // make this into a function
+                    if (!(finalResult) && (counter == 9)) {
 
 
-                    if (finalResult) {
+                        document.querySelector('.gameResultMessage').textContent = 'It\'s a tie!';
 
-                        result.endTurnWithWinner(finalResult, play.gameCounter(), counter)
+                        result.updateListOfWinners(finalResult, play.gameCounter(), counter);
+                        finalResult = undefined;
+
+                        disableBoard()
+                        result.resetBoardScheme()
+
+
+                    } else if (finalResult) {
+
+                        document.querySelector('.gameResultMessage').textContent = `${finalResult} has won this round!`;
+
+                        result.updateScoreboard(finalResult)
+
+                        result.updateListOfWinners(finalResult, play.gameCounter(), counter);
+                        finalResult = undefined;
+
+                        disableBoard()
+                        result.resetBoardScheme()
                     }
-
+                    // make this into a function
 
 
                 }
@@ -225,7 +248,7 @@ function boardClickListener(e) {
     }
 
 
-
+    // make this into a function
     if (!(finalResult) && (counter == 9)) {
 
 
@@ -240,9 +263,17 @@ function boardClickListener(e) {
 
     } else if (finalResult) {
 
-        result.endTurnWithWinner(finalResult, play.gameCounter(), counter)
-    }
+        document.querySelector('.gameResultMessage').textContent = `${finalResult} has won this round!`;
 
+        result.updateScoreboard(finalResult)
+
+        result.updateListOfWinners(finalResult, play.gameCounter(), counter);
+        finalResult = undefined;
+
+        disableBoard()
+        result.resetBoardScheme()
+    }
+    // make this into a function
 }
 
 document.querySelector('.board').addEventListener('click', boardClickListener);
@@ -295,7 +326,7 @@ let result = (function () {
 
 
     let updateBoardScheme = (position, symbol) => {
-        console.log('updatd board scheme')
+
         for (let i = 0; i < boardScheme.length; i++) {
             for (let j = 0; j < boardScheme[i].length; j++) {
                 boardScheme[i][j] == +position ? boardScheme[i][j] = symbol : boardScheme[i][j]
@@ -378,20 +409,9 @@ let result = (function () {
         return arrayOfEmptyCells;
     }
 
-    let endTurnWithWinner = (finalResult, currentNumberOfGame, counter) => {
 
-        document.querySelector('.gameResultMessage').textContent = `${finalResult} has won this round!`;
 
-        updateScoreboard(finalResult)
-
-        updateListOfWinners(finalResult, currentNumberOfGame, counter);
-        finalResult = undefined;
-
-        disableBoard()
-        resetBoardScheme()
-    }
-
-    return { getWinner, updateScoreboard, updateListOfWinners, resetBoardScheme, updateBoardScheme, getBoardScheme, getEmptyCellsFromBoardScheme, endTurnWithWinner }
+    return { getWinner, updateScoreboard, updateListOfWinners, resetBoardScheme, updateBoardScheme, getBoardScheme, getEmptyCellsFromBoardScheme }
 
 })();
 
@@ -444,7 +464,11 @@ function initializeBoardData() {
 function showBoard() {
     document.querySelector('nav').style.display = 'none';
     document.querySelector('main').style.display = 'flex';
-    document.querySelector('.leftArea').style.display = 'flex';
+
+    if (game.getMode() != 'sp') {
+        document.querySelector('.leftArea').style.display = 'flex';
+    }
+
     document.querySelector('.rightArea').style.display = 'flex';
 }
 
