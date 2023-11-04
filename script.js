@@ -139,6 +139,7 @@ document.querySelector('.nextGame').addEventListener('click', (e) => {
     let gameNumber = Number(document.querySelector('.currentGameNr').textContent);
     document.querySelector('.currentGameNr').textContent = ++gameNumber;
     document.querySelector('.gameResultMessage').textContent = '';
+    document.querySelector('.nextGame').classList.replace('btnEnabled', 'btnDisabled')
 })
 
 function boardClickListener(e) {
@@ -187,93 +188,23 @@ function boardClickListener(e) {
             finalResult = result.getWinner(currentPosition, currentPlayer, counter);
             if (!(finalResult)) {
 
-
                 let makeComputerTurn = function () {
-
                     let randomCellNumber = game.getRandomCellNumber(); //zisti nahodne volne policko pre comp
                     play.makeTurnComputer(boardCells, randomCellNumber); //na nahodne policko zaznaci comp symbol
                     counter = play.turnCounter(); //zapocita ze presiel tah comp
                     console.log(counter);
-
-
                     result.updateBoardScheme(randomCellNumber, game.getSymbolPlayer2(), counter); //do boardscheme zaznaci miesto kam dal symbol comp
-
-
                     finalResult = result.getWinner(currentPosition, currentPlayer, counter); //zisti ci su 3 policka oznacene a ak ano tak do finalResult da meno toho, kto oznacil tie 3 policka
 
-                    // make this into a function
-                    if (!(finalResult) && (counter == 9)) {
-
-
-                        document.querySelector('.gameResultMessage').textContent = 'It\'s a tie!';
-
-                        result.updateListOfWinners(finalResult, play.gameCounter(), counter);
-                        finalResult = undefined;
-
-                        disableBoard()
-                        result.resetBoardScheme()
-
-
-                    } else if (finalResult) {
-
-                        document.querySelector('.gameResultMessage').textContent = `${finalResult} has won this round!`;
-
-                        result.updateScoreboard(finalResult)
-
-                        result.updateListOfWinners(finalResult, play.gameCounter(), counter);
-                        finalResult = undefined;
-
-                        disableBoard()
-                        result.resetBoardScheme()
-                    }
-                    // make this into a function
-
-
+                    result.endTurn(finalResult, counter);
                 }
-
                 setTimeout(makeComputerTurn, 300);
-
-
             }
-
-
-
-
-
-
-
-
         }
-
     }
 
+    result.endTurn(finalResult, counter);
 
-    // make this into a function
-    if (!(finalResult) && (counter == 9)) {
-
-
-        document.querySelector('.gameResultMessage').textContent = 'It\'s a tie!';
-
-        result.updateListOfWinners(finalResult, play.gameCounter(), counter);
-        finalResult = undefined;
-
-        disableBoard()
-        result.resetBoardScheme()
-
-
-    } else if (finalResult) {
-
-        document.querySelector('.gameResultMessage').textContent = `${finalResult} has won this round!`;
-
-        result.updateScoreboard(finalResult)
-
-        result.updateListOfWinners(finalResult, play.gameCounter(), counter);
-        finalResult = undefined;
-
-        disableBoard()
-        result.resetBoardScheme()
-    }
-    // make this into a function
 }
 
 document.querySelector('.board').addEventListener('click', boardClickListener);
@@ -409,9 +340,38 @@ let result = (function () {
         return arrayOfEmptyCells;
     }
 
+    let endTurn = (finalResult, counter) => {
+        if (!(finalResult) && (counter == 9)) {
 
 
-    return { getWinner, updateScoreboard, updateListOfWinners, resetBoardScheme, updateBoardScheme, getBoardScheme, getEmptyCellsFromBoardScheme }
+            document.querySelector('.gameResultMessage').textContent = 'It\'s a tie!';
+
+            updateListOfWinners(finalResult, play.gameCounter(), counter);
+            finalResult = undefined;
+
+            disableBoard()
+            resetBoardScheme()
+            document.querySelector('.nextGame').classList.replace('btnDisabled', 'btnEnabled')
+
+
+        } else if (finalResult) {
+
+            document.querySelector('.gameResultMessage').textContent = `${finalResult} has won this round!`;
+
+            updateScoreboard(finalResult)
+
+            updateListOfWinners(finalResult, play.gameCounter(), counter);
+            finalResult = undefined;
+
+            disableBoard()
+            resetBoardScheme()
+            document.querySelector('.nextGame').classList.replace('btnDisabled', 'btnEnabled')
+        }
+    }
+
+
+
+    return { getWinner, updateBoardScheme, getBoardScheme, getEmptyCellsFromBoardScheme, endTurn }
 
 })();
 
