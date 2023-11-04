@@ -446,13 +446,42 @@ main .gameScore {
 
 body>main>div.options {
     display: flex;
-    gap: 20px;
+    gap: 30px;
 
 }
 
 body>main>div.options>button,
 body>main>div.gameResult>button {
     font-size: 2rem;
+    font-weight: bolder;
+    padding: 10px;
+    border: 3px solid var(--dark-color);
+}
+
+
+.btnDisabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+main button:hover {
+    cursor: pointer;
+}
+
+.btnEnabled {
+    opacity: 1;
+    background-color: var(--dark-color);
+    color: var(--light-color);
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.btnDisabled:hover {
+    cursor: auto;
+}
+
+.btnEnabled:hover {
+    background-color: var(--light-color);
+    color: var(--dark-color);
 }
 
 main .gameResultMessage {
@@ -524,6 +553,7 @@ body .leftArea .turn {
     border: 3px solid var(--dark-color);
     padding: 10px;
 }
+
 
 
 body .leftArea div {
