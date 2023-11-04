@@ -290,15 +290,32 @@ let result = (function () {
         }
     }
 
+    let getScorePlayer = () => Number(document.querySelector('.scoreP').textContent);
+
+    let getSoreOpponent = () => Number(document.querySelector('.scoreO').textContent);
+
+    let getCurrentGameNumber = () => Number(document.querySelector('.currentGameNr').textContent);
+
+    let getTotalGamesNumber = () => Number(document.querySelector('.totalGameNr').textContent);
+
+    let updateScorePlayer = () => {
+        let score = getScorePlayer();
+        return ++score;
+    }
+
+    let updateScoreOpponent = () => {
+        let score = getSoreOpponent();
+        return ++score;
+    }
+
     let updateScoreboard = (nameOfWinner) => {
         let scoreboard = document.querySelector('.gameScore');
-        let scorePlayer = Number(scoreboard.querySelector('.scoreP').textContent);
-        let scoreOpponent = Number(scoreboard.querySelector('.scoreO').textContent);
+
 
         if (scoreboard.querySelector('.nameP').textContent == nameOfWinner) {
-            scoreboard.querySelector('.scoreP').textContent = ++scorePlayer
+            scoreboard.querySelector('.scoreP').textContent = updateScorePlayer();
         } else {
-            scoreboard.querySelector('.scoreO').textContent = ++scoreOpponent
+            scoreboard.querySelector('.scoreO').textContent = updateScoreOpponent(); //x
         }
     }
 
@@ -316,7 +333,6 @@ let result = (function () {
                 }
             })
         }
-
     }
 
     let getBoardScheme = () => {
@@ -355,21 +371,25 @@ let result = (function () {
 
 
         } else if (finalResult) {
-
-            document.querySelector('.gameResultMessage').textContent = `${finalResult} has won this round!`;
-
             updateScoreboard(finalResult)
-
             updateListOfWinners(finalResult, play.gameCounter(), counter);
+            document.querySelector('.nextGame').classList.replace('btnDisabled', 'btnEnabled')
+            if ((getCurrentGameNumber()) < (getTotalGamesNumber())) {
+                document.querySelector('.gameResultMessage').textContent = `${finalResult} has won this round!`;
+            } else if ((getCurrentGameNumber()) == (getTotalGamesNumber())) { //final game has just been played
+                if ((getScorePlayer()) == (getSoreOpponent())) {
+                    document.querySelector('.gameResultMessage').textContent = `Match has ended in a tie!`;
+                } else if ((getScorePlayer()) > (getSoreOpponent())) {
+                    document.querySelector('.gameResultMessage').textContent = `Congratulations to ${game.getNamePlayer1()} for winning this match!`;
+                } else if ((getScorePlayer()) < (getSoreOpponent())) {
+                    document.querySelector('.gameResultMessage').textContent = `Congratulations to ${game.getNamePlayer2()} for winning this match!`;
+                }
+            }
             finalResult = undefined;
-
             disableBoard()
             resetBoardScheme()
-            document.querySelector('.nextGame').classList.replace('btnDisabled', 'btnEnabled')
         }
     }
-
-
 
     return { getWinner, updateBoardScheme, getBoardScheme, getEmptyCellsFromBoardScheme, endTurn }
 
