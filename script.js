@@ -6,6 +6,9 @@ document.querySelector('nav .startGame').addEventListener('click', () => {
         showBoard();
         createBoard();
         initializeBoardData();
+        result.rematch();
+        document.querySelector('.nextGame').textContent = 'Next Round';
+        document.querySelector('.nextGame').classList.replace('btnEnabled', 'btnDisabled');
     }
     else {
         document.querySelector('.startGameWarning').style.display = 'block';
@@ -17,13 +20,15 @@ document.querySelector('main .options .menuBtn').addEventListener('click', () =>
     clearBoard();
     clearListOfWinners();
     play.resetGameCounter();
+    enableBoard();
+
     document.querySelector('.startGameWarning').style.display = 'none';
 })
 
 function createBoard() {
     let board = document.querySelector('main .board');
-    board.style.gridTemplateColumns = 'repeat(3, 180px)';
-    board.style.gridTemplateRows = 'repeat(3, 180px)';
+    board.style.gridTemplateColumns = 'repeat(3, 145px)';
+    board.style.gridTemplateRows = 'repeat(3, 145px)';
     board.style.width = '10wv';
     for (let i = 1; i <= 9; i++) {
         let cell = document.createElement('div');
@@ -37,6 +42,8 @@ function createBoard() {
 
 function clearBoard() {
     document.querySelector('main .board').innerHTML = '';
+    document.querySelector('header').style.display = 'flex';
+    document.querySelector('footer').style.display = 'flex';
 }
 
 let game = (function () {
@@ -85,6 +92,8 @@ let game = (function () {
         let randomIndex = Math.floor(Math.random() * emptyCells.length)
         return emptyCells[randomIndex];
     }
+
+
 
     return { getMode, getNamePlayer1, getNamePlayer2, getNumberOfGames, getSymbolPlayer1, getSymbolPlayer2, getRandomCellNumber }
 })();
@@ -136,10 +145,14 @@ document.querySelector('.nextGame').addEventListener('click', (e) => {
     createBoard();
     enableBoard();
     play.resetTurnCounter();
-    let gameNumber = Number(document.querySelector('.currentGameNr').textContent);
+    let gameNumber = result.getCurrentGameNumber();
     document.querySelector('.currentGameNr').textContent = ++gameNumber;
     document.querySelector('.gameResultMessage').textContent = '';
     document.querySelector('.nextGame').classList.replace('btnEnabled', 'btnDisabled')
+    if (e.target.textContent == 'Rematch') {
+        result.rematch();
+        e.target.textContent = 'Next Round'
+    }
 })
 
 function boardClickListener(e) {
@@ -380,10 +393,13 @@ let result = (function () {
                 if ((getScorePlayer()) == (getSoreOpponent())) {
                     document.querySelector('.gameResultMessage').textContent = `Match has ended in a tie!`;
                 } else if ((getScorePlayer()) > (getSoreOpponent())) {
-                    document.querySelector('.gameResultMessage').textContent = `Congratulations to ${game.getNamePlayer1()} for winning this match!`;
+                    document.querySelector('.gameResultMessage').textContent = `${game.getNamePlayer1()} is the absolute winner!`;
+
                 } else if ((getScorePlayer()) < (getSoreOpponent())) {
-                    document.querySelector('.gameResultMessage').textContent = `Congratulations to ${game.getNamePlayer2()} for winning this match!`;
+                    document.querySelector('.gameResultMessage').textContent = `${game.getNamePlayer2()} is the absolute winner!`;
+
                 }
+                document.querySelector('.nextGame').textContent = 'Rematch'
             }
             finalResult = undefined;
             disableBoard()
@@ -391,7 +407,18 @@ let result = (function () {
         }
     }
 
-    return { getWinner, updateBoardScheme, getBoardScheme, getEmptyCellsFromBoardScheme, endTurn }
+    let rematch = () => {
+        document.querySelector('.currentGameNr').textContent = 1;
+        document.querySelector('.scoreP').textContent = 0;
+        document.querySelector('.scoreO').textContent = 0;
+        clearListOfWinners()
+        createListOfWInners()
+        play.resetGameCounter()
+        resetBoardScheme()
+        play.resetTurnCounter()
+    }
+
+    return { getWinner, updateBoardScheme, getBoardScheme, getEmptyCellsFromBoardScheme, endTurn, getCurrentGameNumber, getTotalGamesNumber, rematch }
 
 })();
 
@@ -444,6 +471,8 @@ function initializeBoardData() {
 function showBoard() {
     document.querySelector('nav').style.display = 'none';
     document.querySelector('main').style.display = 'flex';
+    document.querySelector('header').style.display = 'none';
+    document.querySelector('footer').style.display = 'none';
 
     if (game.getMode() != 'sp') {
         document.querySelector('.leftArea').style.display = 'flex';
