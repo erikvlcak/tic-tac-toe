@@ -20,6 +20,17 @@
     font-family: 'Gochi Hand', cursive;
 }
 
+.githubImg {
+    height: 25px;
+    width: 25px;
+    padding: 0px 15px;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
 body {
     display: grid;
     grid-template-rows: auto 1fr auto;
@@ -34,11 +45,12 @@ header {
     justify-content: center;
     align-items: center;
     margin-bottom: 30px;
+    padding-top: 20px;
 
 }
 
 header>div {
-    font-size: 5rem;
+    font-size: 10rem;
     font-weight: 700;
     font-family: 'Yomogi', serif;
 }
@@ -173,7 +185,7 @@ nav .playerName>button {
     justify-content: center;
     cursor: pointer;
     background-color: lightgray;
-    color: black;
+    color: var(--dark-color);
     transition: color 0.3s, background-color 0.3s;
 }
 
@@ -209,6 +221,7 @@ nav .playerName>#nameO {
     font-size: 2.5rem;
     background-color: transparent;
     font-weight: bold;
+    color: var(--dark-color)
 }
 
 nav .playerName>#nameO:disabled {
@@ -450,6 +463,16 @@ body>main>div.gameResult>button {
     border: 3px solid var(--dark-color);
 }
 
+body>main>div.options>.menuBtn {
+    background-color: var(--light-color);
+    transition: background-color 0.3s;
+}
+
+body>main>div.options>.menuBtn:hover {
+    background-color: var(--transition-color);
+}
+
+
 
 .btnDisabled {
     opacity: 0.5;
@@ -633,8 +656,6 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-footer>div {
     font-size: 2rem;
+    padding-bottom: 20px;
 }
