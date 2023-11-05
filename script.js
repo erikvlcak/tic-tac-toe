@@ -9,6 +9,7 @@ document.querySelector('nav .startGame').addEventListener('click', () => {
         result.rematch();
         document.querySelector('.nextGame').textContent = 'Next Round';
         document.querySelector('.nextGame').classList.replace('btnEnabled', 'btnDisabled');
+        hideHeaderFooter()
     }
     else {
         document.querySelector('.startGameWarning').style.display = 'block';
@@ -22,6 +23,7 @@ document.querySelector('main .options .menuBtn').addEventListener('click', () =>
     play.resetGameCounter();
     enableBoard();
 
+    displayHeaderFooter()
     document.querySelector('.startGameWarning').style.display = 'none';
 })
 
@@ -42,8 +44,16 @@ function createBoard() {
 
 function clearBoard() {
     document.querySelector('main .board').innerHTML = '';
+}
+
+function displayHeaderFooter() {
     document.querySelector('header').style.display = 'flex';
     document.querySelector('footer').style.display = 'flex';
+}
+
+function hideHeaderFooter() {
+    document.querySelector('header').style.display = 'none';
+    document.querySelector('footer').style.display = 'none';
 }
 
 let game = (function () {
@@ -412,7 +422,7 @@ let result = (function () {
         document.querySelector('.scoreP').textContent = 0;
         document.querySelector('.scoreO').textContent = 0;
         clearListOfWinners()
-        createListOfWInners()
+        initializeBoardData(); //maybe
         play.resetGameCounter()
         resetBoardScheme()
         play.resetTurnCounter()
@@ -471,8 +481,7 @@ function initializeBoardData() {
 function showBoard() {
     document.querySelector('nav').style.display = 'none';
     document.querySelector('main').style.display = 'flex';
-    document.querySelector('header').style.display = 'none';
-    document.querySelector('footer').style.display = 'none';
+    hideHeaderFooter()
 
     if (game.getMode() != 'sp') {
         document.querySelector('.leftArea').style.display = 'flex';
