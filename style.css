@@ -9,25 +9,21 @@
     --dark-color: black;
 }
 
-/* 
 
-* {
+
+/* * {
     border: solid red 1px;
 } */
 
 
 .ff-symbols {
     font-family: 'Gochi Hand', cursive;
-
-
-
 }
-
 
 body {
     display: grid;
     grid-template-rows: auto 1fr auto;
-    grid-template-columns: 0.5fr 800px 0.5fr;
+    grid-template-columns: 1fr 700px 1fr;
     height: 100svh;
     margin: 5px;
 }
@@ -37,6 +33,7 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 30px;
 
 }
 
@@ -225,7 +222,7 @@ nav .playerName>.labelO {
 
 nav .playerSymbol {
     display: grid;
-    grid-template-rows: 0.5fr 2fr 1fr;
+    grid-template-rows: 0.5fr 2fr 0.5fr;
     grid-template-columns: 1fr 1fr;
     place-items: center;
     width: 80%;
@@ -289,8 +286,6 @@ nav .playerSymbol button {
     font-size: 7rem;
 }
 
-
-
 nav .playerSymbol .mpXO {
     grid-area: 2/2/3/3;
     font-size: 2rem;
@@ -298,21 +293,15 @@ nav .playerSymbol .mpXO {
     padding-bottom: 0px;
 }
 
-
-
-
 nav .numberOfGames {
     display: flex;
     flex-flow: column;
-    justify-content: space-between;
-    align-items: center;
     grid-area: 4/1/5/3;
     cursor: default;
     width: 80%;
     border-top: var(--section-top-border);
     border-bottom: var(--section-top-border);
-    gap: 30px;
-
+    gap: 20px;
 }
 
 nav .numberOfGames {
@@ -383,7 +372,7 @@ nav .startGame {
     color: var(--dark-color);
     font-weight: bold;
     transition: background-color 0.2s, color 0.2s;
-    margin-top: 15%;
+    margin-top: 8%;
 }
 
 nav .startGame:hover {
@@ -408,6 +397,8 @@ main {
     align-items: center;
     flex-direction: column;
     gap: 2%;
+    /* margin-top: auto;
+    margin-bottom: auto; */
 }
 
 /* main div,
@@ -439,7 +430,7 @@ main .gameScore {
     border: 3px solid var(--dark-color);
     width: fit-content;
     margin: 0 auto;
-    padding: 10px;
+    padding: 5px 10px;
     font-size: 2rem;
     font-weight: bold;
 }
@@ -447,6 +438,7 @@ main .gameScore {
 body>main>div.options {
     display: flex;
     gap: 30px;
+    margin-bottom: 20px;
 
 }
 
@@ -485,10 +477,10 @@ main button:hover {
 }
 
 main .gameResultMessage {
-    padding: 20px;
-    font-size: 3rem;
+    padding: 10px;
+    font-size: 2rem;
     font-weight: bold;
-    height: 80px;
+    height: 50px;
 }
 
 main .gameScore .nameP {
@@ -500,15 +492,15 @@ main .gameScore .nameP {
 
 main .gameScore .scoreP {
     grid-area: 1/2/2/3;
-    padding: 15px;
-    font-size: 3rem;
+    padding: 10px;
+    font-size: 4rem;
     font-weight: bold;
 }
 
 main .gameScore .scoreO {
     grid-area: 1/4/2/5;
-    padding: 15px;
-    font-size: 3rem;
+    padding: 10px;
+    font-size: 4rem;
     font-weight: bold;
 }
 
