@@ -10,3 +10,7 @@ Main features:
 - Highlight winning tripple (if possible) and display a message about end result.
 - In game against computer, you always start firts. Computer moves are semi-random (always chooses only from remaining empty spots, although only at random).
 
+Main goals:
+- Use CSS Grid and Flexbox efficiently
+- Use Factory functions and Module pattern efficiently
+- Code with no global variables 
