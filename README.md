@@ -1,4 +1,4 @@
-# tic-tac-toe
+# Tic-tac-toe
 
 Standard TIC-TAC-TOE game, where you can try beating another player or computer.
 
