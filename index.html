@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="../normalize.css" />
+    <script src="script.js" defer></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&family=Gabriela&family=Inter:wght@400;600;700&display=swap");
+    </style>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Yomogi&display=swap");
+    </style>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Gochi+Hand&display=swap");
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+    <title>Piškvorky</title>
+  </head>
+
+  <body>
+    <header>
+      <div>Tic - tac - toe</div>
+    </header>
+
+    <nav>
+      <div class="gameMode">
+        <p>Choose your opponent</p>
+        <button type="button" class="sp">
+          <img src="./imgs/robot_FILL0_wght400_GRAD0_opsz48.svg" class="spImg" alt="robot" />
+        </button>
+        <button type="button" class="mp">
+          <img src="./imgs/face_FILL1_wght400_GRAD0_opsz48.svg" class="mpImg" alt="human" />
+        </button>
+      </div>
+
+      <div class="playerName">
+        <p>Enter names</p>
+        <label for="nameP" class="labelP">Player</label>
+        <input type="text" id="nameP" autocomplete="off" />
+        <label for="nameO" class="labelO">Opponent</label>
+        <input type="text" id="nameO" autocomplete="off" />
+      </div>
+
+      <div class="playerSymbol">
+        <p>Choose symbol</p>
+        <p>Click to change</p>
+        <p>Player</p>
+        <div class="spXO">
+          <button class="btnSP ff-symbols">X</button>
+        </div>
+        <p>Opponent</p>
+        <div class="mpXO">
+          <button class="btnMP ff-symbols">O</button>
+        </div>
+      </div>
+
+      <div class="numberOfGames">
+        <p>Number of rounds</p>
+        <div class="numbers">
+          <button type="button" class="notSelected">1</button>
+          <button type="button" class="notSelected">2</button>
+          <button type="button" class="notSelected">3</button>
+          <button type="button" class="notSelected">4</button>
+          <button type="button" class="notSelected">5</button>
+        </div>
+      </div>
+      <button class="startGame">Confirm and play!</button>
+      <p class="startGameWarning">You must choose your opponent.</p>
+    </nav>
+
+    <div class="leftArea">
+      <div class="turn">
+        <p>On turn</p>
+        <div class="turnName">Erik</div>
+        <div class="turnSymbol ff-symbols">X</div>
+      </div>
+    </div>
+
+    <div class="rightArea">
+      <div class="log">
+        <div class="gameCounter">
+          <p>Current round</p>
+          <div class="counter"><span class="currentGameNr">1</span>/<span class="totalGameNr">5</span></div>
+        </div>
+
+        <div class="logItems">
+          <div class="resultList">
+            <p>List of winners</p>
+            <div class="listData"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <main>
+      <div class="options">
+        <button class="menuBtn">Back to menu</button>
+        <button class="nextGame btnDisabled">Next round</button>
+      </div>
+
+      <!-- board -->
+      <div class="board ff-symbols"></div>
+
+      <div class="score">
+        <div class="gameResultMessage"></div>
+        <div class="gameScore">
+          <span class="nameP"> </span> <span class="scoreP">0</span> : <span class="scoreO">0</span>
+          <span class="nameO"> </span>
+        </div>
+      </div>
+
+      <div class="gameResult"></div>
+    </main>
+
+    <footer>
+      Made by
+      <a href="https://github.com/erikvlcak">
+        <img src="./imgs/github_logo.png" class="githubImg" alt="github-mark"
+      /></a>
+      <a href="https://github.com/erikvlcak"> Erik Vlcak</a>
+    </footer>
+  </body>
+</html>
