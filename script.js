@@ -1,31 +1,31 @@
 "use strict";
 
-document.querySelector("nav .startGame").addEventListener("click", () => {
+document.querySelector("nav .nav__button--start-game").addEventListener("click", () => {
   if (game.getMode()) {
     game.showBoard();
     game.createBoard();
     game.initializeBoardData();
     result.rematch();
 
-    document.querySelector(".nextGame").textContent = "Next Round";
-    document.querySelector(".nextGame").classList.replace("btnEnabled", "btnDisabled");
+    document.querySelector(".main__button--next-game").textContent = "Next Round";
+    document.querySelector(".main__button--next-game").classList.replace("btnEnabled", "btnDisabled");
     game.hideHeaderFooter();
   } else {
-    document.querySelector(".startGameWarning").style.display = "block";
+    document.querySelector(".nav__warning").style.display = "block";
   }
 });
 
-document.querySelector("main .options .menuBtn").addEventListener("click", () => {
+document.querySelector(".main .main__options .main__button--menu").addEventListener("click", () => {
   game.showMenu();
   game.clearBoard();
   game.clearListOfWinners();
   play.resetGameCounter();
   game.enableBoard();
   game.displayHeaderFooter();
-  document.querySelector(".startGameWarning").style.display = "none";
+  document.querySelector(".nav__warning").style.display = "none";
 });
 
-document.querySelector(".board").addEventListener("click", boardClickListener);
+document.querySelector(".main__board").addEventListener("click", boardClickListener);
 
 function boardClickListener(e) {
   let currentPlayer;
@@ -33,26 +33,28 @@ function boardClickListener(e) {
   let finalResult;
   let gameMode = game.getMode();
   let counter;
-  let boardCells = document.querySelectorAll(".board div");
+  let boardCells = document.querySelectorAll(".main__board div");
 
-  if (gameMode == "mp") {
+  if (gameMode == "nav__button--mp") {
     if (e.target.textContent == "") {
       counter = play.turnCounter();
       currentPosition = e.target.className;
       if (counter % 2 == 1) {
         play.makeTurnPlayer1(e);
-        document.querySelector(".leftArea .turn .turnName").textContent = game.getNamePlayer2();
-        document.querySelector(".leftArea .turn .turnSymbol").textContent = game.getSymbolPlayer2();
+        document.querySelector(".left-area .left-area__turn .left-area__turn-name").textContent = game.getNamePlayer2();
+        document.querySelector(".left-area .left-area__turn .left-area__turn-symbol").textContent =
+          game.getSymbolPlayer2();
         currentPlayer = game.getSymbolPlayer1();
       } else {
         play.makeTurnPlayer2(e);
-        document.querySelector(".leftArea .turn .turnName").textContent = game.getNamePlayer1();
-        document.querySelector(".leftArea .turn .turnSymbol").textContent = game.getSymbolPlayer1();
+        document.querySelector(".left-area .left-area__turn .left-area__turn-name").textContent = game.getNamePlayer1();
+        document.querySelector(".left-area .left-area__turn .left-area__turn-symbol").textContent =
+          game.getSymbolPlayer1();
         currentPlayer = game.getSymbolPlayer2();
       }
       finalResult = result.getWinner(currentPosition, currentPlayer, counter);
     }
-  } else if (gameMode == "sp") {
+  } else if (gameMode == "nav__button--sp") {
     if (e.target.textContent == "") {
       play.makeTurnPlayer1(e);
       counter = play.turnCounter();
@@ -76,18 +78,18 @@ function boardClickListener(e) {
   result.endTurn(finalResult, counter);
 }
 
-document.querySelector(".nextGame").addEventListener("click", (e) => {
+document.querySelector(".main__button--next-game").addEventListener("click", (e) => {
   game.clearBoard();
   game.createBoard();
   game.enableBoard();
   play.resetTurnCounter();
   let gameNumber = result.getCurrentGameNumber();
-  document.querySelector(".currentGameNr").textContent = ++gameNumber;
-  document.querySelector(".gameResultMessage").textContent = "";
-  document.querySelector(".nextGame").classList.replace("btnEnabled", "btnDisabled");
+  document.querySelector(".right-area__current-game-nr").textContent = ++gameNumber;
+  document.querySelector(".main__result-message").textContent = "";
+  document.querySelector(".main__button--next-game").classList.replace("btnEnabled", "btnDisabled");
   //reset On turn left area log
-  document.querySelector(".leftArea .turn .turnName").textContent = game.getNamePlayer1();
-  document.querySelector(".leftArea .turn .turnSymbol").textContent = game.getSymbolPlayer1();
+  document.querySelector(".left-area .left-area__turn .left-area__turn-name").textContent = game.getNamePlayer1();
+  document.querySelector(".left-area .left-area__turn .left-area__turn-symbol").textContent = game.getSymbolPlayer1();
   if (e.target.textContent == "Rematch") {
     result.rematch();
     e.target.textContent = "Next Round";
@@ -95,45 +97,46 @@ document.querySelector(".nextGame").addEventListener("click", (e) => {
 });
 
 //select opponent
-document.querySelector(".gameMode").addEventListener("click", (e) => {
-  if (e.target.className == "sp" || e.target.className == "spImg") {
+document.querySelector(".nav__game-mode").addEventListener("click", (e) => {
+  if (e.target.className == "nav__button--sp" || e.target.className == "nav__icon--sp") {
     game.highlightSp();
-    document.querySelector("#nameO").value = "Computer";
-    document.querySelector("#nameO").disabled = true;
+    document.querySelector(".nav__input--opponent").value = "Computer";
+    document.querySelector(".nav__input--opponent").disabled = true;
   }
-  if (e.target.className == "mp" || e.target.className == "mpImg") {
+  if (e.target.className == "nav__button--mp" || e.target.className == "nav__icon--mp") {
     game.highlightMp();
-    document.querySelector("#nameO").value = "";
-    document.querySelector("#nameO").disabled = false;
+    document.querySelector(".nav__input--opponent").value = "";
+    document.querySelector(".nav__input--opponent").disabled = false;
   }
 });
 
 //change X and O
-document.querySelector(".playerSymbol").addEventListener("click", (e) => {
-  if (e.target.classList.contains("btnSP")) {
+document.querySelector(".nav__player-symbol").addEventListener("click", (e) => {
+  if (e.target.classList.contains("nav__button--sp-symbol")) {
     if (e.target.textContent == "X") {
       e.target.textContent = "O";
-      document.querySelector(".btnMP").textContent = "X";
+      document.querySelector(".nav__button--mp-symbol").textContent = "X";
     } else {
       e.target.textContent = "X";
-      document.querySelector(".btnMP").textContent = "O";
+      document.querySelector(".nav__button--mp-symbol").textContent = "O";
     }
   }
 
-  if (e.target.classList.contains("btnMP")) {
+  if (e.target.classList.contains("nav__button--mp-symbol")) {
     if (e.target.textContent == "X") {
       e.target.textContent = "O";
-      document.querySelector(".btnSP").textContent = "X";
+      document.querySelector(".nav__button--sp-symbol").textContent = "X";
     } else {
       e.target.textContent = "X";
-      document.querySelector(".btnSP").textContent = "O";
+      document.querySelector(".nav__button--sp-symbol").textContent = "O";
     }
   }
 });
 
 //get selected number of games to be played
-document.querySelector(".numberOfGames div").addEventListener("click", (e) => {
+document.querySelector(".nav__numbers").addEventListener("click", (e) => {
   if (e.target.tagName == "BUTTON") {
+    console.log(`clicked number ${e.target.textContent}`);
     for (let i = 0; i < e.target.parentElement.children.length; i++) {
       e.target.parentElement.children[i].classList.replace("selected", "notSelected");
     }
@@ -143,7 +146,7 @@ document.querySelector(".numberOfGames div").addEventListener("click", (e) => {
 
 let game = (function () {
   function createBoard() {
-    let board = document.querySelector("main .board");
+    let board = document.querySelector(".main .main__board");
     board.style.gridTemplateColumns = "repeat(3, 145px)";
     board.style.gridTemplateRows = "repeat(3, 145px)";
     board.style.width = "10wv";
@@ -157,22 +160,22 @@ let game = (function () {
   }
 
   function highlightSp() {
-    document.querySelector(".sp").style.backgroundColor = "black";
-    document.querySelector(".spImg").style.filter = "invert(100)";
-    document.querySelector(".mp").style.backgroundColor = "white";
-    document.querySelector(".mpImg").style.filter = "invert(0)";
+    document.querySelector(".nav__button--sp").style.backgroundColor = "black";
+    document.querySelector(".nav__icon--sp").style.filter = "invert(100)";
+    document.querySelector(".nav__button--mp").style.backgroundColor = "white";
+    document.querySelector(".nav__icon--mp").style.filter = "invert(0)";
   }
 
   function highlightMp() {
-    document.querySelector(".mp").style.backgroundColor = "black";
-    document.querySelector(".mpImg").style.filter = "invert(100)";
-    document.querySelector(".sp").style.backgroundColor = "white";
-    document.querySelector(".spImg").style.filter = "invert(0)";
+    document.querySelector(".nav__button--mp").style.backgroundColor = "black";
+    document.querySelector(".nav__icon--mp").style.filter = "invert(100)";
+    document.querySelector(".nav__button--sp").style.backgroundColor = "white";
+    document.querySelector(".nav__icon--sp").style.filter = "invert(0)";
   }
 
   function highlightWinningPositions(i, boardSchemeCopy) {
     let [firstWinPos, secondWinPos, thirdWinPos] = boardSchemeCopy[i];
-    document.querySelectorAll(".board div").forEach((item) => {
+    document.querySelectorAll(".main__board div").forEach((item) => {
       if (item.className == firstWinPos || item.className == secondWinPos || item.className == thirdWinPos) {
         item.style.backgroundColor = "#303030";
         item.style.color = "white";
@@ -181,12 +184,14 @@ let game = (function () {
   }
 
   function createListOfWInners() {
-    let listData = document.querySelector(".rightArea .logItems .resultList .listData");
+    let listData = document.querySelector(
+      ".right-area .right-area__log-items .right-area__result-list .right-area__list-data"
+    );
     for (let i = 1; i <= game.getNumberOfGames(); i++) {
       let currentGame = document.createElement("div");
       currentGame.classList.add("currentGame");
       let currentGameNr = document.createElement("span");
-      currentGameNr.classList.add("currentGameNr");
+      currentGameNr.classList.add("right-area__current-game-nr");
       let currentGameResult = document.createElement("div");
       currentGameResult.classList.add("currentGameResult", i);
 
@@ -199,60 +204,62 @@ let game = (function () {
   }
 
   function clearListOfWinners() {
-    document.querySelector(".rightArea .logItems .resultList .listData").innerHTML = "";
+    document.querySelector(
+      ".right-area .right-area__log-items .right-area__result-list .right-area__list-data"
+    ).innerHTML = "";
   }
 
   function initializeBoardData() {
-    document.querySelector(".leftArea .turn .turnName").textContent = game.getNamePlayer1();
-    document.querySelector(".leftArea .turn .turnSymbol").textContent = game.getSymbolPlayer1();
-    document.querySelector(".rightArea .totalGameNr").textContent = game.getNumberOfGames();
-    document.querySelector(".score .nameP").textContent = game.getNamePlayer1();
-    document.querySelector(".score .nameO").textContent = game.getNamePlayer2();
-    document.querySelector(".gameResultMessage").textContent = "";
+    document.querySelector(".left-area .left-area__turn .left-area__turn-name").textContent = game.getNamePlayer1();
+    document.querySelector(".left-area .left-area__turn .left-area__turn-symbol").textContent = game.getSymbolPlayer1();
+    document.querySelector(".right-area .right-area__total-game-nr").textContent = game.getNumberOfGames();
+    document.querySelector(".main__score .main__player-name").textContent = game.getNamePlayer1();
+    document.querySelector(".main__score .main__opponent-name").textContent = game.getNamePlayer2();
+    document.querySelector(".main__result-message").textContent = "";
     createListOfWInners();
   }
 
   function showBoard() {
     document.querySelector("nav").style.display = "none";
-    document.querySelector("main").style.display = "flex";
+    document.querySelector(".main").style.display = "flex";
     hideHeaderFooter();
-    if (game.getMode() != "sp") {
-      document.querySelector(".leftArea").style.display = "flex";
+    if (game.getMode() != "nav__button--sp") {
+      document.querySelector(".left-area").style.display = "flex";
     }
-    document.querySelector(".rightArea").style.display = "flex";
+    document.querySelector(".right-area").style.display = "flex";
   }
 
   function showMenu() {
     document.querySelector("nav").style.display = "flex";
-    document.querySelector("main").style.display = "none";
-    document.querySelector(".leftArea").style.display = "none";
-    document.querySelector(".rightArea").style.display = "none";
+    document.querySelector(".main").style.display = "none";
+    document.querySelector(".left-area").style.display = "none";
+    document.querySelector(".right-area").style.display = "none";
   }
 
   function disableBoard() {
-    document.querySelector(".board").removeEventListener("click", boardClickListener);
+    document.querySelector(".main__board").removeEventListener("click", boardClickListener);
   }
 
   function enableBoard() {
-    document.querySelector(".board").addEventListener("click", boardClickListener);
+    document.querySelector(".main__board").addEventListener("click", boardClickListener);
   }
 
   function clearBoard() {
-    document.querySelector("main .board").innerHTML = "";
+    document.querySelector(".main .main__board").innerHTML = "";
   }
 
   function displayHeaderFooter() {
-    document.querySelector("header").style.display = "flex";
-    document.querySelector("footer").style.display = "flex";
+    document.querySelector(".header").style.display = "flex";
+    document.querySelector(".footer").style.display = "flex";
   }
 
   function hideHeaderFooter() {
-    document.querySelector("header").style.display = "none";
-    document.querySelector("footer").style.display = "none";
+    document.querySelector(".header").style.display = "none";
+    document.querySelector(".footer").style.display = "none";
   }
 
   let getMode = () => {
-    let mode = document.querySelectorAll(".gameMode button");
+    let mode = document.querySelectorAll(".nav__game-mode button");
 
     for (let item of mode) {
       if (item.style.backgroundColor == "black") {
@@ -262,32 +269,33 @@ let game = (function () {
   };
 
   let getNamePlayer1 = () => {
-    if (document.querySelector("#nameP").value != "") {
-      return document.querySelector("#nameP").value;
+    if (document.querySelector(".nav__input--player").value != "") {
+      return document.querySelector(".nav__input--player").value;
     } else return "Player 1";
   };
 
   let getNamePlayer2 = () => {
-    if (getMode() == "sp") {
-      return document.querySelector("#nameO").value;
-    } else if (document.querySelector("#nameO").value != "") {
-      return document.querySelector("#nameO").value;
+    if (getMode() == "nav__button--sp") {
+      return document.querySelector(".nav__input--opponent").value;
+    } else if (document.querySelector(".nav__input--opponent").value != "") {
+      return document.querySelector(".nav__input--opponent").value;
     } else return "Player 2";
   };
 
   let getNumberOfGames = () => {
-    const buttons = document.querySelectorAll(".numberOfGames button");
+    const buttons = document.querySelectorAll(".nav__number-of-games button");
     for (let item of buttons) {
-      if (item.className == "selected") {
+      if (item.classList.contains("selected")) {
+        console.log(`selected je cislo ${item.textContent}`);
         return +item.textContent;
       }
     }
     return 1;
   };
 
-  let getSymbolPlayer1 = () => document.querySelector(".btnSP").textContent;
+  let getSymbolPlayer1 = () => document.querySelector(".nav__button--sp-symbol").textContent;
 
-  let getSymbolPlayer2 = () => document.querySelector(".btnMP").textContent;
+  let getSymbolPlayer2 = () => document.querySelector(".nav__button--mp-symbol").textContent;
 
   let getRandomCellNumber = () => {
     let emptyCells = result.getEmptyCellsFromBoardScheme();
@@ -439,55 +447,53 @@ let result = (function () {
   };
 
   let getScorePlayer = () => {
-    let score = Number(document.querySelector(".scoreP").textContent);
+    let score = Number(document.querySelector(".main__player-score").textContent);
     return score;
   };
 
   let getSoreOpponent = () => {
-    let score = Number(document.querySelector(".scoreO").textContent);
+    let score = Number(document.querySelector(".main__opponent-score").textContent);
     return score;
   };
 
   let getCurrentGameNumber = () => {
-    let gameNumber = Number(document.querySelector(".currentGameNr").textContent);
+    let gameNumber = Number(document.querySelector(".right-area__current-game-nr").textContent);
     return gameNumber;
   };
 
   let getTotalGamesNumber = () => {
-    let totalGames = Number(document.querySelector(".totalGameNr").textContent);
+    let totalGames = Number(document.querySelector(".right-area__total-game-nr").textContent);
     return totalGames;
   };
 
   let updateScorePlayer = () => {
     let score = getScorePlayer();
-
     return ++score;
   };
 
   let updateScoreOpponent = () => {
     let score = getSoreOpponent();
-
     return ++score;
   };
 
   let updateScoreboard = (nameOfWinner) => {
-    let scoreboard = document.querySelector(".gameScore");
-    if (scoreboard.querySelector(".nameP").textContent == nameOfWinner) {
-      scoreboard.querySelector(".scoreP").textContent = updateScorePlayer();
+    let scoreboard = document.querySelector(".main__game-score");
+    if (scoreboard.querySelector(".main__player-name").textContent == nameOfWinner) {
+      scoreboard.querySelector(".main__player-score").textContent = updateScorePlayer();
     } else {
-      scoreboard.querySelector(".scoreO").textContent = updateScoreOpponent(); //x
+      scoreboard.querySelector(".main__opponent-score").textContent = updateScoreOpponent(); //x
     }
   };
 
   let updateListOfWinners = (finalResult, currentNumberOfGame, counter) => {
     if (finalResult) {
-      document.querySelectorAll(".listData .currentGameResult").forEach((item) => {
+      document.querySelectorAll(".right-area__list-data .currentGameResult").forEach((item) => {
         if (item.classList.contains(currentNumberOfGame)) {
           item.textContent = finalResult;
         }
       });
     } else if (!finalResult && counter == 9) {
-      document.querySelectorAll(".listData .currentGameResult").forEach((item) => {
+      document.querySelectorAll(".right-area__list-data .currentGameResult").forEach((item) => {
         if (item.classList.contains(currentNumberOfGame)) {
           item.textContent = "Tie!";
         }
@@ -524,48 +530,56 @@ let result = (function () {
       //final turn has been played and game ends in a tie
       if (currentGameNumber === totalGamesNumber) {
         //it was the last game of the tournament
-        document.querySelector(".nextGame").textContent = "Rematch";
+        document.querySelector(".main__button--next-game").textContent = "Rematch";
         const playerScore = getScorePlayer();
         const opponentScore = getSoreOpponent();
 
         if (playerScore === opponentScore) {
           //evaluate winner of the tournament
-          document.querySelector(".gameResultMessage").textContent = `Match has ended in a tie!`;
+          document.querySelector(".main__result-message").textContent = `Match has ended in a tie!`;
         } else if (playerScore > opponentScore) {
-          document.querySelector(".gameResultMessage").textContent = `${game.getNamePlayer1()} is the absolute winner!`;
+          document.querySelector(
+            ".main__result-message"
+          ).textContent = `${game.getNamePlayer1()} is the absolute winner!`;
         } else if (playerScore < opponentScore) {
-          document.querySelector(".gameResultMessage").textContent = `${game.getNamePlayer2()} is the absolute winner!`;
+          document.querySelector(
+            ".main__result-message"
+          ).textContent = `${game.getNamePlayer2()} is the absolute winner!`;
         }
       } else {
         // its a tie but not the final game of the tournament
-        document.querySelector(".gameResultMessage").textContent = "It's a tie!";
+        document.querySelector(".main__result-message").textContent = "It's a tie!";
       }
       updateListOfWinners(finalResult, play.gameCounter(), counter);
       game.disableBoard();
       resetBoardScheme();
-      document.querySelector(".nextGame").classList.replace("btnDisabled", "btnEnabled");
+      document.querySelector(".main__button--next-game").classList.replace("btnDisabled", "btnEnabled");
     } else if (finalResult !== "tie" && finalResult) {
       //final turn has been played and game DOES NOT end in a tie
       updateScoreboard(finalResult);
       updateListOfWinners(finalResult, play.gameCounter(), counter);
-      document.querySelector(".nextGame").classList.replace("btnDisabled", "btnEnabled");
+      document.querySelector(".main__button--next-game").classList.replace("btnDisabled", "btnEnabled");
 
       if (currentGameNumber < totalGamesNumber) {
         //end of game but NOT the end of tournament
-        document.querySelector(".gameResultMessage").textContent = `${finalResult || "No one"} has won this round!`;
+        document.querySelector(".main__result-message").textContent = `${finalResult || "No one"} has won this round!`;
       } else if (currentGameNumber === totalGamesNumber) {
         //it was the last game of the tournament
-        document.querySelector(".nextGame").textContent = "Rematch";
+        document.querySelector(".main__button--next-game").textContent = "Rematch";
         const playerScore = getScorePlayer();
         const opponentScore = getSoreOpponent();
 
         if (playerScore === opponentScore) {
           //evaluate winner of the tournament
-          document.querySelector(".gameResultMessage").textContent = `Match has ended in a tie!`;
+          document.querySelector(".main__result-message").textContent = `Match has ended in a tie!`;
         } else if (playerScore > opponentScore) {
-          document.querySelector(".gameResultMessage").textContent = `${game.getNamePlayer1()} is the absolute winner!`;
+          document.querySelector(
+            ".main__result-message"
+          ).textContent = `${game.getNamePlayer1()} is the absolute winner!`;
         } else if (playerScore < opponentScore) {
-          document.querySelector(".gameResultMessage").textContent = `${game.getNamePlayer2()} is the absolute winner!`;
+          document.querySelector(
+            ".main__result-message"
+          ).textContent = `${game.getNamePlayer2()} is the absolute winner!`;
         }
       }
       game.disableBoard();
@@ -574,9 +588,9 @@ let result = (function () {
   };
 
   let rematch = () => {
-    document.querySelector(".currentGameNr").textContent = 1;
-    document.querySelector(".scoreP").textContent = 0;
-    document.querySelector(".scoreO").textContent = 0;
+    document.querySelector(".right-area__current-game-nr").textContent = 1;
+    document.querySelector(".main__player-score").textContent = 0;
+    document.querySelector(".main__opponent-score").textContent = 0;
     game.clearListOfWinners();
     game.initializeBoardData();
     play.resetGameCounter();

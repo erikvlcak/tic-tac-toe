@@ -19,110 +19,113 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
     />
-    <title>Piškvorky</title>
+    <title>Tic-Tac-Toe</title>
   </head>
 
   <body>
-    <header>
-      <div>Tic - tac - toe</div>
+    <header class="header">
+      <div class="header__title">Tic - tac - toe</div>
     </header>
 
-    <nav>
-      <div class="gameMode">
-        <p>Choose your opponent</p>
-        <button type="button" class="sp">
-          <img src="./imgs/robot_FILL0_wght400_GRAD0_opsz48.svg" class="spImg" alt="robot" />
+    <nav class="nav">
+      <div class="nav__game-mode">
+        <p class="nav__text">Choose your opponent</p>
+        <button type="button" class="nav__button--sp">
+          <img src="./imgs/robot_FILL0_wght400_GRAD0_opsz48.svg" class="nav__icon--sp" alt="robot" />
         </button>
-        <button type="button" class="mp">
-          <img src="./imgs/face_FILL1_wght400_GRAD0_opsz48.svg" class="mpImg" alt="human" />
+        <button type="button" class="nav__button--mp">
+          <img src="./imgs/face_FILL1_wght400_GRAD0_opsz48.svg" class="nav__icon--mp" alt="human" />
         </button>
       </div>
 
-      <div class="playerName">
-        <p>Enter names</p>
-        <label for="nameP" class="labelP">Player</label>
-        <input type="text" id="nameP" autocomplete="off" />
-        <label for="nameO" class="labelO">Opponent</label>
-        <input type="text" id="nameO" autocomplete="off" />
+      <div class="nav__player-name">
+        <p class="nav__text">Enter names</p>
+        <label for="nameP" class="nav__label--player">Player</label>
+        <input type="text" id="nameP" class="nav__input--player" autocomplete="off" />
+        <label for="nameO" class="nav__label--opponent">Opponent</label>
+        <input type="text" id="nameO" class="nav__input--opponent" autocomplete="off" />
       </div>
 
-      <div class="playerSymbol">
-        <p>Choose symbol</p>
-        <p>Click to change</p>
-        <p>Player</p>
-        <div class="spXO">
-          <button class="btnSP ff-symbols">X</button>
+      <div class="nav__player-symbol">
+        <p class="nav__text">Choose symbol</p>
+        <p class="nav__text">Click to change</p>
+        <p class="nav__label">Player</p>
+        <div class="nav__symbol--player">
+          <button class="nav__button--sp-symbol ff-symbols">X</button>
         </div>
-        <p>Opponent</p>
-        <div class="mpXO">
-          <button class="btnMP ff-symbols">O</button>
+        <p class="nav__label">Opponent</p>
+        <div class="nav__symbol--opponent">
+          <button class="nav__button--mp-symbol ff-symbols">O</button>
         </div>
       </div>
 
-      <div class="numberOfGames">
-        <p>Number of rounds</p>
-        <div class="numbers">
-          <button type="button" class="notSelected">1</button>
-          <button type="button" class="notSelected">2</button>
-          <button type="button" class="notSelected">3</button>
-          <button type="button" class="notSelected">4</button>
-          <button type="button" class="notSelected">5</button>
+      <div class="nav__number-of-games">
+        <p class="nav__text">Number of rounds</p>
+        <div class="nav__numbers">
+          <button type="button" class="nav__number notSelected">1</button>
+          <button type="button" class="nav__number notSelected">2</button>
+          <button type="button" class="nav__number notSelected">3</button>
+          <button type="button" class="nav__number notSelected">4</button>
+          <button type="button" class="nav__number notSelected">5</button>
         </div>
       </div>
-      <button class="startGame">Confirm and play!</button>
-      <p class="startGameWarning">You must choose your opponent.</p>
+      <button class="nav__button--start-game">Confirm and play!</button>
+      <p class="nav__warning">You must choose your opponent.</p>
     </nav>
 
-    <div class="leftArea">
-      <div class="turn">
-        <p>On turn</p>
-        <div class="turnName">Erik</div>
-        <div class="turnSymbol ff-symbols">X</div>
+    <div class="left-area">
+      <div class="left-area__turn">
+        <p class="left-area__text">On turn</p>
+        <div class="left-area__turn-name">Erik</div>
+        <div class="left-area__turn-symbol ff-symbols">X</div>
       </div>
     </div>
 
-    <div class="rightArea">
-      <div class="log">
-        <div class="gameCounter">
-          <p>Current round</p>
-          <div class="counter"><span class="currentGameNr">1</span>/<span class="totalGameNr">5</span></div>
+    <div class="right-area">
+      <div class="right-area__log">
+        <div class="right-area__game-counter">
+          <p class="right-area__text">Current round</p>
+          <div class="right-area__counter">
+            <span class="right-area__current-game-nr">1</span>/<span class="right-area__total-game-nr">5</span>
+          </div>
         </div>
 
-        <div class="logItems">
-          <div class="resultList">
-            <p>List of winners</p>
-            <div class="listData"></div>
+        <div class="right-area__log-items">
+          <div class="right-area__result-list">
+            <p class="right-area__text">List of winners</p>
+            <div class="right-area__list-data"></div>
           </div>
         </div>
       </div>
     </div>
 
-    <main>
-      <div class="options">
-        <button class="menuBtn">Back to menu</button>
-        <button class="nextGame btnDisabled">Next round</button>
+    <main class="main">
+      <div class="main__options">
+        <button class="main__button--menu">Back to menu</button>
+        <button class="main__button--next-game btnDisabled">Next round</button>
       </div>
 
       <!-- board -->
-      <div class="board ff-symbols"></div>
+      <div class="main__board ff-symbols"></div>
 
-      <div class="score">
-        <div class="gameResultMessage"></div>
-        <div class="gameScore">
-          <span class="nameP"> </span> <span class="scoreP">0</span> : <span class="scoreO">0</span>
-          <span class="nameO"> </span>
+      <div class="main__score">
+        <div class="main__result-message"></div>
+        <div class="main__game-score">
+          <span class="main__player-name"> </span> <span class="main__player-score">0</span> :
+          <span class="main__opponent-score">0</span>
+          <span class="main__opponent-name"> </span>
         </div>
       </div>
 
-      <div class="gameResult"></div>
+      <div class="main__game-result"></div>
     </main>
 
-    <footer>
+    <footer class="footer">
       Made by
       <a href="https://github.com/erikvlcak">
-        <img src="./imgs/github_logo.png" class="githubImg" alt="github-mark"
+        <img src="./imgs/github_logo.png" class="footer__github-img" alt="github-mark"
       /></a>
-      <a href="https://github.com/erikvlcak"> Erik Vlcak</a>
+      <a class="footer__link" href="https://github.com/erikvlcak"> Erik Vlcak</a>
     </footer>
   </body>
 </html>
