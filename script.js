@@ -2,22 +2,20 @@
 
 document.querySelector("nav .startGame").addEventListener("click", () => {
   if (game.getMode()) {
-    console.log("Starting game in mode:", game.getMode());
     game.showBoard();
     game.createBoard();
     game.initializeBoardData();
     result.rematch();
+
     document.querySelector(".nextGame").textContent = "Next Round";
     document.querySelector(".nextGame").classList.replace("btnEnabled", "btnDisabled");
     game.hideHeaderFooter();
   } else {
-    console.log("Game mode not selected");
     document.querySelector(".startGameWarning").style.display = "block";
   }
 });
 
 document.querySelector("main .options .menuBtn").addEventListener("click", () => {
-  console.log("Returning to menu");
   game.showMenu();
   game.clearBoard();
   game.clearListOfWinners();
@@ -30,7 +28,6 @@ document.querySelector("main .options .menuBtn").addEventListener("click", () =>
 document.querySelector(".board").addEventListener("click", boardClickListener);
 
 function boardClickListener(e) {
-  console.log("Board clicked:", e.target);
   let currentPlayer;
   let currentPosition;
   let finalResult;
@@ -38,14 +35,10 @@ function boardClickListener(e) {
   let counter;
   let boardCells = document.querySelectorAll(".board div");
 
-  console.log("Game mode:", gameMode);
-
   if (gameMode == "mp") {
     if (e.target.textContent == "") {
       counter = play.turnCounter();
-      console.log("Turn counter:", counter);
       currentPosition = e.target.className;
-      console.log("Current position:", currentPosition);
       if (counter % 2 == 1) {
         play.makeTurnPlayer1(e);
         document.querySelector(".leftArea .turn .turnName").textContent = game.getNamePlayer2();
@@ -57,32 +50,23 @@ function boardClickListener(e) {
         document.querySelector(".leftArea .turn .turnSymbol").textContent = game.getSymbolPlayer1();
         currentPlayer = game.getSymbolPlayer2();
       }
-      console.log("Current player:", currentPlayer);
       finalResult = result.getWinner(currentPosition, currentPlayer, counter);
-      console.log("Final result:", finalResult);
     }
   } else if (gameMode == "sp") {
     if (e.target.textContent == "") {
       play.makeTurnPlayer1(e);
       counter = play.turnCounter();
-      console.log("Turn counter:", counter);
       currentPosition = e.target.className;
-      console.log("Current position:", currentPosition);
       currentPlayer = game.getSymbolPlayer1();
-      console.log("Current player:", currentPlayer);
       result.updateBoardScheme(currentPosition, currentPlayer, counter);
       finalResult = result.getWinner(currentPosition, currentPlayer, counter);
-      console.log("Final result:", finalResult);
       if (!finalResult) {
         let makeComputerTurn = function () {
           let randomCellNumber = game.getRandomCellNumber();
-          console.log("Computer turn, random cell number:", randomCellNumber);
           play.makeTurnComputer(boardCells, randomCellNumber);
           counter = play.turnCounter();
-          console.log("Turn counter:", counter);
           result.updateBoardScheme(randomCellNumber, game.getSymbolPlayer2(), counter);
           finalResult = result.getWinner(currentPosition, currentPlayer, counter);
-          console.log("Final result after computer turn:", finalResult);
           result.endTurn(finalResult, counter);
         };
         setTimeout(makeComputerTurn, 300);
@@ -93,7 +77,6 @@ function boardClickListener(e) {
 }
 
 document.querySelector(".nextGame").addEventListener("click", (e) => {
-  console.log("Next game clicked");
   game.clearBoard();
   game.createBoard();
   game.enableBoard();
@@ -102,16 +85,17 @@ document.querySelector(".nextGame").addEventListener("click", (e) => {
   document.querySelector(".currentGameNr").textContent = ++gameNumber;
   document.querySelector(".gameResultMessage").textContent = "";
   document.querySelector(".nextGame").classList.replace("btnEnabled", "btnDisabled");
+  //reset On turn left area log
+  document.querySelector(".leftArea .turn .turnName").textContent = game.getNamePlayer1();
+  document.querySelector(".leftArea .turn .turnSymbol").textContent = game.getSymbolPlayer1();
   if (e.target.textContent == "Rematch") {
     result.rematch();
     e.target.textContent = "Next Round";
-    console.log("NEXT GAME block is running");
   }
 });
 
 //select opponent
 document.querySelector(".gameMode").addEventListener("click", (e) => {
-  console.log("Game mode selected:", e.target.className);
   if (e.target.className == "sp" || e.target.className == "spImg") {
     game.highlightSp();
     document.querySelector("#nameO").value = "Computer";
@@ -126,7 +110,6 @@ document.querySelector(".gameMode").addEventListener("click", (e) => {
 
 //change X and O
 document.querySelector(".playerSymbol").addEventListener("click", (e) => {
-  console.log("Player symbol clicked:", e.target.className);
   if (e.target.classList.contains("btnSP")) {
     if (e.target.textContent == "X") {
       e.target.textContent = "O";
@@ -150,7 +133,6 @@ document.querySelector(".playerSymbol").addEventListener("click", (e) => {
 
 //get selected number of games to be played
 document.querySelector(".numberOfGames div").addEventListener("click", (e) => {
-  console.log("Number of games selected:", e.target.textContent);
   if (e.target.tagName == "BUTTON") {
     for (let i = 0; i < e.target.parentElement.children.length; i++) {
       e.target.parentElement.children[i].classList.replace("selected", "notSelected");
@@ -161,7 +143,6 @@ document.querySelector(".numberOfGames div").addEventListener("click", (e) => {
 
 let game = (function () {
   function createBoard() {
-    console.log("Creating board");
     let board = document.querySelector("main .board");
     board.style.gridTemplateColumns = "repeat(3, 145px)";
     board.style.gridTemplateRows = "repeat(3, 145px)";
@@ -176,7 +157,6 @@ let game = (function () {
   }
 
   function highlightSp() {
-    console.log("Highlighting single player mode");
     document.querySelector(".sp").style.backgroundColor = "black";
     document.querySelector(".spImg").style.filter = "invert(100)";
     document.querySelector(".mp").style.backgroundColor = "white";
@@ -184,7 +164,6 @@ let game = (function () {
   }
 
   function highlightMp() {
-    console.log("Highlighting multiplayer mode");
     document.querySelector(".mp").style.backgroundColor = "black";
     document.querySelector(".mpImg").style.filter = "invert(100)";
     document.querySelector(".sp").style.backgroundColor = "white";
@@ -192,7 +171,6 @@ let game = (function () {
   }
 
   function highlightWinningPositions(i, boardSchemeCopy) {
-    console.log("Highlighting winning positions:", boardSchemeCopy[i]);
     let [firstWinPos, secondWinPos, thirdWinPos] = boardSchemeCopy[i];
     document.querySelectorAll(".board div").forEach((item) => {
       if (item.className == firstWinPos || item.className == secondWinPos || item.className == thirdWinPos) {
@@ -203,7 +181,6 @@ let game = (function () {
   }
 
   function createListOfWInners() {
-    console.log("Creating list of winners");
     let listData = document.querySelector(".rightArea .logItems .resultList .listData");
     for (let i = 1; i <= game.getNumberOfGames(); i++) {
       let currentGame = document.createElement("div");
@@ -222,22 +199,20 @@ let game = (function () {
   }
 
   function clearListOfWinners() {
-    console.log("Clearing list of winners");
     document.querySelector(".rightArea .logItems .resultList .listData").innerHTML = "";
   }
 
   function initializeBoardData() {
-    console.log("Initializing board data");
     document.querySelector(".leftArea .turn .turnName").textContent = game.getNamePlayer1();
     document.querySelector(".leftArea .turn .turnSymbol").textContent = game.getSymbolPlayer1();
     document.querySelector(".rightArea .totalGameNr").textContent = game.getNumberOfGames();
     document.querySelector(".score .nameP").textContent = game.getNamePlayer1();
     document.querySelector(".score .nameO").textContent = game.getNamePlayer2();
+    document.querySelector(".gameResultMessage").textContent = "";
     createListOfWInners();
   }
 
   function showBoard() {
-    console.log("Showing board");
     document.querySelector("nav").style.display = "none";
     document.querySelector("main").style.display = "flex";
     hideHeaderFooter();
@@ -248,7 +223,6 @@ let game = (function () {
   }
 
   function showMenu() {
-    console.log("Showing menu");
     document.querySelector("nav").style.display = "flex";
     document.querySelector("main").style.display = "none";
     document.querySelector(".leftArea").style.display = "none";
@@ -256,28 +230,23 @@ let game = (function () {
   }
 
   function disableBoard() {
-    console.log("Disabling board");
     document.querySelector(".board").removeEventListener("click", boardClickListener);
   }
 
   function enableBoard() {
-    console.log("Enabling board");
     document.querySelector(".board").addEventListener("click", boardClickListener);
   }
 
   function clearBoard() {
-    console.log("Clearing board");
     document.querySelector("main .board").innerHTML = "";
   }
 
   function displayHeaderFooter() {
-    console.log("Displaying header and footer");
     document.querySelector("header").style.display = "flex";
     document.querySelector("footer").style.display = "flex";
   }
 
   function hideHeaderFooter() {
-    console.log("Hiding header and footer");
     document.querySelector("header").style.display = "none";
     document.querySelector("footer").style.display = "none";
   }
@@ -354,15 +323,12 @@ let play = (function () {
   let turnCount = 0;
   let gameCount = 0;
   let makeTurnPlayer1 = (e) => {
-    console.log("Player 1 turn:", e.target);
     e.target.textContent = game.getSymbolPlayer1();
   };
   let makeTurnPlayer2 = (e) => {
-    console.log("Player 2 turn:", e.target);
     e.target.textContent = game.getSymbolPlayer2();
   };
   let makeTurnComputer = (boardCells, randomCellNumber) => {
-    console.log("Computer turn:", randomCellNumber);
     boardCells.forEach((item) => {
       if (item.classList.contains(randomCellNumber)) {
         item.textContent = game.getSymbolPlayer2();
@@ -372,24 +338,20 @@ let play = (function () {
 
   let turnCounter = () => {
     ++turnCount;
-    console.log("Turn count:", turnCount);
     return turnCount;
   };
 
   let resetTurnCounter = () => {
     turnCount = 0;
-    console.log("Turn counter reset");
   };
 
   let gameCounter = () => {
     gameCount++;
-    console.log("Game count:", gameCount);
     return gameCount;
   };
 
   let resetGameCounter = () => {
     gameCount = 0;
-    console.log("Game counter reset");
   };
 
   let generateRandomPosition = () => {
@@ -442,7 +404,6 @@ let result = (function () {
       [1, 5, 9],
       [3, 5, 7],
     ];
-    console.log("Board scheme reset");
   };
 
   let updateBoardScheme = (position, symbol) => {
@@ -455,71 +416,61 @@ let result = (function () {
 
   let getWinner = (position, symbol, counter) => {
     updateBoardScheme(position, symbol, counter);
-    console.log("Updating board scheme:", position, symbol);
-    for (let i = 0; i < boardScheme.length; i++) {
+    for (let i = 0; i < boardScheme.length; ++i) {
       if (boardScheme[i].join("") == "XXX") {
         game.highlightWinningPositions(i, boardSchemeCopy);
         if (game.getSymbolPlayer1() == "X") {
-          console.log("Winner found:", game.getNamePlayer1());
           return game.getNamePlayer1();
         } else {
-          console.log("Winner found:", game.getNamePlayer2());
           return game.getNamePlayer2();
         }
       } else if (boardScheme[i].join("") == "OOO") {
         game.highlightWinningPositions(i, boardSchemeCopy);
         if (game.getSymbolPlayer1() == "O") {
-          console.log("Winner found:", game.getNamePlayer1());
           return game.getNamePlayer1();
         } else {
-          console.log("Winner found:", game.getNamePlayer2());
           return game.getNamePlayer2();
         }
-      } else if (counter == 9) {
-        return "Tie"; //this was outside of the loop
-      }
+      } //this was outside of the loop
     }
-    console.log("No winner found");
+    if (counter == 9) {
+      return "tie";
+    }
   };
 
   let getScorePlayer = () => {
     let score = Number(document.querySelector(".scoreP").textContent);
-    console.log("Player score:", score);
     return score;
   };
 
   let getSoreOpponent = () => {
     let score = Number(document.querySelector(".scoreO").textContent);
-    console.log("Opponent score:", score);
     return score;
   };
 
   let getCurrentGameNumber = () => {
     let gameNumber = Number(document.querySelector(".currentGameNr").textContent);
-    console.log("Current game number:", gameNumber);
     return gameNumber;
   };
 
   let getTotalGamesNumber = () => {
     let totalGames = Number(document.querySelector(".totalGameNr").textContent);
-    console.log("Total games number:", totalGames);
     return totalGames;
   };
 
   let updateScorePlayer = () => {
     let score = getScorePlayer();
-    console.log("Updating player score:", score + 1);
+
     return ++score;
   };
 
   let updateScoreOpponent = () => {
     let score = getSoreOpponent();
-    console.log("Updating opponent score:", score + 1);
+
     return ++score;
   };
 
   let updateScoreboard = (nameOfWinner) => {
-    console.log("Updating scoreboard:", nameOfWinner);
     let scoreboard = document.querySelector(".gameScore");
     if (scoreboard.querySelector(".nameP").textContent == nameOfWinner) {
       scoreboard.querySelector(".scoreP").textContent = updateScorePlayer();
@@ -529,7 +480,6 @@ let result = (function () {
   };
 
   let updateListOfWinners = (finalResult, currentNumberOfGame, counter) => {
-    console.log("Updating list of winners:", finalResult, currentNumberOfGame, counter);
     if (finalResult) {
       document.querySelectorAll(".listData .currentGameResult").forEach((item) => {
         if (item.classList.contains(currentNumberOfGame)) {
@@ -546,7 +496,6 @@ let result = (function () {
   };
 
   let getBoardScheme = () => {
-    console.log("Getting board scheme:", boardScheme);
     return boardScheme;
   };
 
@@ -563,40 +512,55 @@ let result = (function () {
         arrayOfEmptyCells.push(item);
       }
     });
-    console.log("Empty cells from board scheme:", arrayOfEmptyCells);
+
     return arrayOfEmptyCells;
   };
 
   let endTurn = (finalResult, counter) => {
-    console.log("Ending turn:", finalResult, counter);
-    if (!finalResult && counter == 9) {
-      document.querySelector(".gameResultMessage").textContent = "It's a tie!";
+    const currentGameNumber = getCurrentGameNumber();
+    const totalGamesNumber = getTotalGamesNumber();
+
+    if (finalResult === "tie" && counter === 9) {
+      //final turn has been played and game ends in a tie
+      if (currentGameNumber === totalGamesNumber) {
+        //it was the last game of the tournament
+        document.querySelector(".nextGame").textContent = "Rematch";
+        const playerScore = getScorePlayer();
+        const opponentScore = getSoreOpponent();
+
+        if (playerScore === opponentScore) {
+          //evaluate winner of the tournament
+          document.querySelector(".gameResultMessage").textContent = `Match has ended in a tie!`;
+        } else if (playerScore > opponentScore) {
+          document.querySelector(".gameResultMessage").textContent = `${game.getNamePlayer1()} is the absolute winner!`;
+        } else if (playerScore < opponentScore) {
+          document.querySelector(".gameResultMessage").textContent = `${game.getNamePlayer2()} is the absolute winner!`;
+        }
+      } else {
+        // its a tie but not the final game of the tournament
+        document.querySelector(".gameResultMessage").textContent = "It's a tie!";
+      }
       updateListOfWinners(finalResult, play.gameCounter(), counter);
-      finalResult = undefined;
       game.disableBoard();
       resetBoardScheme();
       document.querySelector(".nextGame").classList.replace("btnDisabled", "btnEnabled");
-    } else if (finalResult) {
+    } else if (finalResult !== "tie" && finalResult) {
+      //final turn has been played and game DOES NOT end in a tie
       updateScoreboard(finalResult);
       updateListOfWinners(finalResult, play.gameCounter(), counter);
       document.querySelector(".nextGame").classList.replace("btnDisabled", "btnEnabled");
 
-      const currentGameNumber = getCurrentGameNumber();
-      const totalGamesNumber = getTotalGamesNumber();
-      console.log("Current game number:", currentGameNumber);
-      console.log("Total games number:", totalGamesNumber);
-
       if (currentGameNumber < totalGamesNumber) {
+        //end of game but NOT the end of tournament
         document.querySelector(".gameResultMessage").textContent = `${finalResult || "No one"} has won this round!`;
-      } else if (currentGameNumber == totalGamesNumber) {
-        //final game has just been played
+      } else if (currentGameNumber === totalGamesNumber) {
+        //it was the last game of the tournament
         document.querySelector(".nextGame").textContent = "Rematch";
-        console.log("Final game played. Checking scores...");
         const playerScore = getScorePlayer();
         const opponentScore = getSoreOpponent();
-        console.log("Player score:", playerScore);
-        console.log("Opponent score:", opponentScore);
-        if (playerScore == opponentScore) {
+
+        if (playerScore === opponentScore) {
+          //evaluate winner of the tournament
           document.querySelector(".gameResultMessage").textContent = `Match has ended in a tie!`;
         } else if (playerScore > opponentScore) {
           document.querySelector(".gameResultMessage").textContent = `${game.getNamePlayer1()} is the absolute winner!`;
@@ -604,14 +568,12 @@ let result = (function () {
           document.querySelector(".gameResultMessage").textContent = `${game.getNamePlayer2()} is the absolute winner!`;
         }
       }
-      finalResult = undefined;
       game.disableBoard();
       resetBoardScheme();
     }
   };
 
   let rematch = () => {
-    console.log("Starting rematch");
     document.querySelector(".currentGameNr").textContent = 1;
     document.querySelector(".scoreP").textContent = 0;
     document.querySelector(".scoreO").textContent = 0;

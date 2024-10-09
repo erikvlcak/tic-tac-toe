@@ -612,6 +612,7 @@ footer {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 1rem;
     margin: 10px 0;
   }
@@ -695,5 +696,9 @@ footer {
 
   nav .gameMode > p {
     align-self: center;
+  }
+
+  body > main > div.options > .menuBtn {
+    margin-right: 1rem;
   }
 }
